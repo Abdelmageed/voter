@@ -2,14 +2,14 @@ import React from 'react';
 import {Provider} from 'react-redux';
 import {configure as authConfigure} from 'redux-auth';
 import {AuthGlobals} from 'redux-auth/default-theme';
-import store from '../index';
+import {store} from '../index';
 
 class App extends React.Component {
   render() {
     <div>
       <AuthGlobals />
       {this.props.children}
-    </div>
+    </div>;
   }
 }
 
@@ -19,9 +19,10 @@ export function renderApp({cookies, isServer, currentLocation} = {}) {
     apiUrl: 'localhost:3000'
   }, {
     isServer, cookies, currentLocation
-  })).then(({redirectPath, blank} = {})=> {
+//  })).then(({redirectPath, blank} = {})=> {
+  })).then(({ blank} = {})=> {        
     if (blank)
-      return <noscript />
+      return <noscript />;
     else {
       return (<Provider store={store} key="provider">
         <App />

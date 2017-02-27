@@ -10,7 +10,6 @@ import webpack from 'webpack';
 import webpackDevMiddleware from 'webpack-dev-middleware';
 import webpackHotMiddleware from 'webpack-hot-middleware';
 import config from '../webpack.config.dev';
-import mongoose from 'mongoose'
 
 const bundler = webpack(config);
 
@@ -57,12 +56,5 @@ browserSync({
   files: [
     'src/*.html'
   ]
-});
-
-mongoose.connect('mongodb://localhost/voter');
-const connection = mongoose.connection;
-connection.on('error', console.error.bind(console, 'connection error:'));
-connection.once('open', ()=>{
-    console.log('Database connection open');
 });
 
