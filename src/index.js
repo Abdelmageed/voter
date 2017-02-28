@@ -4,6 +4,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { App } from './components/app';
+import 'bootstrap/dist/css/bootstrap.css';
 
 export const store = configureStore({});
 const reactRoot = window.document.getElementById("app");
