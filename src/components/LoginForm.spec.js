@@ -16,24 +16,18 @@ describe('Login Form', ()=> {
   });
   
   it('submits on click', ()=> {
-    const submit = (name, password)=> {},
-          name = 'name',
-          password = 'password';
+    const submit = ()=> {};
     const submitSpy = sinon.spy(submit);
     const wrapper = mount(
       <LoginForm 
       submit={submitSpy}
-      name={name}
-      password={password}/>);
+     />);
     const submitButton = wrapper.find(Button);
     
     expect(submitButton.length).to.be.equal(1);
     
     submitButton.simulate('click');
     expect(submitSpy.called).to.be.true;
-    
-//    expect(submitSpy.getCall(0).args[0]).to.equal(name);
-//    expect(submitSpy.getCall(0).args[1]).to.equal(password);
 
   });
 });

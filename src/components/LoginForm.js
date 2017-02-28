@@ -31,7 +31,7 @@ export class LoginForm extends React.Component {
         <ControlLabel>Password</ControlLabel>
         <FormControl onChange={this.handleChange} value={this.state.password} name="password" type="password" />
       </FormGroup>
-      <Button onClick={()=> this.props.submit(this.state.username, this.state.password)}>Sign in</Button>
+      <Button onClick={()=> this.props.submit(this.state)}>Sign in</Button>
     </form>);
   }
 }
