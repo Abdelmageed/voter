@@ -1,7 +1,8 @@
 // Set up your root reducer here...
 import { combineReducers } from 'redux';
+import {user} from './user';
 
  export default combineReducers({
-   def: (state={}, action)=> state
+   user
  });
 
