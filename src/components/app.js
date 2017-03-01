@@ -1,5 +1,6 @@
 import React, {Component, PropTypes} from 'react';
-import {LoginForm} from './LoginForm';
+//import {LoginForm} from './LoginForm';
+import LoginForm from '../containers/LoginForm';
 
 export class App extends Component {
   render() {
