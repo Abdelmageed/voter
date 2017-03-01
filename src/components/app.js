@@ -1,10 +1,15 @@
-import React from 'react';
-import {Provider} from 'react-redux';
-import {store} from '../index'
-export class App extends React.Component {
+import React, {Component, PropTypes} from 'react';
+import {LoginForm} from './LoginForm';
+
+export class App extends Component {
   render() {
       return(<div>
+         <LoginForm />
         {this.props.children}
       </div>);
   }
 }
+
+App.propTypes = {
+  children: PropTypes.array
+};
