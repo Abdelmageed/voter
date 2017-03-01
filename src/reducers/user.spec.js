@@ -1,5 +1,5 @@
 import {expect} from 'chai';
-import axios from 'axios';
+//import axios from 'axios';
 import MockAdapter from 'axios-mock-adapter';
 import configureStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
@@ -10,7 +10,8 @@ import * as endpoints from '../constants/endpoints';
 import * as actions from '../actions/actionCreators';
 
 let axiosMock,
-    storeMock;
+    storeMock,
+    axios = endpoints.axiosInstance;
 describe('User Reducer', ()=> {
   
   before(()=> {

@@ -1,10 +1,16 @@
 import * as actions from '../constants/actions';
-import axios from 'axios';
+//import axios from 'axios';
 import * as endpoints from '../constants/endpoints';
+import querystring from 'querystring';
+
+const axios = endpoints.axiosInstance;
 
 export const login = (credentials)=> {
   return dispatch=> {
-    return axios.post(endpoints.login, credentials)
+    return axios.post(endpoints.login,
+                      querystring.stringify(credentials), {
+      headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+    })
       .then((response)=> {
       dispatch(loginSuccess());
       dispatch(setUser(response.data));
