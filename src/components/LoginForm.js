@@ -22,7 +22,13 @@ export class LoginForm extends React.Component {
   
   render(){
     return (
-    <form>
+    <form style={{
+          position: 'absolute',
+          border: '1px solid #ccc',
+          boxShadow: '0 2px 5px rgba(0, 0, 0, 0.3)',
+          padding: '10px',
+          borderRadius: '3%'
+        }}>
       <FormGroup controlId="username">
         <ControlLabel>Username</ControlLabel>
         <FormControl onChange={this.handleChange} value={this.state.username} name="username" type="text" placeholder="Enter your name" />
