@@ -47,5 +47,5 @@ describe('Custom Overlay', ()=> {
     
     expect(form.length).to.equal(1);
     
-  })
+  });
 });

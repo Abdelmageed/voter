@@ -2,6 +2,12 @@ import {connect} from 'react-redux';
 import {LoginForm} from '../components/LoginForm';
 import {login} from '../actions/actionCreators';
 
+const mapStateToProps = (state)=> {
+  return {
+    error: state.user.error
+  };
+};
+
 const mapDispatchToProps = (dispatch)=> {
   return {
     submit: (credentials)=> {
@@ -10,4 +16,4 @@ const mapDispatchToProps = (dispatch)=> {
   };
 };
 
-export default connect(null, mapDispatchToProps)(LoginForm);
+export default connect(mapStateToProps, mapDispatchToProps)(LoginForm);

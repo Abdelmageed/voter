@@ -8,19 +8,20 @@ import {initialState} from '../initialState';
 import * as actionNames from '../constants/actions';
 import * as endpoints from '../constants/endpoints';
 import * as actions from '../actions/actionCreators';
+import * as errors from '../constants/errors';
 
 let axiosMock,
     storeMock,
     axios = endpoints.axiosInstance;
 describe('User Reducer', ()=> {
   
-  before(()=> {
+  beforeEach(()=> {
     axiosMock = new MockAdapter(axios);
     let middlewares = [thunk];
     storeMock = configureStore(middlewares);
   });
   
-  after(()=> {
+  afterEach(()=> {
     axiosMock.restore();
   });
   
@@ -52,20 +53,36 @@ describe('User Reducer', ()=> {
     const action = actions.loginSuccess(),
           state = {
             isAuthenticated: false,
-            loggingIn: true
+            loggingIn: true,
+            error: errors.login
           },
-          nextState = Object.assign({}, state, {isAuthenticated: true, loggingIn: false});
+          nextState = Object.assign({}, state, {isAuthenticated: true, loggingIn: false, error: ''});
     
     expect(user(state, action)).to.deep.equal(nextState);
   });
   
   it('should handle LOGIN_FAILURE', ()=> {
-    const action = actions.loginFailure(),
+    const action = actions.loginFailure(errors.login),
           state = {
             isAuthenticated: false,
             loggingIn: true
           },
-          nextState = Object.assign({}, state, {isAuthenticated: false, loggingIn: false});
+          nextState = Object.assign({}, state, {
+            isAuthenticated: false,
+            loggingIn: false,
+            error: errors.login
+          });
+      
+      expect(user(state, action)).to.deep.equal(nextState);
+  });
+  
+  it('should handle LOGIN_PENDING', ()=> {
+    const action = actions.loginPending(),
+          state = {
+            isAuthenticated: false,
+            loggingIn: false
+          },
+          nextState = Object.assign({}, state, {isAuthenticated: false, loggingIn: true});
       
       expect(user(state, action)).to.deep.equal(nextState);
   });
@@ -87,6 +104,7 @@ describe('User Reducer', ()=> {
             isAuthenticated: false
           },
           expectedActions = [
+            actions.loginPending(),
             actions.loginSuccess(),
             actions.setUser(userData)
           ];
@@ -98,6 +116,33 @@ describe('User Reducer', ()=> {
       
         expect(store.getActions()).to.deep.equal(expectedActions);
         done();
+    }, 10);
+  });
+  
+  it('should set a login error message on unsuccessful login', (done)=> {
+    const credentials = {
+            username: 'name',
+            password: 'password'
+          };
+    axiosMock.onPost(endpoints.login)
+      .reply(401);
+    
+    const state = {
+            loggingIn: false,
+            isAuthenticated: false
+          },
+          expectedActions = [
+            actions.loginPending(),
+            actions.loginFailure(errors.login)
+          ];
+    
+    const store = storeMock(state);
+    
+    store.dispatch(actions.login(credentials));
+    
+    setTimeout(()=> {
+      expect(store.getActions()).to.deep.equal(expectedActions);
+      done();
     }, 10);
   });
   

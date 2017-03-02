@@ -1,5 +1,5 @@
 import * as actions from '../constants/actions';
-//import axios from 'axios';
+import * as errors from '../constants/errors';
 import * as endpoints from '../constants/endpoints';
 import querystring from 'querystring';
 
@@ -7,18 +7,27 @@ const axios = endpoints.axiosInstance;
 
 export const login = (credentials)=> {
   return dispatch=> {
+    dispatch(loginPending());
     return axios.post(endpoints.login,
                       querystring.stringify(credentials), {
       headers: {'Content-Type': 'application/x-www-form-urlencoded'}
     })
       .then((response)=> {
-      dispatch(loginSuccess());
-      dispatch(setUser(response.data));
+      if (response.status === 401) {
+          dispatch(loginFailure(errors.login));
+      } else {
+          dispatch(loginSuccess());
+          dispatch(setUser(response.data));
+      }
     })
       .catch((error)=> {
-      dispatch(loginFailure());
+//        if(error.response) {
+//        } else {
+          dispatch(loginFailure(errors.server));
+//        }
+      
     });
-  }
+  };
 };
 
 export const setUser = (user)=> {
@@ -28,15 +37,22 @@ export const setUser = (user)=> {
   };
 };
 
-//for some reason using action constants fails the tests. 
+//for some reason using action constants fails the tests.
+export const loginPending = ()=> {
+  return {
+    type: 'LOGIN_PENDING'
+  };
+};
+
 export const loginSuccess = ()=> {
   return {
     type: 'LOGIN_SUCCESS'
   };
 };
 
-export const loginFailure = ()=> {
+export const loginFailure = (error)=> {
   return {
-    type: 'LOGIN_FAILURE'
+    type: 'LOGIN_FAILURE',
+    error
   };
 };

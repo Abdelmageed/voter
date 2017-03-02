@@ -1,7 +1,7 @@
-import React from 'react';
+import React, {Component, PropTypes} from 'react';
 import {FormGroup, ControlLabel, FormControl, Button} from 'react-bootstrap';
 
-export class LoginForm extends React.Component {
+export class LoginForm extends Component {
   constructor(props){
     super(props);
     this.state = {
@@ -37,11 +37,17 @@ export class LoginForm extends React.Component {
         <ControlLabel>Password</ControlLabel>
         <FormControl onChange={this.handleChange} value={this.state.password} name="password" type="password" />
       </FormGroup>
+      {(this.props.error && this.props.error != '')?
+        <div style={{color: '#d00'}}
+        className="error-label">{this.props.error}</div>
+        :null
+      }
       <Button onClick={()=> this.props.submit(this.state)}>Sign in</Button>
     </form>);
   }
 }
 
 LoginForm.propTypes = {
-  submit: React.PropTypes.func
+  submit: PropTypes.func,
+  error: PropTypes.string
 };

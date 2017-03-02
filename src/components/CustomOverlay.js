@@ -21,9 +21,9 @@ export default class CustomOverlay extends Component {
   render(){
     return (
       <div style={{
-            position: 'relative'
+            position: "relative"
         }}>
-        <Button ref='target' onClick={()=>this.toggle()}>
+        <Button ref="target" onClick={()=>this.toggle()}>
           {this.props.triggerText}
         </Button>
         <Overlay
@@ -42,5 +42,6 @@ export default class CustomOverlay extends Component {
 }
 
 CustomOverlay.propTypes = {
-  triggerText: PropTypes.string
+  triggerText: PropTypes.string,
+  popover: PropTypes.element
 };

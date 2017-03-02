@@ -30,4 +30,19 @@ describe('Login Form', ()=> {
     expect(submitSpy.called).to.be.true;
 
   });
+  
+  it('shows error message if an error is present', ()=> {
+    const error = "Wrong username or password";
+    let wrapper = mount(<LoginForm error={error} />);
+    
+    let errorLabel = wrapper.find('.error-label');
+    expect(errorLabel.length).to.equal(1);
+    
+    expect(errorLabel.text()).to.equal(error);
+    
+    wrapper = mount(<LoginForm />);
+    errorLabel =wrapper.find('.error-label');
+    expect(errorLabel.length).to.equal(0);
+
+  });
 });
