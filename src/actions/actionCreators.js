@@ -21,11 +21,8 @@ export const login = (credentials)=> {
       }
     })
       .catch((error)=> {
-//        if(error.response) {
-//        } else {
-          dispatch(loginFailure(errors.server));
-//        }
-      
+        const errorMsg = error.response | errors.server; 
+        dispatch(loginFailure(errorMsg));
     });
   };
 };
