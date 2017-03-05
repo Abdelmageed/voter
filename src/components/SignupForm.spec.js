@@ -34,20 +34,96 @@ describe('SignupForm', ()=> {
     usernameControl.simulate('change', e);
     
     expect(handleChangeSpy.called).to.be.true;
-    expect(handleChangeSpy.calledWith(e))
+    expect(handleChangeSpy.calledWith(e));
     handleChangeSpy.restore();
   });
   
-  it('should validate password fields when one field finished editing and the other has been edited', ()=> {
-    //either field is not '', and the other on finish edit
-    //call validate(1st, 2nd)
-    //if matching show error
-    const spyValidatePassword = (SignupForm.prototype, 'validatePassword');
-    const wrapper = mount(<SignupForm />);
-    const controls = wrapper.find(FormControl);
-    const passwordControl = controls.at(1),
-          passwordConfirmControl = controls.at(2);
+  describe('validatePassword()', ()=> {
     
+    const matchError = "Passwords must match";
+    
+    let spyValidatePassword,
+        wrapper,
+        controls,
+        passwordControl,
+        passwordConfirmControl;
+    
+    beforeEach(()=> {
+      spyValidatePassword = sinon.spy(SignupForm.prototype, 'validatePassword');
+      wrapper = mount(<SignupForm />),
+      controls = wrapper.find(FormControl),
+      passwordControl = controls.at(1),
+      passwordConfirmControl = controls.at(2);
+    });
+    
+    afterEach(()=> {
+      spyValidatePassword.restore();
+      wrapper.unmount();
+    });
+    
+    it('should not add match error to state.errors when one field is blurred and the other has been edited', ()=> {
+      
+    wrapper.setState({
+      password: 'a',
+      passwordConfirm: 'a' 
+    });
+    
+    
+    passwordControl.simulate('blur');
+    expect(spyValidatePassword.called).to.be.true;
+    expect(wrapper.state('errors')).to.not.include(matchError);
+
+    
+    });
+    
+    it('should not add match error to state.errors if one field is clean', ()=> {
+      
+      wrapper.setState({
+        password: 'a'
+      });
+      
+      passwordConfirmControl.simulate('blur');
+      passwordControl.simulate('blur');
+      expect(wrapper.state('errors')).to.not.include(matchError);
+
+      
+      wrapper.setState({
+        passwordConfirm: 'a' 
+      });
+      
+      passwordConfirmControl.simulate('blur');
+      passwordControl.simulate('blur');
+      expect(wrapper.state('errors')).to.not.include(matchError);
+    });
+    
+    it('should add match error to state.errors if passwords do not match', ()=> {
+      
+      wrapper.setState({
+        password: 'a',
+        passwordConfirm: 'b'
+      });
+      
+      
+      passwordControl.simulate('blur');
+      expect(spyValidatePassword.called).to.be.true;
+      expect(wrapper.state('errors')).to.include(matchError);
+      
+      passwordControl.simulate('blur');
+      expect(spyValidatePassword.called).to.be.true;
+      expect(wrapper.state('errors')).to.include(matchError);
+
+    });
+    
+    //should be another method's and called onChange not onBlur
+//    it('should remove "Password must match" from state.errors if passwords match', ()=> {
+//      wrapper.setState({
+//        errors: [matchError],
+//        password: 'aa',
+//        passwordConfirm: 'aa'
+//      });
+      
+//    });
     
   });
+  
 });
