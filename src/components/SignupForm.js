@@ -1,5 +1,6 @@
-import React, {Component} from 'react';
+import React, {Component, PropTypes} from 'react';
 import {FormGroup, ControlLabel, FormControl, Button} from 'react-bootstrap';
+import debounce from 'throttle-debounce/debounce';
 
 export class SignupForm extends Component {
   
@@ -17,6 +18,7 @@ export class SignupForm extends Component {
     this.validatePassword = this.validatePassword.bind(this);
     this.removePasswordError = this.removePasswordError.bind(this);
     this.validateSubmit = this.validateSubmit.bind(this);
+    this.debouncedCheckUsername = this.debouncedCheckUsername.bind(this);
   }
   
   handleChange(e, callback){
@@ -61,6 +63,9 @@ export class SignupForm extends Component {
     }
   }
   
+  debouncedCheckUsername(){
+    debounce(400, this.props.checkUsername);
+  }
   
   render(){
     return (
@@ -71,8 +76,14 @@ export class SignupForm extends Component {
              type="text"
              value={this.state.username}
              name="username"
-             onChange={(e)=>{this.handleChange(e);}} />
+             onChange={(e)=>{
+              this.handleChange(e, this.debouncedCheckUsername);
+                            }} />
         </FormGroup>
+        <div style={{color:'#d00'}}
+          className="username-error">
+           {this.props.checkUsernameError}
+        </div>
          <FormGroup>
         <ControlLabel>password</ControlLabel>
           <FormControl
@@ -83,7 +94,7 @@ export class SignupForm extends Component {
              onBlur={()=>{this.validatePassword();}} />
         </FormGroup>
         <FormGroup>
-          <ControlLabel>username</ControlLabel>
+          <ControlLabel>confirm password</ControlLabel>
             <FormControl
                type="password"
                value={this.state.passwordConfirm}
@@ -103,3 +114,9 @@ export class SignupForm extends Component {
     );
   }
 }
+
+SignupForm.propTypes = {
+  submit: PropTypes.func,
+  checkUsername: PropTypes.func,
+  checkUsernameError: PropTypes.string
+};

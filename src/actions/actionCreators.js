@@ -56,8 +56,8 @@ export const checkUsername = (username)=> {
       //TODO redirect to an internal server error page
       if(error.response) throw error.response;
     });
-  }
-}
+  };
+};
 
 export const setUsernameError = (error)=> {
   return {

@@ -3,6 +3,7 @@ import {shallow, mount} from 'enzyme';
 import {expect} from 'chai';
 import sinon from 'sinon';
 import {FormControl, Button} from 'react-bootstrap';
+import * as errors from '../constants/errors';
 
 import {SignupForm} from './SignupForm';
 
@@ -14,6 +15,7 @@ describe('SignupForm', ()=> {
       spyValidatePassword,
       spyRemovePasswordError,
       spyValidateSubmit,
+      spyDebouncedCheckUsername,
       wrapper,
       controls,
       passwordControl,
@@ -31,8 +33,9 @@ describe('SignupForm', ()=> {
     spyValidatePassword = sinon.spy(SignupForm.prototype, 'validatePassword');
     spyRemovePasswordError = sinon.spy(SignupForm.prototype, 'removePasswordError');
     spyValidateSubmit = sinon.spy(SignupForm.prototype, 'validateSubmit');
+    spyDebouncedCheckUsername = sinon.spy(SignupForm.prototype, 'debouncedCheckUsername');
 
-    wrapper = mount(<SignupForm submit={spySubmit}/>),
+    wrapper = mount(<SignupForm submit={spySubmit} checkUsernameError={errors.usernameInUse}/>),
     controls = wrapper.find(FormControl),
     usernameControl = controls.at(0),
     passwordControl = controls.at(1),
@@ -45,6 +48,7 @@ describe('SignupForm', ()=> {
     spyRemovePasswordError.restore();
     spyHandleChange.restore();
     spyValidateSubmit.restore();
+    spyDebouncedCheckUsername.restore();
     wrapper.unmount();
   });
   
@@ -192,4 +196,22 @@ describe('SignupForm', ()=> {
     
   });
   
+  describe('Username Control', ()=> {
+    
+    it('should call debouncedCheckUsername onChange', ()=> {
+      
+      const e = {
+        value: '',
+        target: usernameControl
+      };
+      usernameControl.simulate('change', e);
+      expect(spyDebouncedCheckUsername.called).to.equal(true);
+    });
+    
+  });
+  
+  it('should show username validation errors', ()=> {
+    const usernameError = wrapper.find('.username-error');
+    expect(usernameError.text()).to.include(errors.usernameInUse);
+  });
 });
