@@ -9,20 +9,22 @@ export class SignupForm extends Component {
       username: '',
       password: '',
       passwordConfirm: '',
-      errors: []
+      matchError: ''
     };
     this.matchError = "Passwords must match";
     
     this.handleChange = this.handleChange.bind(this);
     this.validatePassword = this.validatePassword.bind(this);
+    this.removePasswordError = this.removePasswordError.bind(this);
+    this.validateSubmit = this.validateSubmit.bind(this);
   }
   
-  handleChange(e){
+  handleChange(e, callback){
     let name = e.target.name,
           value = e.target.value;
     this.setState({
       [name]: value
-    });
+    }, callback);
   }
   
   validatePassword(){
@@ -32,11 +34,33 @@ export class SignupForm extends Component {
     this.setState((prevState)=> {
       
       if (prevState.password !== prevState.passwordConfirm){
-        return {errors: prevState.errors.concat(this.matchError)};
+        return {matchError: this.matchError};
       }
-      return {errors: prevState.errors};
+      return {matchError: ''};
     });
   }
+  
+  removePasswordError(){
+    if(this.state.password === this.state.passwordConfirm){
+      this.setState({
+        matchError: ''
+      });
+    }
+  }
+  
+  validateSubmit(){
+    this.removePasswordError();
+    //this.checkUniqueUsername();
+    
+    if(this.state.matchError == '' /* && usernameError === '' */) {
+      let user = {
+        username: this.state.username,
+        password: this.state.password
+      };
+      this.props.submit(user);
+    }
+  }
+  
   
   render(){
     return (
@@ -47,7 +71,7 @@ export class SignupForm extends Component {
              type="text"
              value={this.state.username}
              name="username"
-             onChange={this.handleChange} />
+             onChange={(e)=>{this.handleChange(e);}} />
         </FormGroup>
          <FormGroup>
         <ControlLabel>password</ControlLabel>
@@ -55,8 +79,8 @@ export class SignupForm extends Component {
              type="password"
              value={this.state.password}
              name="password"
-             onChange={this.handleChange}
-             onBlur={()=>{this.validatePassword()}} />
+             onChange={(e)=>{this.handleChange(e, this.removePasswordError);}}
+             onBlur={()=>{this.validatePassword();}} />
         </FormGroup>
         <FormGroup>
           <ControlLabel>username</ControlLabel>
@@ -64,10 +88,17 @@ export class SignupForm extends Component {
                type="password"
                value={this.state.passwordConfirm}
                name="passwordConfirm"
-               onChange={this.handleChange}
-               onBlur={()=>{this.validatePassword()}} />
+               onChange={(e)=>{this.handleChange(e, this.removePasswordError);}}
+               onBlur={()=>{this.validatePassword();}} />
         </FormGroup>
-        <Button/>
+        <div style={{color:'#d00'}}>{this.state.matchError}</div>
+        <Button 
+          type="submit"
+          onSubmit={(e)=>{e.preventDefault();
+                          this.validateSubmit();
+                         }}>
+                         Create Account
+       </Button>
       </form>
     );
   }

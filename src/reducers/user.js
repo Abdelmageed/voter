@@ -1,5 +1,6 @@
 import {initialState} from '../initialState';
 import * as actions from '../constants/actions';
+import * as errors from '../constants/errors';
 
 export function user(state = initialState.user, action){
   switch (action.type) {
@@ -24,6 +25,13 @@ export function user(state = initialState.user, action){
     case 'LOGIN_PENDING':
       return Object.assign({}, state, {
         loggingIn: true
+      });
+      
+    case 'SET_USERNAME_ERROR':
+      return Object.assign({}, state, {
+        signup: Object.assign({}, state.signup, {
+          usernameError: errors.usernameInUse
+        })
       });
       
     default:

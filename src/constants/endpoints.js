@@ -10,3 +10,7 @@ export const axiosInstance = axios.create({
 axiosInstance.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
 //export const login = path.join(apiUrl, 'login');
 export const login = '/login';
+
+export const checkUsername = '/check_username';
+
+export const signup = '/signup';

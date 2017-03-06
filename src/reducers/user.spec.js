@@ -87,6 +87,17 @@ describe('User Reducer', ()=> {
       expect(user(state, action)).to.deep.equal(nextState);
   });
   
+  it('should handle SET_USERNAME_ERROR', ()=> {
+    const action = actions.setUsernameError(),
+          state = {},
+          nextState = {
+            signup:{
+              usernameError: errors.usernameInUse
+            }
+          };
+    expect(user(state, action)).to.deep.equal(nextState);
+  });
+  
   it('should set user on successful login', (done)=> {
     const userData = {
       id: 1,
@@ -146,4 +157,68 @@ describe('User Reducer', ()=> {
     }, 10);
   });
   
+  it('should set a "username in use" error on signup if response.valid === false', (done)=> {
+    
+    const name = 'name';
+    axiosMock.onGet(endpoints.checkUsername)
+      .reply(200, {valid: false});
+    
+    const expectedActions = [
+      actions.setUsernameError(errors.usernameInUse)
+    ];
+    const store = storeMock({});
+    
+    store.dispatch(actions.checkUsername(name));
+    
+    setTimeout(()=> {
+      expect(store.getActions()).to.deep.equal(expectedActions);
+      done();
+    }, 10);
+    
+  });
+  
+  it('should set username in use error to "" if response.valid', (done)=> {
+    const name = 'name';
+    axiosMock.onGet(endpoints.checkUsername)
+      .reply(200, {valid: true});
+    
+    const expectedActions = [
+      actions.setUsernameError('')
+    ];
+    const store = storeMock({});
+    
+    store.dispatch(actions.checkUsername(name));
+    
+    setTimeout(()=> {
+      expect(store.getActions()).to.deep.equal(expectedActions);
+      done();
+    }, 10);
+  });
+  
+  it('should set user and login on successful signup', (done)=> {
+    const userData = {
+      id: 1,
+      username: 'name'
+    },
+          formData = {
+            username: 'name',
+            password: 'password'
+          };
+    axiosMock.onPost(endpoints.signup)
+      .reply(200, userData);
+    
+    const expectedActions = [
+            actions.loginPending(),
+            actions.loginSuccess(),
+            actions.setUser(userData)
+          ];
+    const store = storeMock({});
+    
+    store.dispatch(actions.signup(formData));
+    
+    setTimeout(()=> {
+      expect(store.getActions()).to.deep.equal(expectedActions);
+      done();
+    });
+  });
 });
