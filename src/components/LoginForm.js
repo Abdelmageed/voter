@@ -42,7 +42,9 @@ export class LoginForm extends Component {
         className="error-label">{this.props.error}</div>
         :null
       }
-      <Button onClick={()=> this.props.submit(this.state)}>Sign in</Button>
+      <Button
+      type="submit" 
+      onSubmit={(e)=> {e.preventDefault();this.props.submit(this.state);}}>Sign in</Button>
     </form>);
   }
 }

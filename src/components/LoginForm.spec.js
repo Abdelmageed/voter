@@ -15,7 +15,7 @@ describe('Login Form', ()=> {
     expect(formGroups.length).to.be.equal(2);
   });
   
-  it('submits on click', ()=> {
+  it('submits', ()=> {
     const submit = ()=> {};
     const submitSpy = sinon.spy(submit);
     const wrapper = mount(
@@ -26,7 +26,7 @@ describe('Login Form', ()=> {
     
     expect(submitButton.length).to.be.equal(1);
     
-    submitButton.simulate('click');
+    submitButton.simulate('submit');
     expect(submitSpy.called).to.be.true;
 
   });
