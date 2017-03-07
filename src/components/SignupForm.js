@@ -69,7 +69,14 @@ export class SignupForm extends Component {
   
   render(){
     return (
-      <form>
+      <form onKeyUp={(e)=>{if(e.keyCode==13) this.validateSubmit();}}
+         style={{
+          position: 'absolute',
+          border: '1px solid #ccc',
+          boxShadow: '0 2px 5px rgba(0, 0, 0, 0.3)',
+          padding: '10px',
+          borderRadius: '3%'
+        }}>
         <FormGroup>
           <ControlLabel>username</ControlLabel>
           <FormControl
@@ -104,10 +111,7 @@ export class SignupForm extends Component {
         </FormGroup>
         <div style={{color:'#d00'}}>{this.state.matchError}</div>
         <Button 
-          type="submit"
-          onSubmit={(e)=>{e.preventDefault();
-                          this.validateSubmit();
-                         }}>
+          onClick={()=>{this.validateSubmit();}}>
                          Create Account
        </Button>
       </form>

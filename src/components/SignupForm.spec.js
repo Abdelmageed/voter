@@ -172,7 +172,7 @@ describe('SignupForm', ()=> {
   describe('Submit Button', ()=> {
     
     it('calls validateSubmit on click', ()=> {
-      submitButton.simulate('submit');
+      submitButton.simulate('click');
       expect(spyValidateSubmit.called).to.be.true;
     });
     

@@ -26,7 +26,7 @@ describe('Login Form', ()=> {
     
     expect(submitButton.length).to.be.equal(1);
     
-    submitButton.simulate('submit');
+    submitButton.simulate('click');
     expect(submitSpy.called).to.be.true;
 
   });

@@ -1,5 +1,6 @@
 import React, {Component, PropTypes} from 'react';
 import {FormGroup, ControlLabel, FormControl, Button} from 'react-bootstrap';
+import NativeListener from 'react-native-listener';
 
 export class LoginForm extends Component {
   constructor(props){
@@ -22,7 +23,8 @@ export class LoginForm extends Component {
   
   render(){
     return (
-    <form style={{
+    <form onKeyUp={(e)=>{if(e.keyCode==13) this.props.submit(this.state);}}
+         style={{
           position: 'absolute',
           border: '1px solid #ccc',
           boxShadow: '0 2px 5px rgba(0, 0, 0, 0.3)',
@@ -42,9 +44,8 @@ export class LoginForm extends Component {
         className="error-label">{this.props.error}</div>
         :null
       }
-      <Button
-      type="submit" 
-      onSubmit={(e)=> {e.preventDefault();this.props.submit(this.state);}}>Sign in</Button>
+      <Button onClick={()=>{this.props.submit(this.state);}}
+              >Sign in</Button>
     </form>);
   }
 }
