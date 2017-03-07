@@ -178,6 +178,10 @@ describe('SignupForm', ()=> {
     
     it('validateSumbit() calls submit(user) if there are no validation errors', ()=> {
       
+      wrapper.setState({
+        username: 'name to pass required validation',
+        password: 'valid password'
+      });
       wrapper.setProps({checkUsernameError: ''});
       wrapper.instance().validateSubmit();
       expect(spySubmit.called).to.be.true;
@@ -195,6 +199,31 @@ describe('SignupForm', ()=> {
       expect(spySubmit.called).to.be.false;
     });
     
+    it('should show errors on submit if required fields are missing', ()=> {
+      const requiredFieldsError = wrapper.find('.required-fields-error');
+
+      wrapper.instance().validateSubmit();
+      expect(wrapper.state('requiredFieldsError')).to.not.equal('');
+      expect(requiredFieldsError.text()).to.not.equal('');
+  });
+    
+    it('should remove "required fields" errors if required fields are not empty', ()=> {
+      
+      wrapper.instance().validateSubmit();
+      expect(wrapper.state('requiredFieldsError')).to.not.equal('');
+      
+      wrapper.instance().state = {
+        username: 'someone',
+      };
+      const e = {
+        target: passwordControl,
+        value: "someone's passowrd"
+      };
+      passwordControl.simulate('change', e);
+      expect(wrapper.state('requiredFieldsError')).to.equal('');
+
+    });
+    
   });
   
   describe('Username Control', ()=> {
@@ -210,6 +239,7 @@ describe('SignupForm', ()=> {
     });
     
   });
+  
   
   it('should show username validation errors', ()=> {
     const usernameError = wrapper.find('.username-error');
