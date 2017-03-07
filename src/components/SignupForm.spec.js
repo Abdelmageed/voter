@@ -15,7 +15,7 @@ describe('SignupForm', ()=> {
       spyValidatePassword,
       spyRemovePasswordError,
       spyValidateSubmit,
-      spyDebouncedCheckUsername,
+      spyCheckUsername,
       wrapper,
       controls,
       passwordControl,
@@ -33,9 +33,9 @@ describe('SignupForm', ()=> {
     spyValidatePassword = sinon.spy(SignupForm.prototype, 'validatePassword');
     spyRemovePasswordError = sinon.spy(SignupForm.prototype, 'removePasswordError');
     spyValidateSubmit = sinon.spy(SignupForm.prototype, 'validateSubmit');
-    spyDebouncedCheckUsername = sinon.spy(SignupForm.prototype, 'debouncedCheckUsername');
+    spyCheckUsername = sinon.spy(SignupForm.prototype, 'checkUsername');
 
-    wrapper = mount(<SignupForm submit={spySubmit} checkUsernameError={errors.usernameInUse}/>),
+    wrapper = mount(<SignupForm submit={spySubmit} checkUsernameError={errors.usernameInUse} checkUsername={()=>{}}/>),
     controls = wrapper.find(FormControl),
     usernameControl = controls.at(0),
     passwordControl = controls.at(1),
@@ -48,7 +48,7 @@ describe('SignupForm', ()=> {
     spyRemovePasswordError.restore();
     spyHandleChange.restore();
     spyValidateSubmit.restore();
-    spyDebouncedCheckUsername.restore();
+    spyCheckUsername.restore();
     wrapper.unmount();
   });
   
@@ -198,14 +198,14 @@ describe('SignupForm', ()=> {
   
   describe('Username Control', ()=> {
     
-    it('should call debouncedCheckUsername onChange', ()=> {
+    it('should call checkUsername onChange', ()=> {
       
       const e = {
         value: '',
         target: usernameControl
       };
       usernameControl.simulate('change', e);
-      expect(spyDebouncedCheckUsername.called).to.equal(true);
+      expect(spyCheckUsername.called).to.equal(true);
     });
     
   });

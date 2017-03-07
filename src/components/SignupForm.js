@@ -1,6 +1,7 @@
 import React, {Component, PropTypes} from 'react';
 import {FormGroup, ControlLabel, FormControl, Button} from 'react-bootstrap';
-import debounce from 'throttle-debounce/debounce';
+import debounce from 'lodash.debounce';
+
 
 export class SignupForm extends Component {
   
@@ -18,7 +19,7 @@ export class SignupForm extends Component {
     this.validatePassword = this.validatePassword.bind(this);
     this.removePasswordError = this.removePasswordError.bind(this);
     this.validateSubmit = this.validateSubmit.bind(this);
-    this.debouncedCheckUsername = this.debouncedCheckUsername.bind(this);
+    this.checkUsername = this.checkUsername.bind(this);
   }
   
   handleChange(e, callback){
@@ -63,9 +64,8 @@ export class SignupForm extends Component {
     }
   }
   
-  debouncedCheckUsername(){
-//    debounce(1000, ()=> {this.props.checkUsername(this.state.username);});
-    this.props.checkUsername(this.state.username);
+  checkUsername(){
+    debounce(()=> {this.props.checkUsername(this.state.username);}, 400)();
   }
   
   render(){
@@ -85,7 +85,7 @@ export class SignupForm extends Component {
              value={this.state.username}
              name="username"
              onChange={(e)=>{
-              this.handleChange(e, this.debouncedCheckUsername);
+              this.handleChange(e, this.checkUsername);
                             }} />
         </FormGroup>
         <div style={{color:'#d00'}}

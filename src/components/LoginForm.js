@@ -1,6 +1,5 @@
 import React, {Component, PropTypes} from 'react';
 import {FormGroup, ControlLabel, FormControl, Button} from 'react-bootstrap';
-import NativeListener from 'react-native-listener';
 
 export class LoginForm extends Component {
   constructor(props){

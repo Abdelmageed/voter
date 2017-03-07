@@ -1,6 +1,5 @@
 import {initialState} from '../initialState';
 import * as actions from '../constants/actions';
-import * as errors from '../constants/errors';
 
 export function user(state = initialState.user, action){
   switch (action.type) {
