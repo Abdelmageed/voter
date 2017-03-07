@@ -178,6 +178,7 @@ describe('SignupForm', ()=> {
     
     it('validateSumbit() calls submit(user) if there are no validation errors', ()=> {
       
+      wrapper.setProps({checkUsernameError: ''});
       wrapper.instance().validateSubmit();
       expect(spySubmit.called).to.be.true;
      });

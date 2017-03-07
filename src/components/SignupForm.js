@@ -52,10 +52,11 @@ export class SignupForm extends Component {
   }
   
   validateSubmit(){
-    this.removePasswordError();
+    this.validatePassword();
     //this.checkUniqueUsername();
     
-    if(this.state.matchError == '' /* && usernameError === '' */) {
+    if(this.state.matchError == ''  &&
+       this.props.checkUsernameError === '') {
       let user = {
         username: this.state.username,
         password: this.state.password
