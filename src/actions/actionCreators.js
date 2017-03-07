@@ -47,7 +47,8 @@ export const signup = (user)=> {
 
 export const checkUsername = (username)=> {
   return (dispatch)=> {
-    return axios.get(endpoints.checkUsername, username)
+    return axios.post(endpoints.checkUsername, querystring.stringify({username}),{
+                     headers: {'Content-Type': 'application/x-www-form-urlencoded'}})
       .then((response)=> {
       let error = (response.data.valid)? '' : errors.usernameInUse;
       dispatch(setUsernameError(error));

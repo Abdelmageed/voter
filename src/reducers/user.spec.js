@@ -88,7 +88,7 @@ describe('User Reducer', ()=> {
   });
   
   it('should handle SET_USERNAME_ERROR', ()=> {
-    const action = actions.setUsernameError(),
+    const action = actions.setUsernameError(errors.usernameInUse),
           state = {},
           nextState = {
             signup:{
@@ -160,7 +160,7 @@ describe('User Reducer', ()=> {
   it('should set a "username in use" error on signup if response.valid === false', (done)=> {
     
     const name = 'name';
-    axiosMock.onGet(endpoints.checkUsername)
+    axiosMock.onPost(endpoints.checkUsername)
       .reply(200, {valid: false});
     
     const expectedActions = [
@@ -179,7 +179,7 @@ describe('User Reducer', ()=> {
   
   it('should set username in use error to "" if response.valid', (done)=> {
     const name = 'name';
-    axiosMock.onGet(endpoints.checkUsername)
+    axiosMock.onPost(endpoints.checkUsername)
       .reply(200, {valid: true});
     
     const expectedActions = [

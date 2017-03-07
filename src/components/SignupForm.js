@@ -64,7 +64,8 @@ export class SignupForm extends Component {
   }
   
   debouncedCheckUsername(){
-    debounce(400, this.props.checkUsername);
+//    debounce(1000, ()=> {this.props.checkUsername(this.state.username);});
+    this.props.checkUsername(this.state.username);
   }
   
   render(){

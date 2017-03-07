@@ -30,7 +30,7 @@ export function user(state = initialState.user, action){
     case 'SET_USERNAME_ERROR':
       return Object.assign({}, state, {
         signup: Object.assign({}, state.signup, {
-          usernameError: errors.usernameInUse
+          usernameError: action.error
         })
       });
       
