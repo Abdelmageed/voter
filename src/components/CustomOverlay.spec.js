@@ -4,7 +4,7 @@ import {expect} from 'chai';
 import React from 'react';
 import {Overlay, Button} from 'react-bootstrap';
 import CustomOverlay from './CustomOverlay';
-import LoginForm from '../containers/LoginForm';
+import {LoginForm} from './LoginForm';
 
 describe('Custom Overlay', ()=> {
   
