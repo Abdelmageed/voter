@@ -28,7 +28,8 @@ export class LoginForm extends Component {
           border: '1px solid #ccc',
           boxShadow: '0 2px 5px rgba(0, 0, 0, 0.3)',
           padding: '10px',
-          borderRadius: '3%'
+          borderRadius: '3%',
+          width: '400%'
         }}>
       <FormGroup controlId="username">
         <ControlLabel>Username</ControlLabel>
@@ -53,7 +54,7 @@ export class LoginForm extends Component {
           style={{
             cursor: 'pointer',
             color: 'inherit',
-            marginLeft: '10px'    
+            marginLeft: '30%'   
           }}
           className="toggle-button"
           onClick={()=>{this.props.toggleForm();}}>

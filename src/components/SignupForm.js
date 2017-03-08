@@ -118,14 +118,16 @@ export class SignupForm extends Component {
           border: '1px solid #ccc',
           boxShadow: '0 2px 5px rgba(0, 0, 0, 0.3)',
           padding: '10px',
-          borderRadius: '3%'
+          borderRadius: '3%',
+          width: '400%'
         }}>
         <FormGroup>
-          <ControlLabel>username</ControlLabel>
+          <ControlLabel>Username</ControlLabel>
           <FormControl
              type="text"
              value={this.state.username}
              name="username"
+             placeholder="Enter your name"
              onChange={(e)=>{
               this.handleChange(e, this.checkUsernameErrors);
                             }} />
@@ -135,7 +137,7 @@ export class SignupForm extends Component {
            {this.props.checkUsernameError}
         </div>
          <FormGroup>
-        <ControlLabel>password</ControlLabel>
+        <ControlLabel>Password</ControlLabel>
           <FormControl
              type="password"
              value={this.state.password}
@@ -144,7 +146,7 @@ export class SignupForm extends Component {
              onBlur={()=>{this.validatePassword();}} />
         </FormGroup>
         <FormGroup>
-          <ControlLabel>confirm password</ControlLabel>
+          <ControlLabel>Confirm Password</ControlLabel>
             <FormControl
                type="password"
                value={this.state.passwordConfirm}
@@ -167,10 +169,11 @@ export class SignupForm extends Component {
           style={{
             cursor: 'pointer',
             color: 'inherit',
-            marginLeft: '10px'    
+            marginLeft: '30%'   
           }}
           onClick={()=>{this.props.toggleForm();}}
-          className="toggle-button">
+          className="toggle-button"
+          >
          Sign in
        </a>
       </form>
