@@ -43,8 +43,22 @@ export class LoginForm extends Component {
         className="error-label">{this.props.error}</div>
         :null
       }
-      <Button onClick={()=>{this.props.submit(this.state);}}
-              >Sign in</Button>
+      <Button
+              className="login-button"
+              onClick={()=>{this.props.submit(this.state);}}
+              >
+              Sign in
+      </Button>
+      <a 
+          style={{
+            cursor: 'pointer',
+            color: 'inherit',
+            marginLeft: '10px'    
+          }}
+          className="toggle-button"
+          onClick={()=>{this.props.toggleForm();}}>
+        Create Account
+      </a>
     </form>);
   }
 }

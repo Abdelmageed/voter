@@ -1,6 +1,6 @@
 //TODO This class is an ugly piece of...
 import React, {Component, PropTypes} from 'react';
-import {FormGroup, ControlLabel, FormControl, Button} from 'react-bootstrap';
+import {FormGroup, ControlLabel, FormControl, Button, Navbar} from 'react-bootstrap';
 import debounce from 'lodash.debounce';
 
 
@@ -149,7 +149,7 @@ export class SignupForm extends Component {
                type="password"
                value={this.state.passwordConfirm}
                name="passwordConfirm"
-               onChange={(e)=>{this.handleChange(e, this.removePasswordErrors);}}
+               onChange={(e)=>{this.handleChange(e, this.removePasswordError);}}
                onBlur={()=>{this.validatePassword();}} />
         </FormGroup>
         <div style={{color:'#d00'}}>{this.state.matchError}</div>
@@ -159,9 +159,20 @@ export class SignupForm extends Component {
             {this.state.requiredFieldsError}
             </div>
         <Button 
-          onClick={()=>{this.validateSubmit();}}>
+          onClick={()=>{this.validateSubmit();}}
+          className="submit-button">
                          Create Account
        </Button>
+       <a
+          style={{
+            cursor: 'pointer',
+            color: 'inherit',
+            marginLeft: '10px'    
+          }}
+          onClick={()=>{this.props.toggleForm();}}
+          className="toggle-button">
+         Sign in
+       </a>
       </form>
     );
   }

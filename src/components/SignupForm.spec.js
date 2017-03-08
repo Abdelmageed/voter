@@ -22,6 +22,7 @@ describe('SignupForm', ()=> {
       passwordConfirmControl,
       usernameControl,
       submitButton,
+      spyToggle,
 //      submit,
       spySubmit;
   
@@ -29,18 +30,23 @@ describe('SignupForm', ()=> {
 //    submit = (state)=> {};
     
     spySubmit = sinon.spy();
+    spyToggle = sinon.spy();
     spyHandleChange = sinon.spy(SignupForm.prototype, 'handleChange');
     spyValidatePassword = sinon.spy(SignupForm.prototype, 'validatePassword');
     spyRemovePasswordError = sinon.spy(SignupForm.prototype, 'removePasswordError');
     spyValidateSubmit = sinon.spy(SignupForm.prototype, 'validateSubmit');
     spyCheckUsername = sinon.spy(SignupForm.prototype, 'checkUsername');
 
-    wrapper = mount(<SignupForm submit={spySubmit} checkUsernameError={errors.usernameInUse} checkUsername={()=>{}}/>),
+    wrapper = mount(<SignupForm 
+    submit={spySubmit}
+    checkUsernameError={errors.usernameInUse}
+    checkUsername={()=>{}}
+    toggleForm={spyToggle}/>),
     controls = wrapper.find(FormControl),
     usernameControl = controls.at(0),
     passwordControl = controls.at(1),
     passwordConfirmControl = controls.at(2),
-    submitButton = wrapper.find(Button);
+    submitButton = wrapper.find('.submit-button');
   });
   
   afterEach(()=> {
@@ -61,7 +67,7 @@ describe('SignupForm', ()=> {
     expect(inputs.at(1).prop('name')).to.be.equal('password');
     expect(inputs.at(2).prop('name')).to.be.equal('passwordConfirm');
 
-    const button = wrapper.find(Button);
+    const button = wrapper.find('.submit-button');
     expect(button.length).to.equal(1);
   });
   
@@ -240,6 +246,15 @@ describe('SignupForm', ()=> {
     
   });
   
+  it('has a "Sign in" button which toggles the login form', ()=> {
+    const spy = sinon.spy();
+    const toggleButton = wrapper.find('.toggle-button');
+    expect(toggleButton.length).to.equal(1);
+    expect(toggleButton.text()).to.include('Sign in');
+    
+    toggleButton.simulate('click');
+    expect(spyToggle.called).to.be.true;
+  });
   
   it('should show username validation errors', ()=> {
     const usernameError = wrapper.find('.username-error');

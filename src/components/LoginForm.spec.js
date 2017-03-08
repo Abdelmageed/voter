@@ -15,6 +15,16 @@ describe('Login Form', ()=> {
     expect(formGroups.length).to.be.equal(2);
   });
   
+  it('has a "Create Account" button which toggles the signup form', ()=> {
+    const spy = sinon.spy();
+    const wrapper = shallow(<LoginForm toggleForm={spy} />);
+    const toggleButton = wrapper.find('.toggle-button');
+    expect(toggleButton.length).to.equal(1);
+  
+    toggleButton.simulate('click');
+    expect(spy.called).to.be.true;
+  });
+  
   it('submits', ()=> {
     const submit = ()=> {};
     const submitSpy = sinon.spy(submit);
@@ -22,7 +32,7 @@ describe('Login Form', ()=> {
       <LoginForm 
       submit={submitSpy}
      />);
-    const submitButton = wrapper.find(Button);
+    const submitButton = wrapper.find('.login-button');
     
     expect(submitButton.length).to.be.equal(1);
     
