@@ -18,7 +18,9 @@ export function user(state = initialState.user, action){
       return Object.assign({}, state, {
         isAuthenticated: false,
         loggingIn: false,
-        error: action.error
+        login: Object.assign({}, state.login, {
+          error: action.error
+      })
       });
       
     case 'LOGIN_PENDING':

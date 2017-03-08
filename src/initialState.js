@@ -4,6 +4,9 @@ export const initialState = {
     loggingIn: false,
     signup: {
       usernameError: ''
+    },
+    login: {
+      error: ''
     }
   }
 };

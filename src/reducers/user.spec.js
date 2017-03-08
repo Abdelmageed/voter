@@ -70,7 +70,9 @@ describe('User Reducer', ()=> {
           nextState = Object.assign({}, state, {
             isAuthenticated: false,
             loggingIn: false,
-            error: errors.login
+            login: Object.assign({}, state.login, {
+              error: errors.login
+            })
           });
       
       expect(user(state, action)).to.deep.equal(nextState);
