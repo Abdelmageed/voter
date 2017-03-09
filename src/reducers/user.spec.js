@@ -100,6 +100,21 @@ describe('User Reducer', ()=> {
     expect(user(state, action)).to.deep.equal(nextState);
   });
   
+  it('should handle REMOVE_USER', ()=> {
+    const action = actions.removeUser(),
+          state  = {
+            isAuthenticated: true,
+            username: 'some authenticated user',
+            id: 'some authenticated user id'
+          },
+          nextState = {
+            isAuthenticated: false,
+            username: '',
+            id: ''
+          };
+    expect(user(state, action)).to.deep.equal(nextState);
+  });
+  
   it('should set user on successful login', (done)=> {
     const userData = {
       user:
@@ -202,8 +217,11 @@ describe('User Reducer', ()=> {
   
   it('should set user and login on successful signup', (done)=> {
     const userData = {
-      id: 1,
-      username: 'name'
+      user:
+      {
+        id: 1,
+        username: 'name'
+      }
     },
           formData = {
             username: 'name',
@@ -215,7 +233,7 @@ describe('User Reducer', ()=> {
     const expectedActions = [
             actions.loginPending(),
             actions.loginSuccess(),
-            actions.setUser(userData)
+            actions.setUser(userData.user)
           ];
     const store = storeMock({});
     
@@ -226,4 +244,22 @@ describe('User Reducer', ()=> {
       done();
     });
   });
+  
+  it('should logout, remove user data, and set isAuthenticated to false', (done)=> {
+    
+    axiosMock.onGet(endpoints.logout)
+      .reply(200);
+    
+    const expectedActions = [
+      actions.removeUser()
+    ];
+    const store = storeMock({});
+    store.dispatch(actions.logout());
+    
+    setTimeout(()=> {
+      expect(store.getActions()).to.deep.equal(expectedActions);
+      done();
+    }, 10);
+  });
+  
 });

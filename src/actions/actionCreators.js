@@ -3,6 +3,9 @@ import * as errors from '../constants/errors';
 import * as endpoints from '../constants/endpoints';
 import querystring from 'querystring';
 
+//TODO handle internal server error on response.catch
+
+
 const axios = endpoints.axiosInstance;
 
 export const login = (credentials)=> {
@@ -36,12 +39,29 @@ export const signup = (user)=> {
     })
       .then((response)=> {
         dispatch(loginSuccess());
-        dispatch(setUser(response.data));
+        dispatch(setUser(response.data.user));
     })
       .catch((error)=> {
-      //TODO handle internal server error
       if (error.respone) throw error.response;
     });
+  };
+};
+
+export const logout = ()=> {
+  return (dispatch)=> {
+    return axios.get(endpoints.logout)
+      .then(()=> {
+      dispatch(removeUser());
+    })
+      .catch((error)=> {
+      if (error.response) throw error.response;
+    });
+  };
+};
+
+export const removeUser = ()=> {
+  return {
+    type: 'REMOVE_USER'
   };
 };
 

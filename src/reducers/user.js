@@ -35,6 +35,10 @@ export function user(state = initialState.user, action){
         })
       });
       
+    case 'REMOVE_USER':
+      return Object.assign({}, state, {isAuthenticated: false},
+                          {username: ''}, {id: ''});
+      
     default:
       return state;
   }

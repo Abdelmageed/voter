@@ -22,6 +22,7 @@ export default class Nav extends Component{
               /> :
             <UserDropdown 
               username={this.props.username}
+              logout={this.props.logout}
             />
            }
          </Bootstrap.Nav>

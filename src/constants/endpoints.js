@@ -1,4 +1,3 @@
-//import path from 'path';
 import axios from 'axios';
 const apiUrl = 'http://localhost:3000';
 export const axiosInstance = axios.create({
@@ -14,3 +13,5 @@ export const login = '/login';
 export const checkUsername = '/check_username';
 
 export const signup = '/signup';
+
+export const logout = '/logout';
