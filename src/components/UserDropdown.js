@@ -9,7 +9,9 @@ export default class UserDropdown extends Component {
   
   render(){ 
     return(
-      <NavDropdown title={this.props.username}>
+      <NavDropdown 
+       title={this.props.username}
+       id="userDropdown">
         <MenuItem>My Polls</MenuItem>
         <MenuItem divider />
         <MenuItem 

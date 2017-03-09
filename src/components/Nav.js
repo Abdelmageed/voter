@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Navbar} from 'react-bootstrap';
+import * as Bootstrap from 'react-bootstrap';
 
 import CustomOverlay from './CustomOverlay';
 import UserDropdown from './UserDropdown';
@@ -12,8 +12,8 @@ export default class Nav extends Component{
   
   render(){
       return (
-        <Navbar>
-         <Navbar.Text
+        <Bootstrap.Navbar>
+         <Bootstrap.Nav
            pullRight>
            {(!this.props.authenticated)?
             <CustomOverlay 
@@ -24,8 +24,8 @@ export default class Nav extends Component{
               username={this.props.username}
             />
            }
-         </Navbar.Text>
-        </Navbar>
+         </Bootstrap.Nav>
+        </Bootstrap.Navbar>
       );
     }
 }

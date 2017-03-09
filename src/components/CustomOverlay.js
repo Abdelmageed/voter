@@ -1,6 +1,6 @@
 import React, {Component, PropTypes} from 'react';
 import ReactDOM from 'react-dom';
-import {Button, Overlay} from 'react-bootstrap';
+import {Button, Overlay, NavItem} from 'react-bootstrap';
 
 export default class CustomOverlay extends Component {
   constructor(props){
@@ -20,7 +20,7 @@ export default class CustomOverlay extends Component {
   
   render(){
     return (
-      <div style={{
+      <NavItem style={{
             position: "relative"
         }}>
         <Button ref="target" onClick={()=>this.toggle()}>
@@ -36,7 +36,7 @@ export default class CustomOverlay extends Component {
          >
           {this.props.popover}
         </Overlay>
-      </div>
+      </NavItem>
     );
   }
 }

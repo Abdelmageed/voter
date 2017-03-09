@@ -1,6 +1,6 @@
 //TODO This class is an ugly piece of...
 import React, {Component, PropTypes} from 'react';
-import {FormGroup, ControlLabel, FormControl, Button, Navbar} from 'react-bootstrap';
+import {FormGroup, ControlLabel, FormControl, Button} from 'react-bootstrap';
 import debounce from 'lodash.debounce';
 
 
@@ -119,7 +119,7 @@ export class SignupForm extends Component {
           boxShadow: '0 2px 5px rgba(0, 0, 0, 0.3)',
           padding: '10px',
           borderRadius: '3%',
-          width: '400%'
+          width: '300%'
         }}>
         <FormGroup>
           <ControlLabel>Username</ControlLabel>
@@ -184,5 +184,6 @@ export class SignupForm extends Component {
 SignupForm.propTypes = {
   submit: PropTypes.func,
   checkUsername: PropTypes.func,
-  checkUsernameError: PropTypes.string
+  checkUsernameError: PropTypes.string,
+  toggleForm: PropTypes.func
 };

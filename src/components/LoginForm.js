@@ -29,7 +29,7 @@ export class LoginForm extends Component {
           boxShadow: '0 2px 5px rgba(0, 0, 0, 0.3)',
           padding: '10px',
           borderRadius: '3%',
-          width: '400%'
+          width: '300%'
         }}>
       <FormGroup controlId="username">
         <ControlLabel>Username</ControlLabel>
@@ -66,5 +66,6 @@ export class LoginForm extends Component {
 
 LoginForm.propTypes = {
   submit: PropTypes.func,
-  error: PropTypes.string
+  error: PropTypes.string,
+  toggleForm: PropTypes.func
 };
