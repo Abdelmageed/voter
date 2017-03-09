@@ -6,10 +6,14 @@ export class LoginForm extends Component {
     super(props);
     this.state = {
       username: '',
-      password: ''
+      password: '',
+      requiredFieldsError: ''
     };
     
     this.handleChange = this.handleChange.bind(this);
+    this.validateSubmit = this.validateSubmit.bind(this);
+    this.hasRequiredFieldsError = this.hasRequiredFieldsError.bind(this);
+    this.removeRequiredFieldsError = this.removeRequiredFieldsError.bind(this);
   }
   
   handleChange(e){
@@ -17,12 +21,44 @@ export class LoginForm extends Component {
     let name = e.target.name;
     this.setState({
       [name]: val
+    }, ()=> {
+      this.removeRequiredFieldsError();
     });
+    
+  }
+  
+  hasRequiredFieldsError (){
+    return (this.state.username === '' ||
+      this.state.password === '');
+  }
+  
+  removeRequiredFieldsError (){
+    if (this.state.username !== '' &&
+      this.state.password !== ''){
+      this.setState({
+        requiredFieldsError: ''
+      });
+    }
+  }
+  
+  validateSubmit(){
+    if(this.hasRequiredFieldsError()){
+      this.setState({
+        requiredFieldsError: 'Please provide a username and a password'
+      });
+    } else {
+      const credentials = {
+        username: this.state.username,
+        password: this.state.password
+      };
+      this.props.submit(credentials);
+    }
+ 
   }
   
   render(){
     return (
-    <form onKeyUp={(e)=>{if(e.keyCode==13) this.props.submit(this.state);}}
+    <form onKeyUp={(e)=>{if(e.keyCode==13)this.validateSubmit();}}
          style={{
           position: 'absolute',
           border: '1px solid #ccc',
@@ -39,14 +75,24 @@ export class LoginForm extends Component {
         <ControlLabel>Password</ControlLabel>
         <FormControl onChange={this.handleChange} value={this.state.password} name="password" type="password" />
       </FormGroup>
-      {(this.props.error && this.props.error != '')?
+      {
+        (this.state.requiredFieldsError != '')?
+          <div 
+           className="required-fields-error"
+           style={{color: '#d00'}}>
+            {this.state.requiredFieldsError}
+          </div> :
+          null
+      }
+      {
+        (this.props.error && this.props.error != '')?
         <div style={{color: '#d00'}}
         className="error-label">{this.props.error}</div>
         :null
       }
       <Button
               className="login-button"
-              onClick={()=>{this.props.submit(this.state);}}
+              onClick={this.validateSubmit}
               >
               Sign in
       </Button>
