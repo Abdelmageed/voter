@@ -102,8 +102,11 @@ describe('User Reducer', ()=> {
   
   it('should set user on successful login', (done)=> {
     const userData = {
-      id: 1,
-      username: 'name'
+      user:
+      {
+        id: 1,
+        username: 'name'
+      }
     },
           credentials = {
             username: 'name',
@@ -119,7 +122,7 @@ describe('User Reducer', ()=> {
           expectedActions = [
             actions.loginPending(),
             actions.loginSuccess(),
-            actions.setUser(userData)
+            actions.setUser(userData.user)
           ];
     
     const store = storeMock(state);

@@ -17,7 +17,7 @@ export const login = (credentials)=> {
           dispatch(loginFailure(errors.login));
       } else {
           dispatch(loginSuccess());
-          dispatch(setUser(response.data));
+          dispatch(setUser(response.data.user));
       }
     })
       .catch((error)=> {

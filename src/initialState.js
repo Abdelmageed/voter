@@ -7,6 +7,8 @@ export const initialState = {
     },
     login: {
       error: ''
-    }
+    },
+    username: '',
+    id: ''
   }
 };
