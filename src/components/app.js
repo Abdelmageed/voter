@@ -1,20 +1,15 @@
 import React, {Component, PropTypes} from 'react';
-//import {LoginForm} from './LoginForm';
-import LoginForm from '../containers/LoginForm';
-import CustomOverlay from './CustomOverlay';
+import Nav from '../containers/Nav';
 
 export class App extends Component {
   render() {
       return(<div>
-         <CustomOverlay 
-         triggerText="Login"
-         popover={<LoginForm />} 
-         />
+       <Nav />
         {this.props.children}
       </div>);
   }
 }
 
 App.propTypes = {
-  children: PropTypes.array
+  children: PropTypes.element
 };

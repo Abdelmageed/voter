@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import * as Bootstrap from 'react-bootstrap';
+import {IndexLink} from 'react-router';
 
 import CustomOverlay from './CustomOverlay';
 import UserDropdown from './UserDropdown';
@@ -13,6 +14,11 @@ export default class Nav extends Component{
   render(){
       return (
         <Bootstrap.Navbar>
+        <Bootstrap.Navbar.Header>
+          <Bootstrap.Navbar.Brand>
+            <IndexLink style={{cursor:'pointer'}} to="/">Voter</IndexLink>
+          </Bootstrap.Navbar.Brand>
+        </Bootstrap.Navbar.Header>
          <Bootstrap.Nav
            pullRight>
            {(!this.props.authenticated)?
