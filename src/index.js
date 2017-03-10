@@ -4,7 +4,6 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { persistStore } from 'redux-persist';
-import { App } from './components/app';
 import {Router, browserHistory} from 'react-router';
 import routes from './routes';
 import 'bootstrap/dist/css/bootstrap.css';

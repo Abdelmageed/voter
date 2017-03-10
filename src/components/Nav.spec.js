@@ -6,7 +6,6 @@ import {Navbar} from 'react-bootstrap';
 
 import Nav from './Nav';
 import CustomOverlay from './CustomOverlay';
-import AuthForm from '../containers/AuthForm';
 import UserDropdown from './UserDropdown';
 
 describe('Nav', ()=> {

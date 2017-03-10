@@ -2,7 +2,7 @@ import React from 'react';
 import {shallow, mount} from 'enzyme';
 import {expect} from 'chai';
 import sinon from 'sinon';
-import {FormControl, Button} from 'react-bootstrap';
+import {FormControl} from 'react-bootstrap';
 import * as errors from '../constants/errors';
 
 import {SignupForm} from './SignupForm';
@@ -247,7 +247,6 @@ describe('SignupForm', ()=> {
   });
   
   it('has a "Sign in" button which toggles the login form', ()=> {
-    const spy = sinon.spy();
     const toggleButton = wrapper.find('.toggle-button');
     expect(toggleButton.length).to.equal(1);
     expect(toggleButton.text()).to.include('Sign in');

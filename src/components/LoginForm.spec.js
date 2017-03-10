@@ -2,7 +2,7 @@ import React from 'react';
 import {shallow, mount} from 'enzyme';
 import {expect} from 'chai';
 import {LoginForm} from './LoginForm';
-import {FormGroup, Button, FormControl} from 'react-bootstrap';
+import {FormGroup} from 'react-bootstrap';
 import sinon from 'sinon';
 
 describe('Login Form', ()=> {

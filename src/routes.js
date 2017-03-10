@@ -10,4 +10,4 @@ export default(
     <IndexRoute component={AllPolls}/>
     <Route path="my-polls" component={MyPolls}/>
   </Route>
-)
+);

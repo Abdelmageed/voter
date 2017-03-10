@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {Component, PropTypes} from 'react';
 import * as Bootstrap from 'react-bootstrap';
 import {IndexLink} from 'react-router';
 
@@ -36,3 +36,9 @@ export default class Nav extends Component{
       );
     }
 }
+
+Nav.propTypes = {
+  authenticated: PropTypes.bool,
+  username: PropTypes.string,
+  logout: PropTypes.func
+};
