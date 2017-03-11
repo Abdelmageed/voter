@@ -10,5 +10,6 @@ export const initialState = {
     },
     username: '',
     id: ''
-  }
+  },
+  polls: []
 };
