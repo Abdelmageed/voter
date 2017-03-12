@@ -7,6 +7,7 @@ import { persistStore } from 'redux-persist';
 import {Router, browserHistory} from 'react-router';
 import routes from './routes';
 import 'bootstrap/dist/css/bootstrap.css';
+require("font-awesome-webpack");
 
 const store = configureStore();
 persistStore(store);
