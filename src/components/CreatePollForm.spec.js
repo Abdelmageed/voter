@@ -5,6 +5,7 @@ import sinon from 'sinon';
 import {FormControl, ControlLabel} from 'react-bootstrap';
 
 import RemovableTextInput from './RemovableTextInput';
+import TextInput from './TextInput';
 import CreatePollForm from './CreatePollForm';
 
 describe('CreatePollForm', ()=> {
@@ -45,18 +46,40 @@ describe('CreatePollForm', ()=> {
     expect(addOptionButton.find('i').hasClass('fa-plus')).to.be.true; 
   });
   
-  it('add option button adds a new RemovableTextInput to the options FormGroup', ()=> {
-    expect(wrapper.find(RemovableTextInput)).to.have.length(0);
+  it('should have 2 non-removable TextInput-s for the minimum of 2 options', ()=> {
+    const optionsFormGroup = wrapper.find('#options');
+    expect(optionsFormGroup.find(TextInput)).to.have.length(2);
+  });
+  
+  it('should render option inputs as RemovableTextinput-s if they are greater than 2', ()=> {
+    const optionsFormGroup = wrapper.find('#options');
+    wrapper.instance().addOption();
+    
+    expect(optionsFormGroup.find(RemovableTextInput)).to.have.length(3);
+  });
+//  
+  it('should render option inputs as TextInput-s if they are equal to 2', ()=> {
+    const optionsFormGroup = wrapper.find('#options');
+    wrapper.instance().addOption();
+    wrapper.instance().deleteOption(0);
+    
+    expect(optionsFormGroup.find(TextInput)).to.have.length(2);
+
+  });
+  
+  it('add option button adds a new input to the options FormGroup', ()=> {
+  
+  const optionsFormGroup = wrapper.find('#options');  expect(optionsFormGroup.find(FormControl)).to.have.length(2);
     
     
     const addOptionButton = wrapper.find('#addOption');
     addOptionButton.simulate('click');
     
-    expect(wrapper.find(RemovableTextInput)).to.have.length(1);
+    expect(optionsFormGroup.find(FormControl)).to.have.length(3);
     
     addOptionButton.simulate('click');
    
-    expect(wrapper.find(RemovableTextInput)).to.have.length(2);
+    expect(optionsFormGroup.find(FormControl)).to.have.length(4);
 
   });
   

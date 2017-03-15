@@ -1,14 +1,15 @@
 import React, {Component, PropTypes} from 'react';
 import {FormGroup, FormControl, ControlLabel, Form, Button} from 'react-bootstrap';
 import RemovableTextInput from './RemovableTextInput';
+import TextInput from './TextInput';
 
 export default class CreatePollForm extends Component{
   constructor(props){
     super(props);
     this.state = {
       name: '',
-      options: [],
-      optionsId: 0
+      options: [{id: 0, name: ''}, {id: 1, name: ''}],
+      optionsId: 2
     };
     this.addOption = this.addOption.bind(this);
     this.setName = this.setName.bind(this);
@@ -51,30 +52,39 @@ export default class CreatePollForm extends Component{
   
   render(){
     
-    const optionsInput = this.state.options.map((option)=> {
+    const optionsInputs = (this.state.options.length > 2)?
+          this.state.options.map((option)=> {
           return (<RemovableTextInput
           id={option.id}
           value={option.name}
           key={option.id}
           removeClicked={this.deleteOption}
           onChange={this.setOption} />);
+      }) :
+          this.state.options.map((option)=> {
+          return (<TextInput
+          id={option.id}
+          value={option.name}
+          key={option.id}
+          onChange={this.setOption} />);
       });
     return (
-      <Form>
+      <div>
         <FormGroup id="pollName">
           <ControlLabel>Name:</ControlLabel>
           <FormControl
             type="text"
             onChange={(e)=> {this.setName(e.target.value);}}/>
         </FormGroup>
-        <FormGroup id="options">
+        <Form inline id="options">
+         <ControlLabel>Options:</ControlLabel>
+          {optionsInputs}
           <Button
           id="addOption"
           onClick={this.addOption} >
             <i className="fa fa-plus"></i>
           </Button>
-        </FormGroup>
-        {optionsInput}
+        </Form>
         <Button
         id="saveButton"
         onClick={()=>{this.props.submit(this.state);}}>Save</Button>
@@ -86,7 +96,7 @@ export default class CreatePollForm extends Component{
         >
           Close
         </Button>
-      </Form>
+      </div>
     );
   }
 }
