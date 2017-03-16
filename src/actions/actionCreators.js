@@ -5,7 +5,7 @@ import querystring from 'querystring';
 
 //TODO handle internal server error on response.catch
 
-
+//thunks
 const axios = endpoints.axiosInstance;
 
 export const login = (credentials)=> {
@@ -59,12 +59,6 @@ export const logout = ()=> {
   };
 };
 
-export const removeUser = ()=> {
-  return {
-    type: 'REMOVE_USER'
-  };
-};
-
 export const checkUsername = (username)=> {
   return (dispatch)=> {
     return axios.post(endpoints.checkUsername, querystring.stringify({username}),{
@@ -74,9 +68,36 @@ export const checkUsername = (username)=> {
       dispatch(setUsernameError(error));
     })
     .catch((error)=> {
-      //TODO redirect to an internal server error page
+      //TODO flash error message
       if(error.response) throw error.response;
     });
+  };
+};
+
+export const createPoll = (poll)=> {
+  return (dispatch)=> {
+    dispatch(addPoll(poll));
+    return axios.post(
+      endpoints.createPoll,
+      querystring.stringify({poll}), {
+        headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+      })
+      .then((response)=> {
+        console.log(response);
+      })
+      .catch((error)=> {
+        dispatch(deletePoll(poll.id));
+        //TODO flash error message
+        if(error.response) throw error.response
+    });
+  }
+};
+
+//end thunks
+
+export const removeUser = ()=> {
+  return {
+    type: 'REMOVE_USER'
   };
 };
 
@@ -93,6 +114,16 @@ export const setUser = (user)=> {
     user
   };
 };
+
+export const addPoll = (poll)=> ({
+  type: actions.ADD_POLL,
+  poll
+});
+
+export const deletePoll = (id)=> ({
+  type: actions.DELETE_POLL,
+  id
+});
 
 //for some reason using action constants fails the tests.
 export const loginPending = ()=> {
