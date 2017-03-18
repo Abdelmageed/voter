@@ -38,7 +38,7 @@ describe('RemovableTextInput', ()=> {
     const removeButton = wrapper.find(Button);
     expect(removeButton.length).to.equal(1);
     
-    const minusIcon = removeButton.find('i')
+    const minusIcon = removeButton.find('i');
     expect(minusIcon.length).to.equal(1);
     //hasClass() called on mount bug when using two classes
     //like 'fa fa-minus'
@@ -60,7 +60,7 @@ describe('RemovableTextInput', ()=> {
       target: {
         value: 'val'
       }
-    }
+    };
     input.simulate('change', e);
     
     expect(spyHandleOnChange.called);

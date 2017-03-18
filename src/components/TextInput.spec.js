@@ -33,7 +33,7 @@ describe('TextInput', ()=> {
       target: {
         value: 'val'
       }
-    }
+    };
     input.simulate('change', e);
     
     expect(spyHandleOnChange.called);

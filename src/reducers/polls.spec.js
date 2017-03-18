@@ -65,7 +65,7 @@ describe('Polls Reducer', ()=> {
         {id: 0, name: 'the option'},
         {id: 1, name: 'the other option'}
       ]
-    }
+    };
     const expectedActions = [
       actionCreators.addPoll(poll)
     ];
@@ -92,7 +92,7 @@ describe('Polls Reducer', ()=> {
         {id: 0, name: 'the option'},
         {id: 1, name: 'the other option'}
       ]
-    }
+    };
     const expectedActions = [
       actionCreators.addPoll(poll),
       actionCreators.deletePoll(0)

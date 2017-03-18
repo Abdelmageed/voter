@@ -1,16 +1,16 @@
 import {InputGroup, FormControl} from 'react-bootstrap';
-import React from 'react';
-export default class RemovableTextInput extends React.Component {
+import React, {Component, PropTypes} from 'react';
+export default class RemovableTextInput extends Component {
   constructor (props) {
     super (props);
     this.handleOnChange = this.handleOnChange.bind (this);
-    var val = this.props.value?this.props.value:'';
+    const val = this.props.value?this.props.value:'';
     this.state = {
       value: val
     };
   }
   handleOnChange (e){
-    var val = e.target.value;
+    const val = e.target.value;
     this.setState (()=>{
       return {value: val};
     });
@@ -25,3 +25,9 @@ export default class RemovableTextInput extends React.Component {
     );
   }
 }
+
+RemovableTextInput.propTypes = {
+  value: PropTypes.string,
+  onChange: PropTypes.func,
+  id: PropTypes.number
+};

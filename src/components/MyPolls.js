@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 //import CreatePollForm from './CreatePollForm';
-import CreatePollForm from '../Containers/CreatePollForm';
-import {Form} from 'react-bootstrap';
+import CreatePollForm from '../containers/CreatePollForm';
 export default class MyPolls extends Component{
   
   render(){
