@@ -15,6 +15,7 @@ export default class CreatePollForm extends Component{
     this.setName = this.setName.bind(this);
     this.setOption = this.setOption.bind(this);
     this.deleteOption = this.deleteOption.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
   
   addOption(){
@@ -50,6 +51,18 @@ export default class CreatePollForm extends Component{
     });
   }
   
+  handleSubmit(){
+    const newPoll = {
+      _author: this.props.userId,
+      name: this.state.name,
+      options: this.state.options.map((option)=> ({
+        id: option.id,
+        name: option.name,
+        votes: 0
+      }))
+    };
+    this.props.submit(newPoll);
+  }
   render(){
     
     const optionsInputs = (this.state.options.length > 2)?
@@ -82,12 +95,12 @@ export default class CreatePollForm extends Component{
           <Button
           id="addOption"
           onClick={this.addOption} >
-            <i className="fa fa-plus"></i>
+            <i className="fa fa-plus" />
           </Button>
         </Form>
         <Button
         id="saveButton"
-        onClick={()=>{this.props.submit(this.state);}}>Save</Button>
+        onClick={()=>{this.handleSubmit();}}>Save</Button>
         <Button
           id="closeButton"
           onClick={()=> {

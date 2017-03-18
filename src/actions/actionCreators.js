@@ -79,18 +79,15 @@ export const createPoll = (poll)=> {
     dispatch(addPoll(poll));
     return axios.post(
       endpoints.createPoll,
-      querystring.stringify({poll}), {
-        headers: {'Content-Type': 'application/x-www-form-urlencoded'}
-      })
-      .then((response)=> {
-        console.log(response);
+      JSON.stringify(poll), {
+        headers: {'Content-Type': 'application/json'}
       })
       .catch((error)=> {
         dispatch(deletePoll(poll.id));
         //TODO flash error message
-        if(error.response) throw error.response
+        if(error.response) throw error.response;
     });
-  }
+  };
 };
 
 //end thunks

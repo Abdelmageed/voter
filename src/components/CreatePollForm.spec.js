@@ -12,12 +12,14 @@ describe('CreatePollForm', ()=> {
   
   let wrapper,
       spySubmit = sinon.spy(),
-      spyClose = sinon.spy();
+      spyClose = sinon.spy(),
+      userId = '123';
   beforeEach(()=> {
     wrapper = mount(
       <CreatePollForm 
         submit={spySubmit}
         close={spyClose}
+        userId={userId}
         />
     );
   });
@@ -92,6 +94,11 @@ describe('CreatePollForm', ()=> {
       ]
     };
     wrapper.instance().state = newPoll;
+    const newSavedPoll = Object.assign({}, newPoll, {
+      options: [
+        {name: 'option0', id:'0', votes:0},
+        {name: 'option1', id:'1', votes:0}
+      ]}, {_author: userId});
 //    wrapper.setState({
 //      name: newPoll.name,
 //      options: newPoll.options
@@ -101,7 +108,7 @@ describe('CreatePollForm', ()=> {
     saveButton.simulate('click');
     expect(spySubmit.called).to.be.true;
     
-    expect(spySubmit.args[0][0]).to.deep.equal(newPoll);
+    expect(spySubmit.args[0][0]).to.deep.equal(newSavedPoll);
     
   });
   
@@ -141,7 +148,7 @@ describe('CreatePollForm', ()=> {
       target: {
         value: 'name'
       }
-    }
+    };
     nameInput.simulate('change', e);
     
     expect(wrapper.instance().state.name).to.equal('name');
