@@ -90,6 +90,19 @@ export const createPoll = (poll)=> {
   };
 };
 
+export const getAllPolls = ()=> {
+  return (dispatch)=> {
+    return axios.get(endpoints.getAllPolls)
+      .then((response)=> {
+        dispatch(setPolls(response.data.polls));
+    })
+    .catch((error)=> {
+      //TODO flash error message
+      if(error.response) throw error.response;
+    })
+  };
+};
+
 //end thunks
 
 export const removeUser = ()=> {
@@ -121,6 +134,11 @@ export const deletePoll = (id)=> ({
   type: actions.DELETE_POLL,
   id
 });
+
+export const setPolls = (polls)=> ({
+  type: actions.SET_POLLS,
+  polls
+})
 
 //for some reason using action constants fails the tests.
 export const loginPending = ()=> {

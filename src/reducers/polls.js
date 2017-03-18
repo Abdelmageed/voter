@@ -10,6 +10,9 @@ export function polls(state = initialState.polls, action){
     case actions.DELETE_POLL:
       return state.filter((poll)=> {poll.id !== action.id});
       
+    case actions.SET_POLLS:
+      return action.polls;
+      
     default:
         return state;
   }

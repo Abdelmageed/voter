@@ -112,4 +112,34 @@ describe('Polls Reducer', ()=> {
     
   });
  
+  it('should handle SET_POLLS', ()=> {
+    const state = [],
+          allPolls = [{name: 'name', options: []},
+                   {name: 'another name', options: []}],
+          nextState = allPolls;
+    expect(polls(state, actionCreators.setPolls(allPolls))).to.deep.equal(nextState);
+  });
+  
+  describe('getAllPolls thunk', ()=> {
+    
+    it('loads state.polls with response.data.polls', (done)=> {
+      
+      const allPolls = [{name: 'name', options: []},
+                   {name: 'another name', options: []}];
+      const expectedActions = [
+        actionCreators.setPolls(allPolls)
+      ];
+      const store = storeMock({});
+      store.dispatch(actionCreators.getAllPolls());
+      axiosMock.onGet(endpoints.getAllPolls)
+        .reply(200, {polls: allPolls});
+      
+    setTimeout(()=> {             expect(store.getActions()).to.deep.equal(expectedActions);
+      done();
+    }, 10);  
+      
+      
+    });
+  });
+  
 });

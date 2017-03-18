@@ -17,3 +17,5 @@ export const signup = '/signup';
 export const logout = '/logout';
 
 export const createPoll = '/poll/';
+
+export const getAllPolls = '/poll/';
