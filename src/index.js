@@ -5,7 +5,7 @@ import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { persistStore } from 'redux-persist';
 import {Router, browserHistory} from 'react-router';
-import routes from './routes';
+import {getRoutes} from './routes';
 import 'bootstrap/dist/css/bootstrap.css';
 require("font-awesome-webpack");
 
@@ -14,6 +14,8 @@ persistStore(store);
 const reactRoot = window.document.getElementById("app");
   ReactDOM.render(
     <Provider store={store}>
-      <Router history={browserHistory} routes={routes}/>
+      <Router history={browserHistory}>
+        {getRoutes(store)}
+      </Router>
     </Provider>,
     reactRoot);
