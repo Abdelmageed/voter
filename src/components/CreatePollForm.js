@@ -9,8 +9,9 @@ export default class CreatePollForm extends Component{
     this.state = {
       name: '',
       options: [{id: 0, name: ''}, {id: 1, name: ''}],
-      optionsId: 2
+      optionsId: 2,
     };
+    
     this.addOption = this.addOption.bind(this);
     this.setName = this.setName.bind(this);
     this.setOption = this.setOption.bind(this);
@@ -63,6 +64,7 @@ export default class CreatePollForm extends Component{
     };
     this.props.submit(newPoll);
   }
+  
   render(){
     
     const optionsInputs = (this.state.options.length > 2)?
@@ -82,7 +84,7 @@ export default class CreatePollForm extends Component{
           onChange={this.setOption} />);
       });
     return (
-      <div>
+      <div id="createPollForm">
         <FormGroup id="pollName">
           <ControlLabel>Name:</ControlLabel>
           <FormControl
@@ -115,6 +117,7 @@ export default class CreatePollForm extends Component{
 }
 
 CreatePollForm.propTypes = {
+  userId: PropTypes.string,
   submit: PropTypes.func,
   close: PropTypes.func
 };
