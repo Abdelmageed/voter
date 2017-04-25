@@ -8,3 +8,4 @@ export const UPDATE_POLL = 'UPDATE_POLL';
 export const VOTE = 'VOTE';
 export const DELETE_POLL = 'DELETE_POLL';
 export const ADD_POLL = 'ADD_POLL';
+export const SET_IP = 'SET_IP';

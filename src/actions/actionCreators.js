@@ -2,11 +2,20 @@ import * as actions from '../constants/actions';
 import * as errors from '../constants/errors';
 import * as endpoints from '../constants/endpoints';
 import querystring from 'querystring';
+import jsonp from 'jsonp';
 
 //TODO handle internal server error on response.catch
 
 //thunks
 const axios = endpoints.axiosInstance;
+
+export const getIp = () => {
+  return (dispatch) => {
+    jsonp('https://api.ipify.org?format=jsonp', null, (err, data)=> {
+      dispatch(setIp(data.ip));
+    });
+  };
+};
 
 export const login = (credentials)=> {
   return (dispatch)=> {
@@ -125,6 +134,11 @@ export const setUser = (user)=> {
   };
 };
 
+export const setIp = (ip) => ({
+  type: actions.SET_IP,
+  ip
+});
+
 export const addPoll = (poll)=> ({
   type: actions.ADD_POLL,
   poll
@@ -138,7 +152,7 @@ export const deletePoll = (id)=> ({
 export const setPolls = (polls)=> ({
   type: actions.SET_POLLS,
   polls
-})
+});
 
 //for some reason using action constants fails the tests.
 export const loginPending = ()=> {

@@ -1,5 +1,6 @@
 import {expect} from 'chai';
-//import axios from 'axios';
+// import jsonp from 'jsonp';
+// import sinon from  'sinon';
 import MockAdapter from 'axios-mock-adapter';
 import configureStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
@@ -112,6 +113,15 @@ describe('User Reducer', ()=> {
             username: '',
             id: ''
           };
+    expect(user(state, action)).to.deep.equal(nextState);
+  });
+
+  it('should handle SET_IP', () => {
+    const ip = '192.168.1.1';
+    const action = actions.setIp(ip),
+      state = initialState.user,
+      nextState = Object.assign({}, state, {ip});
+
     expect(user(state, action)).to.deep.equal(nextState);
   });
   

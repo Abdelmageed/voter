@@ -9,7 +9,8 @@ export const initialState = {
       error: ''
     },
     username: '',
-    id: ''
+    id: '',
+    ip: ''
   },
   polls: []
 };
