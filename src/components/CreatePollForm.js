@@ -59,7 +59,7 @@ export default class CreatePollForm extends Component{
       options: this.state.options.map((option)=> ({
         id: option.id,
         name: option.name,
-        votes: 0
+        votes: []
       }))
     };
     this.props.submit(newPoll);

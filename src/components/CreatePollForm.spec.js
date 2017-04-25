@@ -96,8 +96,8 @@ describe('CreatePollForm', ()=> {
     wrapper.instance().state = newPoll;
     const newSavedPoll = Object.assign({}, newPoll, {
       options: [
-        {name: 'option0', id:'0', votes:0},
-        {name: 'option1', id:'1', votes:0}
+        {name: 'option0', id:'0', votes:[]},
+        {name: 'option1', id:'1', votes:[]}
       ]}, {_author: userId});
 //    wrapper.setState({
 //      name: newPoll.name,
