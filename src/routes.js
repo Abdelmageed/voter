@@ -11,7 +11,7 @@ export const getRoutes = (store)=> {
 
   const getPolls = ()=> {
     store.dispatch(actionCreators.getAllPolls());
-  }
+  };
 
   return(
     <Route path="/" component={App}>
@@ -21,5 +21,5 @@ export const getRoutes = (store)=> {
       <Route path="my-polls" component={MyPolls}/>
     </Route>
   );
-}
+};
 

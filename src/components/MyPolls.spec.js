@@ -4,7 +4,6 @@ import {expect} from 'chai';
 import sinon from 'sinon';
 
 import MyPolls from './MyPolls';
-import CreatePollForm from '../containers/CreatePollForm';
 
 
 describe('MyPolls component', ()=> {
@@ -23,16 +22,17 @@ let wrapper,
   });
   
   
-//  it('should render a CreatePollForm when state.showForm is true', ()=> {
-//    wrapper.instance().state.showForm = true;
-//    
-//    expect(wrapper.find('#createPollForm')).to.have.length(1);
-//    expect(wrapper.find('#createPollButton')).to.have.length(0);
-//    
-//  });
+ it('should render a CreatePollForm when state.showForm is true', ()=> {
+   wrapper.instance().setState({showForm: true});
+   
+   expect(wrapper.find('#createPollForm')).to.have.length(1);
+   expect(wrapper.find('#createPollButton')).to.have.length(0);
+   
+ });
   
   it('should render a createPollButon when state.showForm is false', ()=> {
-        wrapper.instance().state.showForm = false;
+    wrapper.instance().setState({showForm: false});
+
     expect(wrapper.find('#createPollForm')).to.have.length(0);
     expect(wrapper.find('#createPollButton')).to.have.length(1);
   });

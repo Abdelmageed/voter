@@ -34,7 +34,7 @@ export default class MyPolls extends Component{
         id="createPollButton"
         onClick={()=> {this.showForm();}}
       >
-        Create New Poll <i className="fa fa-plus"></i>
+        Create New Poll <i className="fa fa-plus" />
       </Button>
     );
     
@@ -43,7 +43,7 @@ export default class MyPolls extends Component{
         id="createPollForm"
         close={this.closeForm}
       />
-    )
+    );
     
     return(
       <div>

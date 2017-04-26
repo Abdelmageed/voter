@@ -108,7 +108,7 @@ export const getAllPolls = ()=> {
     .catch((error)=> {
       //TODO flash error message
       if(error.response) throw error.response;
-    })
+    });
   };
 };
 
