@@ -102,7 +102,14 @@ export const createPoll = (poll)=> {
 export const modifyPoll = (poll, newPoll) => {
   return (dispatch) => {
     dispatch(editPoll(poll._id, newPoll));
-    return axios.put(endpoints.modifyPoll)
+    return axios.put(
+      endpoints.modifyPoll,
+      JSON.stringify({
+        id: poll._id,
+        newPoll
+      }), {
+        headers: {'Content-Type': 'application/json'}
+      })
       .catch((error) => {
         //edit the modified poll to the old poll (revert modification)
         dispatch(editPoll(poll._id, poll));

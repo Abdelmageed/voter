@@ -4,8 +4,8 @@ import {Button} from 'react-bootstrap';
 export default class Poll extends Component{
   constructor(props){
     super(props);
-    
     this.getUserVote = this.getUserVote.bind(this);
+    this.vote = this.vote.bind(this);
   }
   
   getUserVote() {
@@ -23,13 +23,24 @@ export default class Poll extends Component{
     });
     return userVote;
   }
+
+  vote(optionId) {
+    const poll = {
+            _id: this.props._id,
+            options: this.props.options,
+            _author: this.props._author,
+            name: this.props.name
+        };
+    this.props.vote(poll, optionId, this.props.ip);
+  }
   
   render(){
     const vote = this.getUserVote(),
       optionButtons = this.props.options.map((option, index) => (
           <Button 
             key={index}
-            className="option-button">
+            className="option-button"
+            onClick={()=> {this.vote(option._id);}}>
             {option.name}
             </Button>
         )),

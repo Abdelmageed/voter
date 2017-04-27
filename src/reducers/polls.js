@@ -16,7 +16,7 @@ export function polls(state = initialState.polls, action){
     case actions.EDIT_POLL:
       return state.map((poll) => {
         if (poll._id === action._id) {
-          return action.newPoll;
+          return {...poll, ...action.newPoll};
         }
         return poll;
       });
