@@ -68,12 +68,19 @@ describe('Polls Reducer', () => {
     
     it('adds a new poll to the state on success(it does not wait for response, optimistic UI)', (done) => {
     
+    const fakeAuthor = {
+      _id: 'id519',
+      local: {
+        username: 'fake name'
+      }
+    }; 
+    const populatedPoll = Object.assign({}, fakePoll, {_author: fakeAuthor});
     const expectedActions = [
-      actionCreators.addPoll(fakePoll)
+      actionCreators.addPoll(populatedPoll)
     ];
     const store = storeMock({});
     
-    store.dispatch(actionCreators.createPoll(fakePoll));
+    store.dispatch(actionCreators.createPoll(fakePoll, fakeAuthor));
     axiosMock.onPost(endpoints.createPoll)
       .reply(200, fakePoll);
     
@@ -85,14 +92,20 @@ describe('Polls Reducer', () => {
   });
     
     it('removes the added poll on response error', (done) => {
-      
+     const fakeAuthor = {
+      _id: 'id519',
+      local: {
+        username: 'fake name'
+      }
+    }; 
+    const populatedPoll = Object.assign({}, fakePoll, {_author: fakeAuthor});
     const expectedActions = [
-      actionCreators.addPoll(fakePoll),
+      actionCreators.addPoll(populatedPoll),
       actionCreators.deletePoll(fakePoll._id)
     ];
     const store = storeMock({});
     
-    store.dispatch(actionCreators.createPoll(fakePoll));
+    store.dispatch(actionCreators.createPoll(fakePoll, fakeAuthor));    
     axiosMock.onPost(endpoints.createPoll)
       .reply(500);
     

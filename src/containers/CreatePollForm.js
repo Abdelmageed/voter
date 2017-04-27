@@ -4,11 +4,12 @@ import {createPoll} from '../actions/actionCreators';
 import CreatePollForm from '../components/CreatePollForm';
 
 const mapStateToProps = (state)=> ({
-  userId: state.user.id
+  userId: state.user.id,
+  username: state.user.username
 });
 
 const mapDispatchToProps = (dispatch)=> ({
-  submit: (newPoll)=> dispatch(createPoll(newPoll))
+  submit: (newPoll, author)=> dispatch(createPoll(newPoll, author))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(CreatePollForm);

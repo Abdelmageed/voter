@@ -13,13 +13,15 @@ describe('CreatePollForm', ()=> {
   let wrapper,
       spySubmit = sinon.spy(),
       spyClose = sinon.spy(),
-      userId = '123';
+      userId = '123',
+      username = 'username';
   beforeEach(()=> {
     wrapper = mount(
       <CreatePollForm 
         submit={spySubmit}
         close={spyClose}
         userId={userId}
+        username={username}
         />
     );
   });
@@ -98,7 +100,7 @@ describe('CreatePollForm', ()=> {
       options: [
         {name: 'option0', id:'0', votes:[]},
         {name: 'option1', id:'1', votes:[]}
-      ]}, {_author: userId});
+      ]});
 //    wrapper.setState({
 //      name: newPoll.name,
 //      options: newPoll.options
@@ -106,9 +108,10 @@ describe('CreatePollForm', ()=> {
     const saveButton = wrapper.find('#saveButton');
     expect(saveButton).to.have.length(1);
     saveButton.simulate('click');
+
     expect(spySubmit.called).to.be.true;
-    
     expect(spySubmit.args[0][0]).to.deep.equal(newSavedPoll);
+    expect(spySubmit.args[0][1]).to.deep.equal({_id: userId, local: {username: username}});
     
   });
   

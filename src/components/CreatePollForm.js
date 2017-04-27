@@ -54,15 +54,20 @@ export default class CreatePollForm extends Component{
   
   handleSubmit(){
     const newPoll = {
-      _author: this.props.userId,
       name: this.state.name,
       options: this.state.options.map((option)=> ({
         id: option.id,
         name: option.name,
         votes: []
       }))
+    },
+    author = {
+      _id: this.props.userId,
+      local: {
+        username: this.props.username
+      }
     };
-    this.props.submit(newPoll);
+    this.props.submit(newPoll, author);
   }
   
   render(){
