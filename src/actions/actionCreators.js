@@ -92,12 +92,13 @@ export const createPoll = (poll)=> {
         headers: {'Content-Type': 'application/json'}
       })
       .catch((error)=> {
-        dispatch(deletePoll(poll.id));
+        dispatch(deletePoll(poll._id));
         //TODO flash error message
         if(error.response) throw error.response;
     });
   };
 };
+
 
 export const getAllPolls = ()=> {
   return (dispatch)=> {
@@ -144,9 +145,15 @@ export const addPoll = (poll)=> ({
   poll
 });
 
-export const deletePoll = (id)=> ({
+export const deletePoll = (_id)=> ({
   type: actions.DELETE_POLL,
-  id
+  _id
+});
+
+export const editPoll = (_id, newPoll) => ({
+  type: actions.EDIT_POLL,
+  _id,
+  newPoll
 });
 
 export const setPolls = (polls)=> ({

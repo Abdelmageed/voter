@@ -12,6 +12,25 @@ describe('Polls Reducer', ()=> {
   let axiosMock,
       storeMock,
       axios = endpoints.axiosInstance;
+
+  const fakePoll = {
+    _id: 0,
+    userId: 0,
+    name: 'pollName',
+    options: [
+      {_id: 0, name: 'the option'},
+      {_id: 1, name: 'the other option'}
+    ]
+  },
+    anotherFakePoll = {
+      _id: 1,
+      userId: 0,
+      name: 'the poll name',
+      options: [
+        {_id: 0, name: 'the option'},
+        {_id: 1, name: 'the other option'}
+      ]
+    };
   
   beforeEach(()=> {
     axiosMock = new MockAdapter(axios);
@@ -24,56 +43,39 @@ describe('Polls Reducer', ()=> {
   });
   
   it('should handle ADD_POLL', ()=> {
-    const poll = {
-      id: 0,
-      userId: 0,
-      name: 'pollName',
-      options: [
-        {id: 0, name: 'the option'},
-        {id: 1, name: 'the other option'}
-      ]
-    },
-          action = {
+      const action = {
       type: actions.ADD_POLL,
-      poll
+      poll: fakePoll
     },
           state = [],
-          nextState = [poll];
+          nextState = [fakePoll];
     expect(polls(state, action)).to.deep.equal(nextState);
     
   });
   
   it('should handle REMOVE_POLL', ()=> {
-    const id = 0,
+    const _id = 0,
           state = [{
-      id,
+      _id,
       name: 'dead poll',
       options: []
     }],
           nextState = [];
-    expect(polls(state, actionCreators.deletePoll(id))).to.deep.equal(nextState);
+    expect(polls(state, actionCreators.deletePoll(_id))).to.deep.equal(nextState);
   });
   
   describe('createPoll thunk', ()=> {
     
     it('adds a new poll to the state on success(it does not wait for response, optimistic UI)', (done)=> {
-    const poll = {
-      id: 0,
-      userId: 0,
-      name: 'pollName',
-      options: [
-        {id: 0, name: 'the option'},
-        {id: 1, name: 'the other option'}
-      ]
-    };
+    
     const expectedActions = [
-      actionCreators.addPoll(poll)
+      actionCreators.addPoll(fakePoll)
     ];
     const store = storeMock({});
     
-    store.dispatch(actionCreators.createPoll(poll));
+    store.dispatch(actionCreators.createPoll(fakePoll));
     axiosMock.onPost(endpoints.createPoll)
-      .reply(200, poll);
+      .reply(200, fakePoll);
     
     setTimeout(()=> {
       expect(store.getActions()).to.deep.equal(expectedActions);
@@ -84,22 +86,13 @@ describe('Polls Reducer', ()=> {
     
     it('removes the added poll on response error', (done)=> {
       
-      const poll = {
-      id: 0,
-      userId: 0,
-      name: 'pollName',
-      options: [
-        {id: 0, name: 'the option'},
-        {id: 1, name: 'the other option'}
-      ]
-    };
     const expectedActions = [
-      actionCreators.addPoll(poll),
-      actionCreators.deletePoll(0)
+      actionCreators.addPoll(fakePoll),
+      actionCreators.deletePoll(fakePoll._id)
     ];
     const store = storeMock({});
     
-    store.dispatch(actionCreators.createPoll(poll));
+    store.dispatch(actionCreators.createPoll(fakePoll));
     axiosMock.onPost(endpoints.createPoll)
       .reply(500);
     
@@ -140,6 +133,15 @@ describe('Polls Reducer', ()=> {
       
       
     });
+  });
+
+  it('should handle EDIT_POLL', () => {
+      const modifiedPoll = Object.assign({}, fakePoll, {name: 'modified poll name'});
+      const state = [fakePoll, anotherFakePoll],
+        nextState = [modifiedPoll, anotherFakePoll],
+        action = actionCreators.editPoll(fakePoll._id, modifiedPoll);
+
+      expect(polls(state, action)).to.deep.equal(nextState);
   });
   
 });
