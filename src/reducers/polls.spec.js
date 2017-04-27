@@ -8,7 +8,7 @@ import * as actions from '../constants/actions';
 import * as actionCreators from '../actions/actionCreators';
 import {polls} from './polls';
 
-describe('Polls Reducer', ()=> {
+describe('Polls Reducer', () => {
   let axiosMock,
       storeMock,
       axios = endpoints.axiosInstance;
@@ -32,17 +32,17 @@ describe('Polls Reducer', ()=> {
       ]
     };
   
-  beforeEach(()=> {
+  beforeEach(() => {
     axiosMock = new MockAdapter(axios);
     let middlewares = [thunk];
     storeMock = configureStore(middlewares);
   });
   
-  afterEach(()=> {
+  afterEach(() => {
     axiosMock.restore();
   });
   
-  it('should handle ADD_POLL', ()=> {
+  it('should handle ADD_POLL', () => {
       const action = {
       type: actions.ADD_POLL,
       poll: fakePoll
@@ -53,7 +53,7 @@ describe('Polls Reducer', ()=> {
     
   });
   
-  it('should handle REMOVE_POLL', ()=> {
+  it('should handle REMOVE_POLL', () => {
     const _id = 0,
           state = [{
       _id,
@@ -64,9 +64,9 @@ describe('Polls Reducer', ()=> {
     expect(polls(state, actionCreators.deletePoll(_id))).to.deep.equal(nextState);
   });
   
-  describe('createPoll thunk', ()=> {
+  describe('createPoll thunk', () => {
     
-    it('adds a new poll to the state on success(it does not wait for response, optimistic UI)', (done)=> {
+    it('adds a new poll to the state on success(it does not wait for response, optimistic UI)', (done) => {
     
     const expectedActions = [
       actionCreators.addPoll(fakePoll)
@@ -77,14 +77,14 @@ describe('Polls Reducer', ()=> {
     axiosMock.onPost(endpoints.createPoll)
       .reply(200, fakePoll);
     
-    setTimeout(()=> {
+    setTimeout(() => {
       expect(store.getActions()).to.deep.equal(expectedActions);
       done();
     }, 10);
     
   });
     
-    it('removes the added poll on response error', (done)=> {
+    it('removes the added poll on response error', (done) => {
       
     const expectedActions = [
       actionCreators.addPoll(fakePoll),
@@ -96,7 +96,7 @@ describe('Polls Reducer', ()=> {
     axiosMock.onPost(endpoints.createPoll)
       .reply(500);
     
-    setTimeout(()=> {
+    setTimeout(() => {
       expect(store.getActions()).to.deep.equal(expectedActions);
       done();
     }, 10);
@@ -105,7 +105,7 @@ describe('Polls Reducer', ()=> {
     
   });
  
-  it('should handle SET_POLLS', ()=> {
+  it('should handle SET_POLLS', () => {
     const state = [],
           allPolls = [{name: 'name', options: []},
                    {name: 'another name', options: []}],
@@ -113,9 +113,9 @@ describe('Polls Reducer', ()=> {
     expect(polls(state, actionCreators.setPolls(allPolls))).to.deep.equal(nextState);
   });
   
-  describe('getAllPolls thunk', ()=> {
+  describe('getAllPolls thunk', () => {
     
-    it('loads state.polls with response.data.polls', (done)=> {
+    it('loads state.polls with response.data.polls', (done) => {
       
       const allPolls = [{name: 'name', options: []},
                    {name: 'another name', options: []}];
@@ -127,7 +127,7 @@ describe('Polls Reducer', ()=> {
       axiosMock.onGet(endpoints.getAllPolls)
         .reply(200, {polls: allPolls});
       
-    setTimeout(()=> {             expect(store.getActions()).to.deep.equal(expectedActions);
+    setTimeout(() => {             expect(store.getActions()).to.deep.equal(expectedActions);
       done();
     }, 10);  
       
@@ -142,6 +142,47 @@ describe('Polls Reducer', ()=> {
         action = actionCreators.editPoll(fakePoll._id, modifiedPoll);
 
       expect(polls(state, action)).to.deep.equal(nextState);
+  });
+
+  describe('modifyPoll thunk', () => {
+    
+    it('should edit poll optimistically', (done) => {
+      const modifiedPoll = Object.assign({}, fakePoll, {name: 'modified poll name'});
+      
+      const expectedActions = [
+        actionCreators.editPoll(fakePoll._id, modifiedPoll)
+      ];
+      const store = storeMock({});
+      
+      store.dispatch(actionCreators.modifyPoll(fakePoll, modifiedPoll));
+      axiosMock.onPut(endpoints.modifyPoll)
+        .reply(200);
+      
+      setTimeout(() => {
+        expect(store.getActions()).to.deep.equal(expectedActions);
+        done();
+      }, 10);
+    });
+
+    it('should revert edit poll on server error', (done) => {
+      const modifiedPoll = Object.assign({}, fakePoll, {name: 'modified poll name'});
+      
+      const expectedActions = [
+        actionCreators.editPoll(fakePoll._id, modifiedPoll),
+        actionCreators.editPoll(fakePoll._id, fakePoll)
+      ];
+      const store = storeMock({});
+      
+      store.dispatch(actionCreators.modifyPoll(fakePoll, modifiedPoll));
+      axiosMock.onPut(endpoints.modifyPoll)
+        .reply(500);
+      
+      setTimeout(() => {
+        expect(store.getActions()).to.deep.equal(expectedActions);
+        done();
+      }, 10);
+    });
+
   });
   
 });

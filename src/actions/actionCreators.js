@@ -99,6 +99,17 @@ export const createPoll = (poll)=> {
   };
 };
 
+export const modifyPoll = (poll, newPoll) => {
+  return (dispatch) => {
+    dispatch(editPoll(poll._id, newPoll));
+    return axios.put(endpoints.modifyPoll)
+      .catch((error) => {
+        //edit the modified poll to the old poll (revert modification)
+        dispatch(editPoll(poll._id, poll));
+        if(error.response) throw error.response;
+      });
+  };
+};
 
 export const getAllPolls = ()=> {
   return (dispatch)=> {
