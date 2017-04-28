@@ -1,9 +1,12 @@
 import React, {Component, PropTypes} from 'react';
 import {Button} from 'react-bootstrap';
+import {Pie} from 'react-chartjs-2';
+import randomcolor from 'randomcolor';
 
 export default class Poll extends Component{
   constructor(props){
     super(props);
+
     this.getUserVote = this.getUserVote.bind(this);
     this.vote = this.vote.bind(this);
   }
@@ -35,6 +38,23 @@ export default class Poll extends Component{
   }
   
   render(){
+
+    const colors = randomcolor({count: this.props.options.length});
+
+    const data = {
+    labels: this.props.options.map((option) => {
+      return option.name;
+    }),
+    datasets: [
+        {
+            data: this.props.options.map((option) => {
+              return option.votes.length;
+            }),
+            backgroundColor: colors,
+            hoverBackgroundColor: colors
+        }]
+  };
+
     const vote = this.getUserVote(),
       optionButtons = this.props.options.map((option, index) => (
           <Button 
@@ -59,6 +79,17 @@ export default class Poll extends Component{
           (vote === '') ?
           optionButtons : voteText
         }
+        <div
+          className="chart" 
+          style={{
+            width: 400,
+            height: 400
+          }}
+        >
+          <Pie
+            data={data}
+            />
+        </div>
       </div>
     );
   }
@@ -68,5 +99,7 @@ Poll.propTypes = {
   name: PropTypes.string,
   _author: PropTypes.object,
   options: PropTypes.array,
-  ip: PropTypes.string
+  ip: PropTypes.string,
+  _id: PropTypes.string,
+  vote: PropTypes.func
 };

@@ -86,5 +86,14 @@ describe('Poll', () => {
     expect(voteText).to.have.length(1);
     expect(voteText.text()).to.include(pollVoted.options[0].name);
   });
+
+  it('should render a div for the votes chart', () => {
+    wrapper = shallow(<Poll {...pollVoted} ip={ownIP}/>);    
+    
+    const chart = wrapper.find('.chart');
+
+    expect(chart).to.have.length(1);
+
+  });
   
 });

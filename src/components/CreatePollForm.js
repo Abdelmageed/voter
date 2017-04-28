@@ -123,6 +123,7 @@ export default class CreatePollForm extends Component{
 
 CreatePollForm.propTypes = {
   userId: PropTypes.string,
+  username: PropTypes.string,
   submit: PropTypes.func,
   close: PropTypes.func
 };
