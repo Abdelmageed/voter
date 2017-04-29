@@ -1,8 +1,12 @@
+import querystring from 'querystring';
+import jsonp from 'jsonp';
+import {push} from 'react-router-redux';
+
 import * as actions from '../constants/actions';
 import * as errors from '../constants/errors';
 import * as endpoints from '../constants/endpoints';
-import querystring from 'querystring';
-import jsonp from 'jsonp';
+
+import session from '../util/session';
 
 //TODO handle internal server error on response.catch
 
@@ -30,12 +34,14 @@ export const login = (credentials)=> {
       } else {
           dispatch(loginSuccess());
           dispatch(setUser(response.data.user));
+          session.setSessionId(response.data.sessionId);
       }
     })
       .catch((error)=> {
-        const errorMsg = error.response | errors.server; 
+        const errorMsg = error.response | errors.server;
+        console.log(errorMsg);
         dispatch(loginFailure(errorMsg));
-    });
+      });
   };
 };
 
@@ -49,10 +55,11 @@ export const signup = (user)=> {
       .then((response)=> {
         dispatch(loginSuccess());
         dispatch(setUser(response.data.user));
-    })
+        session.setSessionId(response.data.sessionId);        
+      })
       .catch((error)=> {
-      if (error.respone) throw error.response;
-    });
+        if (error.respone) throw error.response;
+      });
   };
 };
 
@@ -60,10 +67,12 @@ export const logout = ()=> {
   return (dispatch)=> {
     return axios.get(endpoints.logout)
       .then(()=> {
-      dispatch(removeUser());
-    })
+        dispatch(removeUser());
+        dispatch(push('/'));
+        session.setSessionId('');      
+     })
       .catch((error)=> {
-      if (error.response) throw error.response;
+        if (error.response) throw error.response;
     });
   };
 };

@@ -3,6 +3,8 @@ import reduxImmutableStateInvariant from 'redux-immutable-state-invariant';
 import thunk from 'redux-thunk';
 import logger from 'redux-logger';
 import {autoRehydrate} from 'redux-persist';
+import {browserHistory} from 'react-router';
+import {routerMiddleware} from 'react-router-redux';
 import rootReducer from '../reducers';
 
 function configureStoreProd(initialState) {
@@ -11,6 +13,8 @@ function configureStoreProd(initialState) {
     // thunk middleware can also accept an extra argument to be passed to each thunk action
     // https://github.com/gaearon/redux-thunk#injecting-a-custom-argument
     thunk,
+
+     routerMiddleware(browserHistory),
   ];
 
   return createStore(rootReducer, initialState, compose(
@@ -31,6 +35,8 @@ function configureStoreDev(initialState) {
     // https://github.com/gaearon/redux-thunk#injecting-a-custom-argument
     thunk,
 
+     routerMiddleware(browserHistory),
+    
     logger,
   ];
 

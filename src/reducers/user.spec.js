@@ -1,29 +1,34 @@
 import {expect} from 'chai';
-// import jsonp from 'jsonp';
-// import sinon from  'sinon';
+import sinon from  'sinon';
 import MockAdapter from 'axios-mock-adapter';
 import configureStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
+import {push} from 'react-router-redux';
+
 import {user} from './user';
 import {initialState} from '../initialState';
 import * as actionNames from '../constants/actions';
 import * as endpoints from '../constants/endpoints';
 import * as actions from '../actions/actionCreators';
 import * as errors from '../constants/errors';
+import session from '../util/session';
 
 let axiosMock,
     storeMock,
     axios = endpoints.axiosInstance;
 describe('User Reducer', ()=> {
   
+  let stubSetSessionId;
   beforeEach(()=> {
     axiosMock = new MockAdapter(axios);
     let middlewares = [thunk];
     storeMock = configureStore(middlewares);
+    stubSetSessionId = sinon.stub(session, 'setSessionId');
   });
   
   afterEach(()=> {
     axiosMock.restore();
+    stubSetSessionId.restore();
   });
   
   it('should return the initial state on unknown actions', ()=> {
@@ -255,13 +260,14 @@ describe('User Reducer', ()=> {
     });
   });
   
-  it('should logout, remove user data, and set isAuthenticated to false', (done)=> {
+  it('should logout, remove user data, set isAuthenticated to false and redirect to index page', (done)=> {
     
     axiosMock.onGet(endpoints.logout)
       .reply(200);
     
     const expectedActions = [
-      actions.removeUser()
+      actions.removeUser(),
+      push('/')
     ];
     const store = storeMock({});
     store.dispatch(actions.logout());
