@@ -13,12 +13,26 @@ export const getRoutes = (store)=> {
     store.dispatch(actionCreators.getAllPolls());
   };
 
+  const redirectIfNotAuth = (nextState, replace) => {
+    //use our manually persisted sessionId in local storage as redux-persist store rehydration happens after page reload, we need it before that
+    const sessionId =  localStorage.getItem('sessionId');
+      const isAuthenticated = (sessionId !== '');
+      if(!isAuthenticated) {
+        replace({
+          pathname: '/'
+        });
+      }
+  };
+
   return(
     <Route path="/" component={App}>
       <IndexRoute 
-      component={AllPolls} 
-      onEnter={()=> {getPolls();}}/>
-      <Route path="my-polls" component={MyPolls}/>
+        component={AllPolls} 
+        onEnter={()=> {getPolls();}}/>
+      <Route 
+        path="my-polls" 
+        component={MyPolls}
+        onEnter={redirectIfNotAuth}/>
     </Route>
   );
 };
