@@ -39,7 +39,6 @@ export const login = (credentials)=> {
     })
       .catch((error)=> {
         const errorMsg = error.response | errors.server;
-        console.log(errorMsg);
         dispatch(loginFailure(errorMsg));
       });
   };

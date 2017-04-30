@@ -3,12 +3,16 @@ import {Button} from 'react-bootstrap';
 import {Pie} from 'react-chartjs-2';
 import randomcolor from 'randomcolor';
 
+import VoteInput from './VoteInput';
+
 export default class Poll extends Component{
   constructor(props){
     super(props);
 
     this.getUserVote = this.getUserVote.bind(this);
     this.vote = this.vote.bind(this);
+    this.getPoll = this.getPoll.bind(this);
+    this.addNewOption = this.addNewOption.bind(this);
   }
   
   getUserVote() {
@@ -27,16 +31,25 @@ export default class Poll extends Component{
     return userVote;
   }
 
-  vote(optionId) {
-    const poll = {
+  getPoll() {
+    return {
             _id: this.props._id,
             options: this.props.options,
             _author: this.props._author,
             name: this.props.name
         };
+  }
+
+  vote(optionId) {
+    const poll = this.getPoll();
     this.props.vote(poll, optionId, this.props.ip);
   }
   
+  addNewOption(newOption) {
+    const poll = this.getPoll();
+    this.props.addNewOption(poll, newOption);
+  }
+
   render(){
 
     const colors = randomcolor({count: this.props.options.length});
@@ -69,6 +82,13 @@ export default class Poll extends Component{
           You voted for {vote}
         </h4>
       );
+
+      optionButtons.push(
+      <VoteInput 
+        key={optionButtons.length}
+        ip={this.props.ip}
+        addNewOption={this.addNewOption}
+        />);
     return (
       <div>
         <h3 id="name">{this.props.name}</h3>

@@ -9,6 +9,7 @@ describe('Poll', () => {
   let wrapper,
       ownIP = '192.168.1.1',
       pollVoted = {
+        _id: 'some123aqqwe',
         name: 'A fake poll',
         options: [
           {name: 'first fake option', votes: [ownIP]},
@@ -28,10 +29,13 @@ describe('Poll', () => {
         ] 
       }),
       sandbox = sinon.sandbox.create(),
-      spyGetUserVote;
+      spyGetUserVote,
+      stubGetPoll;
+      // spyPropVote;
   
   beforeEach(() => {
     spyGetUserVote = sandbox.spy(Poll.prototype, 'getUserVote');
+    stubGetPoll = sandbox.stub(Poll.prototype, 'getPoll');
   });
 
   afterEach(() => {
@@ -95,5 +99,51 @@ describe('Poll', () => {
     expect(chart).to.have.length(1);
 
   });
+
+  it('vote(optionId) should call props.vote with (pollObject, optionId, props.ip)', () => {
+    wrapper = shallow(<Poll {...pollVoted} ip={ownIP} vote={sinon.spy()}/>);    
+    const poll = {
+      _id: 'some123hade314',
+      name: 'name',
+      options: []
+    },
+    optionId = 'some123sdiq2aa';
+    stubGetPoll.returns(poll);
+
+    wrapper.instance().vote(optionId);
+
+    expect(wrapper.instance().props.vote.calledWith(poll, optionId, ownIP)).to.be.true;
+  });
   
+  it('getPoll() should return the extracted poll object from props', () => {
+    //getPoll is the SUT it is stubbed.
+    sandbox.restore();
+    //spy on it instead
+    const spyGetPoll = sandbox.spy(Poll.prototype, 'getPoll')
+    wrapper = shallow(<Poll {...pollVoted}/>);    
+    
+    wrapper.instance().getPoll();
+    
+    expect(spyGetPoll.returned(pollVoted)).to.be.true;
+  });
+
+  it('addNewOption(newOption) should call props.addNewOption with (poll, newOption) ', () => {
+     const poll = {
+      _id: 'some123hade314',
+      name: 'name',
+      options: []
+    },
+    newOption = {
+      _id: 'some123sdiq2aa',
+      name: 'new option',
+      votes: [ownIP]
+    };
+    stubGetPoll.returns(poll);
+    wrapper = shallow(<Poll {...pollVoted} ip={ownIP} addNewOption={sinon.spy()}/>);    
+
+    wrapper.instance().addNewOption(newOption);
+
+    expect(wrapper.instance().props.addNewOption.calledWith(poll, newOption)).to.be.true;
+  });
+
 });

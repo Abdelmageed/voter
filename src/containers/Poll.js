@@ -14,6 +14,10 @@ const getVotedPoll = (poll, optionId, ip) => {
     });
 };
 
+const getPollWithNewOption = (poll, newOption) => {
+    return Object.assign({}, poll, {options: poll.options.concat(newOption)});
+}
+
 const mapStateToProps = (state, ownProps) => {
     const poll = state.polls.filter((poll) => {
         return (poll._id === ownProps._id);
@@ -28,6 +32,11 @@ const mapDispatchToProps = (dispatch) => ({
     vote: (poll, optionId, ip) => {
         const votedPoll = getVotedPoll(poll, optionId, ip);
         dispatch(modifyPoll(poll, votedPoll));
+    },
+    addNewOption: (poll, newOption) => {
+        
+        const pollWithNewOption = getPollWithNewOption(poll, newOption);
+        dispatch(modifyPoll(poll, pollWithNewOption));
     }
 });
 
