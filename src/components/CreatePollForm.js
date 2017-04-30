@@ -68,6 +68,7 @@ export default class CreatePollForm extends Component{
       }
     };
     this.props.submit(newPoll, author);
+    this.props.close();
   }
   
   render(){

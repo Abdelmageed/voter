@@ -35,7 +35,7 @@ describe('CreatePollForm', ()=> {
     
     const label = nameFormGroup.find(ControlLabel);
     expect(label.length).to.equal(1);    expect(label.render().text().toLowerCase()).to.include('name');
-//    
+    
     const control = nameFormGroup.find(FormControl);
     expect(control.length).to.equal(1);
     
@@ -61,7 +61,7 @@ describe('CreatePollForm', ()=> {
     
     expect(optionsFormGroup.find(RemovableTextInput)).to.have.length(3);
   });
-//  
+ 
   it('should render option inputs as TextInput-s if they are equal to 2', ()=> {
     const optionsFormGroup = wrapper.find('#options');
     wrapper.instance().addOption();
@@ -72,9 +72,7 @@ describe('CreatePollForm', ()=> {
   });
   
   it('add option button adds a new input to the options FormGroup', ()=> {
-  
-  const optionsFormGroup = wrapper.find('#options');  expect(optionsFormGroup.find(FormControl)).to.have.length(2);
-    
+    const optionsFormGroup = wrapper.find('#options');  expect(optionsFormGroup.find(FormControl)).to.have.length(2);
     
     const addOptionButton = wrapper.find('#addOption');
     addOptionButton.simulate('click');
@@ -87,7 +85,7 @@ describe('CreatePollForm', ()=> {
 
   });
   
-  it('has a save button that calls props.submit() on click with the poll object', ()=> {
+  it('has a save button that calls props.submit() and props.close() on click with the poll object', ()=> {
     const newPoll = {
       name: 'new poll',
       options: [
@@ -101,10 +99,7 @@ describe('CreatePollForm', ()=> {
         {name: 'option0', id:'0', votes:[]},
         {name: 'option1', id:'1', votes:[]}
       ]});
-//    wrapper.setState({
-//      name: newPoll.name,
-//      options: newPoll.options
-//    }, ()=> {
+
     const saveButton = wrapper.find('#saveButton');
     expect(saveButton).to.have.length(1);
     saveButton.simulate('click');
@@ -112,7 +107,7 @@ describe('CreatePollForm', ()=> {
     expect(spySubmit.called).to.be.true;
     expect(spySubmit.args[0][0]).to.deep.equal(newSavedPoll);
     expect(spySubmit.args[0][1]).to.deep.equal({_id: userId, local: {username: username}});
-    
+    expect(spyClose.called).to.be.true;
   });
   
   it('has a cancel button that calls props.close on click', ()=> {
