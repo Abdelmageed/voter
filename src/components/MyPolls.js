@@ -1,7 +1,9 @@
-import React, {Component} from 'react';
+import React, {Component, PropTypes} from 'react';
 import {Button} from 'react-bootstrap';
-//import CreatePollForm from './CreatePollForm';
+
+import Poll from '../containers/Poll';
 import CreatePollForm from '../containers/CreatePollForm';
+
 export default class MyPolls extends Component{
   
   constructor(props){
@@ -45,15 +47,23 @@ export default class MyPolls extends Component{
       />
     );
     
+    const userPolls = this.props.userPollIds.map((id, index) => (
+      <Poll _id={id} key={index}/>
+    ));
+
     return(
       <div>
         <h1>My Polls</h1>
         { 
-        (this.state.showForm)?
-          createPollForm : createPollButton
-        
+          (this.state.showForm)?
+            createPollForm : createPollButton
         }
+        {userPolls}
       </div>
     ); 
   }
 }
+
+MyPolls.propTypes = {
+  userPollIds: PropTypes.arrayOf(PropTypes.string),
+};
