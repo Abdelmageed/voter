@@ -6,13 +6,14 @@ import { Provider } from 'react-redux';
 import { persistStore } from 'redux-persist';
 import {Router, browserHistory} from 'react-router';
 import {getRoutes} from './routes';
-import {getIp} from './actions/actionCreators';
+import {getIp, getAllPolls} from './actions/actionCreators';
 import 'bootstrap/dist/css/bootstrap.css';
 require("font-awesome-webpack");
 
 const store = configureStore();
 persistStore(store);
 store.dispatch(getIp());
+store.dispatch(getAllPolls());
 
 const reactRoot = window.document.getElementById("app");
   ReactDOM.render(
