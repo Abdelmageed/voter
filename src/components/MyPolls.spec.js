@@ -6,6 +6,7 @@ import sinon from 'sinon';
 import MyPolls from './MyPolls';
 import Poll from '../containers/Poll';
 
+
 describe('MyPolls component', () => {
 let wrapper,
     userPollIds = ['myFirstPollId', 'mySecondPollId'],
