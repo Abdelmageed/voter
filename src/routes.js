@@ -5,7 +5,7 @@ import * as actionCreators from './actions/actionCreators';
 
 import {App} from './components/app';
 import AllPolls from './containers/AllPolls';
-import MyPolls from './components/MyPolls';
+import MyPolls from './containers/MyPolls';
 
 export const getRoutes = (store)=> {
 
