@@ -83,12 +83,25 @@ export default class Poll extends Component{
         </h4>
       );
 
+      const voteInput = (
+        <VoteInput 
+          key={optionButtons.length}
+          ip={this.props.ip}
+          addNewOption={this.addNewOption}
+          />),
+        loginToAddMessage = (
+          <h4 
+            id="loginToAddMesage"
+            key={optionButtons.length}
+            >
+            Login in order to vote for your own option
+          </h4>
+        ),
+        addVoteOrMessage = (this.props.isAuthenticated) ? voteInput : loginToAddMessage;
+      
       optionButtons.push(
-      <VoteInput 
-        key={optionButtons.length}
-        ip={this.props.ip}
-        addNewOption={this.addNewOption}
-        />);
+        addVoteOrMessage
+      );
     return (
       <div>
         <h3 id="name">{this.props.name}</h3>
@@ -121,5 +134,7 @@ Poll.propTypes = {
   options: PropTypes.array,
   ip: PropTypes.string,
   _id: PropTypes.string,
-  vote: PropTypes.func
+  vote: PropTypes.func,
+  addNewOption: PropTypes.func,
+  isAuthenticated: PropTypes.bool
 };

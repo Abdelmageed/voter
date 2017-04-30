@@ -16,7 +16,7 @@ const getVotedPoll = (poll, optionId, ip) => {
 
 const getPollWithNewOption = (poll, newOption) => {
     return Object.assign({}, poll, {options: poll.options.concat(newOption)});
-}
+};
 
 const mapStateToProps = (state, ownProps) => {
     const poll = state.polls.filter((poll) => {
@@ -24,7 +24,8 @@ const mapStateToProps = (state, ownProps) => {
     })[0];
     return {
         ip: state.user.ip,
-        ...poll
+        ...poll,
+        isAuthenticated: state.user.isAuthenticated
     };
 };
 

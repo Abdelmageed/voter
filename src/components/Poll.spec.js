@@ -4,6 +4,7 @@ import {shallow} from 'enzyme';
 import sinon from 'sinon';
 
 import Poll from './Poll';
+import VoteInput from './VoteInput';
 
 describe('Poll', () => {
   let wrapper,
@@ -127,7 +128,7 @@ describe('Poll', () => {
     expect(spyGetPoll.returned(pollVoted)).to.be.true;
   });
 
-  it('addNewOption(newOption) should call props.addNewOption with (poll, newOption) ', () => {
+  it('addNewOption(newOption) should call props.addNewOption with (poll, newOption)', () => {
      const poll = {
       _id: 'some123hade314',
       name: 'name',
@@ -144,6 +145,26 @@ describe('Poll', () => {
     wrapper.instance().addNewOption(newOption);
 
     expect(wrapper.instance().props.addNewOption.calledWith(poll, newOption)).to.be.true;
+  });
+
+  it('should render a VoteInput component for authenticated users only', () => {
+    wrapper = shallow(<Poll {...pollVoted} isAuthenticated={true}/>);    
+    
+    const voteInput = wrapper.find(VoteInput),
+      loginToAddMesage = wrapper.find('#loginToAddMesage');
+
+    expect(voteInput).to.have.length(1);
+    expect(loginToAddMesage).to.have.length(0);
+  });
+
+  it('should render a "Login in order to vote for your own option" message to unauthenticated users instead of the VoteInput component', () => {
+    wrapper = shallow(<Poll {...pollVoted} isAuthenticated={false}/>);    
+    
+    const voteInput = wrapper.find(VoteInput),
+      loginToAddMesage = wrapper.find('#loginToAddMesage');
+
+    expect(voteInput).to.have.length(0);
+    expect(loginToAddMesage).to.have.length(1);
   });
 
 });
