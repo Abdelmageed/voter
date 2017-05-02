@@ -16,8 +16,7 @@ export const getRoutes = (store)=> {
   const redirectIfNotAuth = (nextState, replace) => {
     //use our manually persisted sessionId in local storage as redux-persist store rehydration happens after page reload, we need it before that
     const sessionId =  localStorage.getItem('sessionId');
-      const isAuthenticated = (sessionId !== '');
-      if(!isAuthenticated) {
+      if(!sessionId) {
         replace({
           pathname: '/'
         });
