@@ -66,7 +66,7 @@ describe('Polls Reducer', () => {
   
   describe('createPoll thunk', () => {
     
-    it('adds a new poll to the state on success(it does not wait for response, optimistic UI)', (done) => {
+    it('adds a new poll to the state on success', (done) => {
     
     const fakeAuthor = {
       _id: 'id519',
@@ -82,7 +82,7 @@ describe('Polls Reducer', () => {
     
     store.dispatch(actionCreators.createPoll(fakePoll, fakeAuthor));
     axiosMock.onPost(endpoints.createPoll)
-      .reply(200, fakePoll);
+      .reply(200, populatedPoll);
     
     setTimeout(() => {
       expect(store.getActions()).to.deep.equal(expectedActions);
@@ -91,30 +91,30 @@ describe('Polls Reducer', () => {
     
   });
     
-    it('removes the added poll on response error', (done) => {
-     const fakeAuthor = {
-      _id: 'id519',
-      local: {
-        username: 'fake name'
-      }
-    }; 
-    const populatedPoll = Object.assign({}, fakePoll, {_author: fakeAuthor});
-    const expectedActions = [
-      actionCreators.addPoll(populatedPoll),
-      actionCreators.deletePoll(fakePoll._id)
-    ];
-    const store = storeMock({});
+    // it('removes the added poll on response error', (done) => {
+    //  const fakeAuthor = {
+    //   _id: 'id519',
+    //   local: {
+    //     username: 'fake name'
+    //   }
+    // }; 
+    // const populatedPoll = Object.assign({}, fakePoll, {_author: fakeAuthor});
+    // const expectedActions = [
+    //   actionCreators.addPoll(populatedPoll),
+    //   actionCreators.deletePoll(fakePoll._id)
+    // ];
+    // const store = storeMock({});
     
-    store.dispatch(actionCreators.createPoll(fakePoll, fakeAuthor));    
-    axiosMock.onPost(endpoints.createPoll)
-      .reply(500);
+    // store.dispatch(actionCreators.createPoll(fakePoll, fakeAuthor));    
+    // axiosMock.onPost(endpoints.createPoll)
+    //   .reply(500);
     
-    setTimeout(() => {
-      expect(store.getActions()).to.deep.equal(expectedActions);
-      done();
-    }, 10);
+    // setTimeout(() => {
+    //   expect(store.getActions()).to.deep.equal(expectedActions);
+    //   done();
+    // }, 10);
       
-    });
+    // });
     
   });
  

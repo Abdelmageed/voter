@@ -93,11 +93,13 @@ export const checkUsername = (username)=> {
 
 export const createPoll = (poll, author)=> {
   return (dispatch)=> {
-    dispatch(addPoll(Object.assign({}, poll, {_author: author})));
     return axios.post(
       endpoints.createPoll,
       JSON.stringify(Object.assign({}, poll, {_author: author._id})), {
         headers: {'Content-Type': 'application/json'}
+      })
+      .then((response) => {
+        dispatch(addPoll(response.data));
       })
       .catch((error)=> {
         dispatch(deletePoll(poll._id));
