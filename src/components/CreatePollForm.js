@@ -1,40 +1,64 @@
 import React, {Component, PropTypes} from 'react';
-import {FormGroup, FormControl, ControlLabel, Form, Button} from 'react-bootstrap';
+import {FormGroup, ControlLabel, Form, Button} from 'react-bootstrap';
 import RemovableTextInput from './RemovableTextInput';
-import TextInput from './TextInput';
+import RequiredTextInput from './RequiredTextInput';
 
 export default class CreatePollForm extends Component{
   constructor(props){
     super(props);
-    this.state = {
+    this.initialState = {
       name: '',
-      options: [{id: 0, name: ''}, {id: 1, name: ''}],
+      options: [{id: '0', name: ''}, {id: '1', name: ''}],
       optionsId: 2,
+      validating: false,
     };
+    this.state = this.initialState;
+
+    //a non-state variable for storing children input validation states
+    //it's outside of state so as not to re-render the whole form on changing an entry
+    this.inputValidations = {
+      pollName: 'false',
+      '0': false,
+      '1': false
+    };
+
+    //incremented when a child input finishes validating
+    this.validateCount = 0;
     
     this.addOption = this.addOption.bind(this);
     this.setName = this.setName.bind(this);
     this.setOption = this.setOption.bind(this);
     this.deleteOption = this.deleteOption.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.validateForm = this.validateForm.bind(this);
+    this.areAllValid = this.areAllValid.bind(this);
+    this.validate = this.validate.bind(this);
   }
   
   addOption(){
+    this.inputValidations[this.state.optionsId] = false;
     this.setState((prevState)=> ({
       options: prevState.options.concat({
         name: '',
-        id: prevState.optionsId
+        id: prevState.optionsId.toString()
       }),
       optionsId: prevState.optionsId + 1  
     }));
   }
   
   deleteOption(id){
+    delete this.inputValidations[id];
     this.setState((prevState)=> ({
       options: prevState.options.filter((option)=> option.id !== id)
     }));
   }
   
+  validate() {
+    this.setState({
+      validating: true
+    });
+  }
+
   setOption(id, value){
     this.setState((prevState)=> ({
      options: prevState.options.map((option)=> {
@@ -46,10 +70,35 @@ export default class CreatePollForm extends Component{
     }));
   }
   
-  setName(value){
+  setName(id, value){
     this.setState({
       name: value
     });
+  }
+
+  validateForm(inputId, isValid) {
+    this.inputValidations[inputId] = isValid;
+    this.validateCount++;
+    if(this.validateCount === Object.keys(this.inputValidations).length) {
+      //all inputs have finished validation
+      this.setState({
+        validating: false
+      });
+      this.validateCount = 0;
+
+      if(this.areAllValid()) {
+        this.handleSubmit();
+      }
+    }
+  }
+
+  areAllValid() {
+    for (let id in this.inputValidations) {
+      if (!this.inputValidations[id]) {
+        return false;
+      }
+    }
+    return true;
   }
   
   handleSubmit(){
@@ -68,6 +117,7 @@ export default class CreatePollForm extends Component{
       }
     };
     this.props.submit(newPoll, author);
+    this.setState(this.initialState);
     this.props.close();
   }
   
@@ -78,24 +128,33 @@ export default class CreatePollForm extends Component{
           return (<RemovableTextInput
           id={option.id}
           value={option.name}
-          key={option.id}
+          key={parseInt(option.id)}
           removeClicked={this.deleteOption}
-          onChange={this.setOption} />);
+          onChange={this.setOption}
+          validateForm={this.validateForm}
+          errorMessage="Can't be empty"
+          validating={this.state.validating}/>);
       }) :
           this.state.options.map((option)=> {
-          return (<TextInput
+          return (<RequiredTextInput
           id={option.id}
           value={option.name}
-          key={option.id}
-          onChange={this.setOption} />);
+          key={parseInt(option.id)}
+          onChange={this.setOption} 
+          validateForm={this.validateForm}
+          errorMessage="Can't be empty"
+          validating={this.state.validating}/>);
       });
     return (
       <div id="createPollForm">
-        <FormGroup id="pollName">
+        <FormGroup id="pollNameGroup">
           <ControlLabel>Name:</ControlLabel>
-          <FormControl
-            type="text"
-            onChange={(e)=> {this.setName(e.target.value);}}/>
+          <RequiredTextInput 
+            id="pollName"
+            onChange={this.setName}
+            validateForm={this.validateForm}
+            validating={this.state.validating}
+            errorMessage="Can't be empty"/>
         </FormGroup>
         <Form inline id="options">
          <ControlLabel>Options:</ControlLabel>
@@ -108,7 +167,7 @@ export default class CreatePollForm extends Component{
         </Form>
         <Button
         id="saveButton"
-        onClick={()=>{this.handleSubmit();}}>Save</Button>
+        onClick={()=>{this.validate();}}>Save</Button>
         <Button
           id="closeButton"
           onClick={()=> {
