@@ -25,7 +25,8 @@ const mapStateToProps = (state, ownProps) => {
     return {
         ip: state.user.ip,
         ...poll,
-        isAuthenticated: state.user.isAuthenticated
+        isAuthenticated: state.user.isAuthenticated,
+        userId: state.user.id
     };
 };
 

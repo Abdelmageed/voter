@@ -11,7 +11,7 @@ export default class AllPoll extends Component{
   render(){
 
     const polls = this.props.pollIds.map((id, index) => (
-      <Poll _id={id} key={index}/>
+      <Poll _id={id} key={index} showAuthor/>
     ));
 
     return(

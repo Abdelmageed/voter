@@ -52,12 +52,27 @@ describe('Poll', () => {
     
   });
     
-  it('should render the poll author name', () => {
-    wrapper = shallow(<Poll {...pollVoted} ip={ownIP}/>);    
+  it('should render the poll author name if props.showAuthor is true', () => {
+    wrapper = shallow(<Poll {...pollVoted} ip={ownIP} showAuthor={true} userId="another fake user id"/>);    
     const authorName = wrapper.find('#authorName');
     
     expect(authorName).to.have.length(1);
     expect(authorName.text()).to.include(pollVoted._author.local.username);
+  });
+
+  it('should not render the poll author name if props.showAuthor is false', () => {
+    wrapper = shallow(<Poll {...pollVoted} ip={ownIP}/>);    
+    const authorName = wrapper.find('#authorName');
+    
+    expect(authorName).to.have.length(0);
+  });
+
+  it('Author name should be "You" for user\'s own polls', () => {
+    wrapper = shallow(<Poll {...pollVoted} ip={ownIP} showAuthor={true} userId={pollVoted._author._id}/>);    
+    const authorName = wrapper.find('#authorName');
+    
+    expect(authorName).to.have.length(1);
+    expect(authorName.text()).to.include('You');
   });
 
   it('getUserVote() should return the option user voted for if it exists', () => {
@@ -120,7 +135,7 @@ describe('Poll', () => {
     //getPoll is the SUT it is stubbed.
     sandbox.restore();
     //spy on it instead
-    const spyGetPoll = sandbox.spy(Poll.prototype, 'getPoll')
+    const spyGetPoll = sandbox.spy(Poll.prototype, 'getPoll');
     wrapper = shallow(<Poll {...pollVoted}/>);    
     
     wrapper.instance().getPoll();

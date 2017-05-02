@@ -102,12 +102,23 @@ export default class Poll extends Component{
       optionButtons.push(
         addVoteOrMessage
       );
+
+      const authorName = (this.props.userId === this.props._author._id) ? 
+        'You' : this.props._author.local.username;
+
+      const authorNameHeading = (
+        <h4 id="authorName">
+          By{' '}<strong>{authorName}</strong>
+        </h4>
+      );
+
     return (
       <div>
         <h3 id="name">{this.props.name}</h3>
-        <h4 id="authorName">
-          By{' '}<strong>{this.props._author.local.username}</strong>
-        </h4>
+        {
+          (this.props.showAuthor) ?
+            authorNameHeading : null
+        }        
         {
           (vote === '') ?
           optionButtons : voteText
@@ -136,5 +147,7 @@ Poll.propTypes = {
   _id: PropTypes.string,
   vote: PropTypes.func,
   addNewOption: PropTypes.func,
-  isAuthenticated: PropTypes.bool
+  isAuthenticated: PropTypes.bool,
+  showAuthor: PropTypes.bool,
+  userId: PropTypes.string
 };
