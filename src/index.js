@@ -12,10 +12,12 @@ import session from './util/session';
 require("font-awesome-webpack");
 
 const store = configureStore();
-persistStore(store);
+persistStore(store, () => {
+  if(!store.getState().user.isAuthenticated) {session.setSessionId('');}
+});
 store.dispatch(getIp());
 store.dispatch(getAllPolls());
-if(!store.getState().user.isAuthenticated) {session.setSessionId('');}
+
 
 const reactRoot = window.document.getElementById("app");
   ReactDOM.render(
