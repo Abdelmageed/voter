@@ -1,31 +1,28 @@
-//Reused component from Recipe Box ^_^
-//http://codepen.io/Abdelmageed/pen/pNVKoz?editors=0010
-import {InputGroup, FormControl, Button} from 'react-bootstrap';
+import RequiredTextInput from './RequiredTextInput';
+
+import {InputGroup, Button} from 'react-bootstrap';
 import React,{Component, PropTypes} from 'react';
 export default class RemovableTextInput extends Component {
   constructor (props) {
     super (props);
-    this.handleOnChange = this.handleOnChange.bind (this);
+    
     this.handleOnClick = this.handleOnClick.bind (this);
-    const val = this.props.value?this.props.value:'';
-    this.state = {
-      value: val
-    };
   }
-  handleOnChange (e){
-    const val = e.target.value;
-    this.setState (()=>{
-      return {value: val};
-    });
-    this.props.onChange (this.props.id, val);
-  }
+ 
   handleOnClick () {
     this.props.removeClicked (this.props.id);
   }
+
   render () {
     return (
       <InputGroup>
-        <FormControl onChange={this.handleOnChange} value={this.state.value}/>
+        <RequiredTextInput 
+          validating={this.props.validating}
+          validateForm={this.props.validateForm}
+          errorMessage={this.props.errorMessage}
+          id={this.props.id}
+          onChange={this.props.onChange}
+          value={this.props.value}/>
         <InputGroup.Button >
           <Button bsStyle="danger" onClick={this.handleOnClick}><i className="fa fa-minus" /></Button>
         </InputGroup.Button>
@@ -36,7 +33,10 @@ export default class RemovableTextInput extends Component {
 
 RemovableTextInput.propTypes = {
   value: PropTypes.string,
-  id: PropTypes.number,
+  id: PropTypes.string,
   onChange: PropTypes.func,
-  removeClicked: PropTypes.func
+  removeClicked: PropTypes.func,
+  validating: PropTypes.bool,
+  validateForm: PropTypes.func,
+  errorMessage: PropTypes.string,
 };
