@@ -182,4 +182,20 @@ describe('Poll', () => {
     expect(loginToAddMesage).to.have.length(1);
   });
 
+  it('showEditForm() sets state.editing to true', () => {
+    wrapper = shallow(<Poll {...pollVoted} ip={ownIP}/>); 
+
+    wrapper.instance().showEditForm();
+
+    expect(wrapper.instance().state).to.have.property('editing', true);
+  });
+
+  it('hideEditForm() sets state.editing to false', () => {
+    wrapper = shallow(<Poll {...pollVoted} ip={ownIP}/>); 
+
+    wrapper.instance().hideEditForm();
+
+    expect(wrapper.instance().state).to.have.property('editing', false);
+  });
+
 });

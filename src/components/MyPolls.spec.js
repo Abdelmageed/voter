@@ -24,10 +24,10 @@ let wrapper,
   });
   
   
- it('should render a CreatePollForm when state.showForm is true', () => {
+ it('should render a PollForm when state.showForm is true', () => {
    wrapper.instance().setState({showForm: true});
    
-   expect(wrapper.find('#createPollForm')).to.have.length(1);
+   expect(wrapper.find('#pollForm')).to.have.length(1);
    expect(wrapper.find('#createPollButton')).to.have.length(0);
    
  });
@@ -35,7 +35,7 @@ let wrapper,
   it('should render a createPollButon when state.showForm is false', () => {
     wrapper.instance().setState({showForm: false});
 
-    expect(wrapper.find('#createPollForm')).to.have.length(0);
+    expect(wrapper.find('#PollForm')).to.have.length(0);
     expect(wrapper.find('#createPollButton')).to.have.length(1);
   });
   

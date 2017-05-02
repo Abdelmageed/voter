@@ -2,7 +2,7 @@ import React from 'react';
 import {mount} from 'enzyme';
 import {expect} from 'chai';
 import sinon from 'sinon';
-import {FormControl, Button} from 'react-bootstrap';
+import {Button} from 'react-bootstrap';
 
 import RemovableTextInput from './RemovableTextInput';
 import RequiredTextInput from './RequiredTextInput';
@@ -54,19 +54,6 @@ describe('RemovableTextInput', ()=> {
     expect(spyHandleOnClick.called).to.be.true;
     expect(spyRemoveClicked.calledWith(id)).to.be.true;
   });
-  
-  // it('calls props.onChange on input field change', ()=> {
-  //   const input = wrapper.find(FormControl);
-  //   const e = {
-  //     target: {
-  //       value: 'val'
-  //     }
-  //   };
-  //   input.simulate('change', e);
-    
-  //   expect(spyHandleOnChange.called);
-  //   expect(spyHandleOnChange.args[0][0].target.value).to.be.equal(e.target.value);
-  //   expect(spyOnChange.calledWith(id, e.target.value));
-  // });
+
   
 });

@@ -4,15 +4,22 @@ import {Pie} from 'react-chartjs-2';
 import randomcolor from 'randomcolor';
 
 import VoteInput from './VoteInput';
+import PollForm from '../containers/EditPollForm';
 
 export default class Poll extends Component{
   constructor(props){
     super(props);
-
+    
     this.getUserVote = this.getUserVote.bind(this);
     this.vote = this.vote.bind(this);
     this.getPoll = this.getPoll.bind(this);
     this.addNewOption = this.addNewOption.bind(this);
+    this.showEditForm = this.showEditForm.bind(this);
+    this.hideEditForm = this.hideEditForm.bind(this);
+
+    this.state = {
+      editing: false
+    };
   }
   
   getUserVote() {
@@ -48,6 +55,18 @@ export default class Poll extends Component{
   addNewOption(newOption) {
     const poll = this.getPoll();
     this.props.addNewOption(poll, newOption);
+  }
+
+  showEditForm() {
+    this.setState({
+      editing: true
+    });
+  }
+
+  hideEditForm() {
+    this.setState({
+      editing: false
+    });
   }
 
   render(){
@@ -112,8 +131,9 @@ export default class Poll extends Component{
         </h4>
       );
 
-    return (
-      <div>
+      const poll = (
+        <div>
+        <Button onClick={this.showEditForm}>Edit</Button>
         <h3 id="name">{this.props.name}</h3>
         {
           (this.props.showAuthor) ?
@@ -135,7 +155,16 @@ export default class Poll extends Component{
             />
         </div>
       </div>
-    );
+      );
+
+      const pollForm = (
+        <PollForm 
+          poll={this.getPoll()}
+          close={this.hideEditForm}
+        />
+      );
+
+    return this.state.editing ? pollForm : poll;
   }
 }
 

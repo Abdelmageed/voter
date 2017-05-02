@@ -6,9 +6,9 @@ import {FormControl, ControlLabel} from 'react-bootstrap';
 
 import RemovableTextInput from './RemovableTextInput';
 import RequiredTextInput from './RequiredTextInput';
-import CreatePollForm from './CreatePollForm';
+import PollForm from './PollForm';
 
-describe('CreatePollForm', () => {
+describe('PollForm', () => {
   
   let wrapper,
       spySubmit = sinon.spy(),
@@ -17,14 +17,22 @@ describe('CreatePollForm', () => {
       spyAreAllValid,
       spyValidate,
       spyHandleSubmit,
+      spyGetState,
       userId = '123',
       username = 'username';
+      const newInitialState = {
+      name: '',
+      options: [{id: '0', name: '', votes: []}, {id: '1', name: '', votes: []}],
+      optionsId: 2,
+      validating: false,
+    };
   beforeEach(() => {
-    spyAreAllValid = sandbox.spy(CreatePollForm.prototype, 'areAllValid');
-    spyHandleSubmit = sandbox.spy(CreatePollForm.prototype, 'handleSubmit');
-    spyValidate = sandbox.spy(CreatePollForm.prototype, 'validate');
+    spyAreAllValid = sandbox.spy(PollForm.prototype, 'areAllValid');
+    spyHandleSubmit = sandbox.spy(PollForm.prototype, 'handleSubmit');
+    spyValidate = sandbox.spy(PollForm.prototype, 'validate');
+    spyGetState = sandbox.spy(PollForm.prototype, 'getState');
     wrapper = mount(
-      <CreatePollForm 
+      <PollForm 
         submit={spySubmit}
         close={spyClose}
         userId={userId}
@@ -37,6 +45,7 @@ describe('CreatePollForm', () => {
     sandbox.restore();
   });
   
+
   it('should have a FormGroup for poll name with a label and a FormControl', () => {
     const nameFormGroup =  wrapper.find('#pollNameGroup');
     expect(nameFormGroup.length).to.equal(1);
@@ -92,13 +101,55 @@ describe('CreatePollForm', () => {
     expect(optionsFormGroup.find(FormControl)).to.have.length(4);
 
   });
+
+  it('getState() should return newInitialState if it was not passed poll in props', () => {
+    wrapper.instance().getState();
+
+    expect(spyGetState.returned(newInitialState)).to.be.true;
+  });
+
+  it('getState() should return state with options including an "id" field if it was passed poll in props', () => {
+    wrapper.unmount();
+    const poll = {
+      _id: 'pollId',
+      _author: {
+        _id: 'authorId',
+        local: {
+
+        }
+      },
+      name: 'some poll',
+      options: [
+        {name: 'option one', votes: ['1.1.1.1'], _id: 'DBid'},
+        {name: 'option two', votes: ['1.1.1.2'], _id: 'DBid2'}        
+      ]
+    },
+      editState = Object.assign({}, newInitialState, {
+        options: poll.options.map((option, index) => {
+          return Object.assign({}, option, {id: index.toString()});
+      }), name: poll.name});
+    wrapper = mount(
+      <PollForm 
+        submit={spySubmit}
+        close={spyClose}
+        userId={userId}
+        username={username}
+        poll={poll}
+        />
+    );
+
+     wrapper.instance().getState();
+
+    expect(spyGetState.returned(editState)).to.be.true;
+  });
+  
   
   it('handleSubmit() calls props.submit() and props.close()', () => {
     const newPoll = {
       name: 'new poll',
       options: [
-        {name: 'option0', id:'0'},
-        {name: 'option1', id:'1'}
+        {name: 'option0', id:'0', votes: []},
+        {name: 'option1', id:'1', votes: []}
       ]
     };
     wrapper.instance().state = newPoll;
@@ -107,13 +158,14 @@ describe('CreatePollForm', () => {
       options: [
         {name: 'option0', id:'0', votes:[]},
         {name: 'option1', id:'1', votes:[]}
-      ]});
+      ],
+      _author: userId
+    });
 
     wrapper.instance().handleSubmit();
 
     expect(spySubmit.called).to.be.true;
     expect(spySubmit.args[0][0]).to.deep.equal(newSavedPoll);
-    expect(spySubmit.args[0][1]).to.deep.equal({_id: userId, local: {username: username}});
     expect(spyClose.called).to.be.true;
   });
 
@@ -165,11 +217,11 @@ describe('CreatePollForm', () => {
   it('validateForm(inputId, isValid) should call handleSubmit if validateCount is equal to the number of children inputs i.e (when the last child has finished validating) and all inputs are valid', () => {
      spyAreAllValid.restore();
      wrapper.unmount();
-     const stubAreAllValid = sandbox.stub(CreatePollForm.prototype, 'areAllValid');
+     const stubAreAllValid = sandbox.stub(PollForm.prototype, 'areAllValid');
      stubAreAllValid.returns(true);
      
      wrapper = mount(
-      <CreatePollForm 
+      <PollForm 
         submit={spySubmit}
         close={spyClose}
         userId={userId}

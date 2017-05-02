@@ -33,12 +33,12 @@ const mapStateToProps = (state, ownProps) => {
 const mapDispatchToProps = (dispatch) => ({
     vote: (poll, optionId, ip) => {
         const votedPoll = getVotedPoll(poll, optionId, ip);
-        dispatch(modifyPoll(poll, votedPoll));
+        dispatch(modifyPoll(votedPoll, poll));
     },
     addNewOption: (poll, newOption) => {
         
         const pollWithNewOption = getPollWithNewOption(poll, newOption);
-        dispatch(modifyPoll(poll, pollWithNewOption));
+        dispatch(modifyPoll(pollWithNewOption ,poll));
     }
 });
 

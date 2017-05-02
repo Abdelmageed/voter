@@ -20,7 +20,8 @@ describe('Polls Reducer', () => {
     options: [
       {_id: 0, name: 'the option'},
       {_id: 1, name: 'the other option'}
-    ]
+    ],
+    _author: '123'    
   },
     anotherFakePoll = {
       _id: 1,
@@ -29,7 +30,8 @@ describe('Polls Reducer', () => {
       options: [
         {_id: 0, name: 'the option'},
         {_id: 1, name: 'the other option'}
-      ]
+      ],
+      _author: '123'
     };
   
   beforeEach(() => {
@@ -89,32 +91,7 @@ describe('Polls Reducer', () => {
       done();
     }, 10);
     
-  });
-    
-    // it('removes the added poll on response error', (done) => {
-    //  const fakeAuthor = {
-    //   _id: 'id519',
-    //   local: {
-    //     username: 'fake name'
-    //   }
-    // }; 
-    // const populatedPoll = Object.assign({}, fakePoll, {_author: fakeAuthor});
-    // const expectedActions = [
-    //   actionCreators.addPoll(populatedPoll),
-    //   actionCreators.deletePoll(fakePoll._id)
-    // ];
-    // const store = storeMock({});
-    
-    // store.dispatch(actionCreators.createPoll(fakePoll, fakeAuthor));    
-    // axiosMock.onPost(endpoints.createPoll)
-    //   .reply(500);
-    
-    // setTimeout(() => {
-    //   expect(store.getActions()).to.deep.equal(expectedActions);
-    //   done();
-    // }, 10);
-      
-    // });
+    });
     
   });
  
@@ -167,7 +144,7 @@ describe('Polls Reducer', () => {
       ];
       const store = storeMock({});
       
-      store.dispatch(actionCreators.modifyPoll(fakePoll, modifiedPoll));
+      store.dispatch(actionCreators.modifyPoll(modifiedPoll ,fakePoll));
       axiosMock.onPut(endpoints.modifyPoll)
         .reply(200);
       
@@ -186,7 +163,7 @@ describe('Polls Reducer', () => {
       ];
       const store = storeMock({});
       
-      store.dispatch(actionCreators.modifyPoll(fakePoll, modifiedPoll));
+      store.dispatch(actionCreators.modifyPoll(modifiedPoll ,fakePoll));
       axiosMock.onPut(endpoints.modifyPoll)
         .reply(500);
       

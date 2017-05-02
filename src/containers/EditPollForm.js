@@ -1,6 +1,6 @@
 import {connect} from 'react-redux';
 
-import {createPoll} from '../actions/actionCreators';
+import {modifyPoll} from '../actions/actionCreators';
 import PollForm from '../components/PollForm';
 
 const mapStateToProps = (state)=> ({
@@ -9,7 +9,7 @@ const mapStateToProps = (state)=> ({
 });
 
 const mapDispatchToProps = (dispatch)=> ({
-  submit: (newPoll, author)=> dispatch(createPoll(newPoll, author))
+  submit: (newPoll, poll)=> dispatch(modifyPoll(newPoll, poll))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(PollForm);

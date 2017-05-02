@@ -91,25 +91,24 @@ export const checkUsername = (username)=> {
   };
 };
 
-export const createPoll = (poll, author)=> {
+export const createPoll = (poll)=> {
   return (dispatch)=> {
     return axios.post(
       endpoints.createPoll,
-      JSON.stringify(Object.assign({}, poll, {_author: author._id})), {
+      poll, {
         headers: {'Content-Type': 'application/json'}
       })
       .then((response) => {
         dispatch(addPoll(response.data));
       })
       .catch((error)=> {
-        dispatch(deletePoll(poll._id));
         //TODO flash error message
         if(error.response) throw error.response;
     });
   };
 };
 
-export const modifyPoll = (poll, newPoll) => {
+export const modifyPoll = (newPoll, poll) => {
   return (dispatch) => {
     dispatch(editPoll(poll._id, newPoll));
     return axios.put(

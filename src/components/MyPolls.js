@@ -2,7 +2,7 @@ import React, {Component, PropTypes} from 'react';
 import {Button} from 'react-bootstrap';
 
 import Poll from '../containers/Poll';
-import CreatePollForm from '../containers/CreatePollForm';
+import PollForm from '../containers/CreatePollForm';
 
 export default class MyPolls extends Component{
   
@@ -40,9 +40,9 @@ export default class MyPolls extends Component{
       </Button>
     );
     
-    const createPollForm = (
-      <CreatePollForm
-        id="createPollForm"
+    const pollForm = (
+      <PollForm
+        id="pollForm"
         close={this.closeForm}
       />
     );
@@ -56,7 +56,7 @@ export default class MyPolls extends Component{
         <h1>My Polls</h1>
         { 
           (this.state.showForm)?
-            createPollForm : createPollButton
+            pollForm : createPollButton
         }
         {userPolls}
       </div>
