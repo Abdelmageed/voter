@@ -48,7 +48,7 @@ export default class MyPolls extends Component{
     );
     
     const userPolls = this.props.userPollIds.map((id, index) => (
-      <Poll _id={id} key={index}/>
+      <Poll _id={id} key={index} showControls/>
     ));
 
     return(

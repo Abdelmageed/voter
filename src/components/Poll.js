@@ -131,9 +131,15 @@ export default class Poll extends Component{
         </h4>
       );
 
+      const pollAuthorControls = (
+        <div id="pollAuthorControls">
+          <Button onClick={this.showEditForm}>Edit</Button>
+        </div>
+      );
+
       const poll = (
         <div>
-        <Button onClick={this.showEditForm}>Edit</Button>
+          {this.props.showControls ? pollAuthorControls : null}
         <h3 id="name">{this.props.name}</h3>
         {
           (this.props.showAuthor) ?
@@ -178,5 +184,6 @@ Poll.propTypes = {
   addNewOption: PropTypes.func,
   isAuthenticated: PropTypes.bool,
   showAuthor: PropTypes.bool,
-  userId: PropTypes.string
+  userId: PropTypes.string,
+  showControls: PropTypes.bool,
 };

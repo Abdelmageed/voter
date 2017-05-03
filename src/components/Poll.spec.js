@@ -198,4 +198,20 @@ describe('Poll', () => {
     expect(wrapper.instance().state).to.have.property('editing', false);
   });
 
+  it('should render poll author controls (edit and delete) if showControls is true', () => {
+    wrapper = shallow(<Poll {...pollVoted} ip={ownIP} showControls/>); 
+    
+    const controls = wrapper.find('#pollAuthorControls');
+
+    expect(controls).to.have.length(1);
+  });
+
+  it('it should not render poll author controls (edit and delete) if showControls is false', () => {
+    wrapper = shallow(<Poll {...pollVoted} ip={ownIP}/>); 
+    
+    const controls = wrapper.find('#pollAuthorControls');
+
+    expect(controls).to.have.length(0);
+  });
+
 });
