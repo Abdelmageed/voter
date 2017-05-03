@@ -5,6 +5,7 @@ import randomcolor from 'randomcolor';
 
 import VoteInput from './VoteInput';
 import PollForm from '../containers/EditPollForm';
+import DeletePopover from '../containers/DeletePopover';
 
 export default class Poll extends Component{
   constructor(props){
@@ -16,9 +17,12 @@ export default class Poll extends Component{
     this.addNewOption = this.addNewOption.bind(this);
     this.showEditForm = this.showEditForm.bind(this);
     this.hideEditForm = this.hideEditForm.bind(this);
+    this.showDeletePopover = this.showDeletePopover.bind(this);
+    this.hideDeletePopover = this.hideDeletePopover.bind(this);
 
     this.state = {
-      editing: false
+      editing: false,
+      showDeletePopover: false
     };
   }
   
@@ -68,6 +72,18 @@ export default class Poll extends Component{
       editing: false
     });
   }
+
+  showDeletePopover() {
+    this.setState({
+      showDeletePopover: true
+    });
+  }
+
+   hideDeletePopover() {
+      this.setState({
+        showDeletePopover: false
+      });
+    }
 
   render(){
 
@@ -134,6 +150,8 @@ export default class Poll extends Component{
       const pollAuthorControls = (
         <div id="pollAuthorControls">
           <Button onClick={this.showEditForm}>Edit</Button>
+          <Button onClick={this.showDeletePopover}>Delete</Button>
+          <DeletePopover show={this.state.showDeletePopover} hide={this.hideDeletePopover} id={this.props._id}/>
         </div>
       );
 

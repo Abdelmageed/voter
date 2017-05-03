@@ -214,4 +214,20 @@ describe('Poll', () => {
     expect(controls).to.have.length(0);
   });
 
+  it('showDeletePopover() sets state.showDeletePopover to true', () => {
+    wrapper = shallow(<Poll {...pollVoted} ip={ownIP} />);
+
+    wrapper.instance().showDeletePopover();
+
+    expect(wrapper.instance().state).to.have.property('showDeletePopover', true);
+  });
+
+  it('hideDeletePopover() sets state.showDeletePopover to false', () => {
+    wrapper = shallow(<Poll {...pollVoted} ip={ownIP} />);
+
+    wrapper.instance().hideDeletePopover();
+
+    expect(wrapper.instance().state).to.have.property('showDeletePopover', false);
+  });
+
 });
