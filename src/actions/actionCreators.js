@@ -15,20 +15,20 @@ const axios = endpoints.axiosInstance;
 
 export const getIp = () => {
   return (dispatch) => {
-    jsonp('https://api.ipify.org?format=jsonp', null, (err, data)=> {
+    jsonp('https://api.ipify.org?format=jsonp', null, (err, data) => {
       dispatch(setIp(data.ip));
     });
   };
 };
 
-export const login = (credentials)=> {
-  return (dispatch)=> {
+export const login = (credentials) => {
+  return (dispatch) => {
     dispatch(loginPending());
     return axios.post(endpoints.login,
                       querystring.stringify(credentials), {
       headers: {'Content-Type': 'application/x-www-form-urlencoded'}
     })
-      .then((response)=> {
+      .then((response) => {
       if (response.status === 401) {
           dispatch(loginFailure(errors.login));
       } else {
@@ -37,62 +37,62 @@ export const login = (credentials)=> {
           session.setSessionId(response.data.sessionId);
       }
     })
-      .catch((error)=> {
+      .catch((error) => {
         const errorMsg = error.response | errors.server;
         dispatch(loginFailure(errorMsg));
       });
   };
 };
 
-export const signup = (user)=> {
-  return (dispatch)=> {
+export const signup = (user) => {
+  return (dispatch) => {
     dispatch(loginPending());
     return axios.post(endpoints.signup,
                      querystring.stringify(user),{
                      headers: {'Content-Type': 'application/x-www-form-urlencoded'}
     })
-      .then((response)=> {
+      .then((response) => {
         dispatch(loginSuccess());
         dispatch(setUser(response.data.user));
         session.setSessionId(response.data.sessionId);        
       })
-      .catch((error)=> {
+      .catch((error) => {
         if (error.respone) throw error.response;
       });
   };
 };
 
-export const logout = ()=> {
-  return (dispatch)=> {
+export const logout = () => {
+  return (dispatch) => {
     return axios.get(endpoints.logout)
-      .then(()=> {
+      .then(() => {
         dispatch(removeUser());
         dispatch(push('/'));
         session.setSessionId('');      
      })
-      .catch((error)=> {
+      .catch((error) => {
         if (error.response) throw error.response;
     });
   };
 };
 
-export const checkUsername = (username)=> {
-  return (dispatch)=> {
+export const checkUsername = (username) => {
+  return (dispatch) => {
     return axios.post(endpoints.checkUsername, querystring.stringify({username}),{
                      headers: {'Content-Type': 'application/x-www-form-urlencoded'}})
-      .then((response)=> {
+      .then((response) => {
       let error = (response.data.valid)? '' : errors.usernameInUse;
       dispatch(setUsernameError(error));
     })
-    .catch((error)=> {
+    .catch((error) => {
       //TODO flash error message
       if(error.response) throw error.response;
     });
   };
 };
 
-export const createPoll = (poll)=> {
-  return (dispatch)=> {
+export const createPoll = (poll) => {
+  return (dispatch) => {
     return axios.post(
       endpoints.createPoll,
       poll, {
@@ -101,7 +101,7 @@ export const createPoll = (poll)=> {
       .then((response) => {
         dispatch(addPoll(response.data));
       })
-      .catch((error)=> {
+      .catch((error) => {
         //TODO flash error message
         if(error.response) throw error.response;
     });
@@ -127,35 +127,48 @@ export const modifyPoll = (newPoll, poll) => {
   };
 };
 
-export const getAllPolls = ()=> {
-  return (dispatch)=> {
+export const getAllPolls = () => {
+  return (dispatch) => {
     return axios.get(endpoints.getAllPolls)
-      .then((response)=> {
+      .then((response) => {
         dispatch(setPolls(response.data.polls));
     })
-    .catch((error)=> {
+    .catch((error) => {
       //TODO flash error message
       if(error.response) throw error.response;
     });
   };
 };
 
+export const removePoll = (id) => {
+  return (dispatch) => {
+    return axios.delete(endpoints.removePoll + id)
+      .then(() => {
+        dispatch(deletePoll(id));
+      })
+      .catch((error) => {
+         //TODO flash error message
+        if(error.response) throw error.response;
+      });
+  };
+};
+
 //end thunks
 
-export const removeUser = ()=> {
+export const removeUser = () => {
   return {
     type: 'REMOVE_USER'
   };
 };
 
-export const setUsernameError = (error)=> {
+export const setUsernameError = (error) => {
   return {
     type: 'SET_USERNAME_ERROR',
     error
   };
 };
 
-export const setUser = (user)=> {
+export const setUser = (user) => {
   return {
     type: actions.SET_USER,
     user
@@ -167,12 +180,12 @@ export const setIp = (ip) => ({
   ip
 });
 
-export const addPoll = (poll)=> ({
+export const addPoll = (poll) => ({
   type: actions.ADD_POLL,
   poll
 });
 
-export const deletePoll = (_id)=> ({
+export const deletePoll = (_id) => ({
   type: actions.DELETE_POLL,
   _id
 });
@@ -183,25 +196,25 @@ export const editPoll = (_id, newPoll) => ({
   newPoll
 });
 
-export const setPolls = (polls)=> ({
+export const setPolls = (polls) => ({
   type: actions.SET_POLLS,
   polls
 });
 
 //for some reason using action constants fails the tests.
-export const loginPending = ()=> {
+export const loginPending = () => {
   return {
     type: 'LOGIN_PENDING'
   };
 };
 
-export const loginSuccess = ()=> {
+export const loginSuccess = () => {
   return {
     type: 'LOGIN_SUCCESS'
   };
 };
 
-export const loginFailure = (error)=> {
+export const loginFailure = (error) => {
   return {
     type: 'LOGIN_FAILURE',
     error

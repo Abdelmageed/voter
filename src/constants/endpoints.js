@@ -18,6 +18,8 @@ export const logout = '/logout';
 
 export const createPoll = '/poll/';
 
+export const removePoll = '/poll/';
+
 export const modifyPoll = '/poll/';
 
 export const getAllPolls = '/poll/';

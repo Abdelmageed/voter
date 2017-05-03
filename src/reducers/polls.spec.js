@@ -174,5 +174,25 @@ describe('Polls Reducer', () => {
     });
 
   });
+
+  describe('removePoll thunk', () => {
+    it('should delete poll on response success', (done) => {
+      const pollId = 'theCondemnedPollId';
+
+      const expectedActions = [
+        actionCreators.deletePoll(pollId)
+      ];
+      const store = storeMock({});
+
+      store.dispatch(actionCreators.removePoll(pollId));
+      axiosMock.onDelete(endpoints.removePoll)
+        .reply(200);
+
+      setTimeout(() => {
+        expect(store.getActions()).to.deep.equal(expectedActions);
+        done();
+      }, 10);
+    });
+  });
   
 });

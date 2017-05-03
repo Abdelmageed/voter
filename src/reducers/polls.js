@@ -8,7 +8,7 @@ export function polls(state = initialState.polls, action){
       return state.concat(action.poll);
     
     case actions.DELETE_POLL:
-      return state.filter((poll)=> {(poll._id !== action._id);});
+      return state.filter((poll)=> {return (poll._id !== action._id);});
       
     case actions.SET_POLLS:
       return action.polls;
