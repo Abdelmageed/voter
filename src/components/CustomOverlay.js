@@ -29,7 +29,7 @@ export default class CustomOverlay extends Component {
         <Overlay
          show={this.state.show}
          onHide={()=> this.setState({show: false})}
-         placement="bottom"
+         placement="left"
          container={this}
          rootClose
          target={()=> ReactDOM.findDOMNode(this.refs.target)}
