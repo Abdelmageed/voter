@@ -23,6 +23,7 @@ export const getIp = () => {
 
 export const login = (credentials) => {
   return (dispatch) => {
+    //TODO need to show a spinner on login pending, hide on success or failure
     dispatch(loginPending());
     return axios.post(endpoints.login,
                       querystring.stringify(credentials), {
@@ -38,7 +39,7 @@ export const login = (credentials) => {
       }
     })
       .catch((error) => {
-        const errorMsg = error.response | errors.server;
+        const errorMsg = error.response || errors.server;
         dispatch(loginFailure(errorMsg));
       });
   };
@@ -75,6 +76,25 @@ export const logout = () => {
     });
   };
 };
+
+export const twitterSignup = () => {
+  return (dispatch) => {
+    return axios.get(endpoints.twitterSignup)
+      .then((response) => {
+      if (response.status === 401) {
+          dispatch(loginFailure(errors.twitterSignup));
+      } else {
+          dispatch(loginSuccess());
+          dispatch(setUser(response.data.user));
+          session.setSessionId(response.data.sessionId);
+      }
+    })
+      .catch((error) => {
+        const errorMsg = error.response.data || errors.server;
+        dispatch(loginFailure(errorMsg));
+      });
+  };
+}
 
 export const checkUsername = (username) => {
   return (dispatch) => {

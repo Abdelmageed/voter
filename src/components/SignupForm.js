@@ -111,6 +111,8 @@ export class SignupForm extends Component {
   }
   
   render(){
+    //TODO redo form submission do not use onKeyup event
+    //TODO use bootstrap state validation instead of your handmade error div, for consistency
     return (
       <form onKeyUp={(e)=>{if(e.keyCode==13) this.validateSubmit();}}
          style={{
@@ -147,7 +149,7 @@ export class SignupForm extends Component {
         </FormGroup>
         <FormGroup>
           <ControlLabel>Confirm Password</ControlLabel>
-            <FormControl
+          <FormControl
                type="password"
                value={this.state.passwordConfirm}
                name="passwordConfirm"

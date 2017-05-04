@@ -1,5 +1,5 @@
 import React from 'react';
-import {shallow, mount} from 'enzyme';
+import {shallow} from 'enzyme';
 import {expect} from 'chai';
 import {LoginForm} from './LoginForm';
 import {FormGroup} from 'react-bootstrap';
@@ -37,7 +37,7 @@ describe('Login Form', ()=> {
      submit = ()=> {};
      spySubmit = sinon.spy(submit);
      spyValidateSubmit = sinon.spy(LoginForm.prototype, 'validateSubmit');
-     wrapper = mount(
+     wrapper = shallow(
       <LoginForm 
       submit={spySubmit}
      />);
@@ -100,14 +100,14 @@ describe('Login Form', ()=> {
   
   it('shows an error message on submitting invalid credentials', ()=> {
     const error = "Wrong username or password";
-    let wrapper = mount(<LoginForm error={error} />);
+    let wrapper = shallow(<LoginForm error={error} />);
     
     let errorLabel = wrapper.find('.error-label');
     expect(errorLabel.length).to.equal(1);
     
     expect(errorLabel.text()).to.equal(error);
     
-    wrapper = mount(<LoginForm />);
+    wrapper = shallow(<LoginForm />);
     errorLabel =wrapper.find('.error-label');
     expect(errorLabel.length).to.equal(0);
 

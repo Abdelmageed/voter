@@ -16,6 +16,8 @@ export const signup = '/signup';
 
 export const logout = '/logout';
 
+export const twitterSignup = '/auth/twitter';
+
 export const createPoll = '/poll/';
 
 export const removePoll = '/poll/';

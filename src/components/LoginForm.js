@@ -1,5 +1,6 @@
 import React, {Component, PropTypes} from 'react';
 import {FormGroup, ControlLabel, FormControl, Button} from 'react-bootstrap';
+import TwitterSignupButton from '../containers/TwitterSignupButton';
 
 export class LoginForm extends Component {
   constructor(props){
@@ -106,6 +107,7 @@ export class LoginForm extends Component {
           onClick={()=>{this.props.toggleForm();}}>
         Create Account
       </a>
+      <TwitterSignupButton />
     </form>);
   }
 }

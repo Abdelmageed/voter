@@ -1,5 +1,5 @@
 import React from 'react';
-import {mount} from 'enzyme';
+import {shallow} from 'enzyme';
 import {expect} from 'chai';
 
 import AuthForm from './AuthForm';
@@ -10,8 +10,8 @@ describe('AuthForm', ()=> {
   
   let wrapper;
   beforeEach(()=> {
-    wrapper = mount(
-        <AuthForm />
+    wrapper = shallow(
+        <AuthForm store={{}}/>
       );
   });
   
