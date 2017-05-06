@@ -148,15 +148,18 @@ export default class Poll extends Component{
         </div>
       );
 
+      const isOwnPoll = (this.props.userId === this.props._author._id);
+
       const poll = (
         <div>
-          {(this.props.userId === this.props._author._id) ? pollAuthorControls : null}
+          {isOwnPoll ? pollAuthorControls : null}
         
         <PollTitle 
           authorName={this.props._author.local.username}
           pollName={this.props.name}
           size="lg"
-          showAuthor/>        
+          showAuthor
+          isOwnPoll={isOwnPoll}/>        
         {
           (vote === '') ?
           optionButtons : voteText

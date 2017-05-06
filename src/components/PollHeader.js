@@ -17,6 +17,8 @@ export default class PollHeader extends Component {
 
     render() {
 
+        const isOwnPoll = (this.props.userId === this.props._author._id);
+
         const leadingOptionsContainers = this.getLeadingOptions().map((option, index) => ((
             <div 
                 className="leading-option"
@@ -31,7 +33,8 @@ export default class PollHeader extends Component {
                 pollName={this.props.name}
                 authorName={this.props._author.local.username}
                 size="sm"
-                showAuthor/>
+                showAuthor={this.props.showAuthor}
+                isOwnPoll={isOwnPoll}/>
             {(this.props.showLeadingOptions) ? leadingOptionsContainers : null}
           </Link>  
         );
@@ -45,4 +48,5 @@ PollHeader.propTypes = {
     _author: PropTypes.object,
     options: PropTypes.arrayOf(PropTypes.object),
     showLeadingOptions: PropTypes.bool,
+    userId: propTypes.string,
 };
