@@ -4,14 +4,14 @@ import {expect} from 'chai';
 import sinon from 'sinon';
 
 import MyPolls from './MyPolls';
-import Poll from '../containers/Poll';
+import PollHeader from '../containers/PollHeader';
 
 
 describe('MyPolls component', () => {
-let wrapper,
-    userPollIds = ['myFirstPollId', 'mySecondPollId'],
-    sandbox = sinon.sandbox.create(),
-    spyShowForm;
+  let wrapper,
+      userPollIds = ['myFirstPollId', 'mySecondPollId'],
+      sandbox = sinon.sandbox.create(),
+      spyShowForm;
   
   beforeEach(() => {
     spyShowForm = sandbox.spy(MyPolls.prototype, 'showForm');
@@ -20,7 +20,6 @@ let wrapper,
 
   afterEach(() => {
     sandbox.restore();
-//    wrapper.unmount();
   });
   
   
@@ -58,10 +57,10 @@ let wrapper,
     expect(spyShowForm.called).to.be.true;
   });
 
-  it('should render the user polls', () => {
-    const userPolls = wrapper.find(Poll);
+  it('should render the user polls headers', () => {
+    const userPollsHeaders = wrapper.find(PollHeader);
 
-    expect(userPolls).to.have.lengthOf(userPollIds.length);
+    expect(userPollsHeaders).to.have.lengthOf(userPollIds.length);
   });
   
 });

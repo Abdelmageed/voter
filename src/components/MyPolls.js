@@ -3,6 +3,7 @@ import {Button} from 'react-bootstrap';
 
 import Poll from '../containers/Poll';
 import PollForm from '../containers/CreatePollForm';
+import PollHeader from '../containers/PollHeader';
 
 export default class MyPolls extends Component{
   
@@ -46,9 +47,9 @@ export default class MyPolls extends Component{
         close={this.closeForm}
       />
     );
-    
-    const userPolls = this.props.userPollIds.map((id, index) => (
-      <Poll _id={id} key={index} showControls/>
+
+    const userPollsHeaders = this.props.userPollIds.map((id, index) => (
+      <PollHeader _id={id} key={index} showLeadingOptions />
     ));
 
     return(
@@ -58,7 +59,7 @@ export default class MyPolls extends Component{
           (this.state.showForm)?
             pollForm : createPollButton
         }
-        {userPolls}
+        {userPollsHeaders}
       </div>
     ); 
   }
