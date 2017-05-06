@@ -8,6 +8,9 @@ import VoteInput from './VoteInput';
 
 describe('Poll', () => {
   let wrapper,
+      params = {
+        _id: 'some123aqqwe'
+      },
       ownIP = '192.168.1.1',
       pollVoted = {
         _id: 'some123aqqwe',
@@ -42,48 +45,16 @@ describe('Poll', () => {
   afterEach(() => {
     sandbox.restore();
   });
-    
-  it('should render the poll name', () => {
-    wrapper = shallow(<Poll {...pollVoted} ip={ownIP}/>);    
-    const name = wrapper.find('#name');
-    
-    expect(name).to.have.length(1);
-    expect(name.text()).to.equal(pollVoted.name);
-    
-  });
-    
-  it('should render the poll author name if props.showAuthor is true', () => {
-    wrapper = shallow(<Poll {...pollVoted} ip={ownIP} showAuthor={true} userId="another fake user id"/>);    
-    const authorName = wrapper.find('#authorName');
-    
-    expect(authorName).to.have.length(1);
-    expect(authorName.text()).to.include(pollVoted._author.local.username);
-  });
-
-  it('should not render the poll author name if props.showAuthor is false', () => {
-    wrapper = shallow(<Poll {...pollVoted} ip={ownIP}/>);    
-    const authorName = wrapper.find('#authorName');
-    
-    expect(authorName).to.have.length(0);
-  });
-
-  it('Author name should be "You" for user\'s own polls', () => {
-    wrapper = shallow(<Poll {...pollVoted} ip={ownIP} showAuthor={true} userId={pollVoted._author._id}/>);    
-    const authorName = wrapper.find('#authorName');
-    
-    expect(authorName).to.have.length(1);
-    expect(authorName.text()).to.include('You');
-  });
 
   it('getUserVote() should return the option user voted for if it exists', () => {
-    wrapper = shallow(<Poll {...pollVoted} ip={ownIP}/>);
+    wrapper = shallow(<Poll params={params} {...pollVoted} ip={ownIP}/>);
 
     wrapper.instance().getUserVote();
     expect(spyGetUserVote.returned(pollVoted.options[0].name)).to.be.true;
   });
 
   it('getUserVote() should return an empty string if user has not voted yet', () => {
-    wrapper = shallow(<Poll {...pollNotVoted} ip={ownIP}/>);    
+    wrapper = shallow(<Poll params={params} {...pollNotVoted} ip={ownIP}/>);    
 
     wrapper.instance().getUserVote();
 
@@ -91,7 +62,7 @@ describe('Poll', () => {
   });
 
   it('should render a collection of buttons for every option if user has not voted yet', () => {
-    wrapper = shallow(<Poll {...pollNotVoted} ip={ownIP}/>);    
+    wrapper = shallow(<Poll params={params} {...pollNotVoted} ip={ownIP}/>);    
     
     const optionButtons = wrapper.find('.option-button');
 
@@ -99,7 +70,7 @@ describe('Poll', () => {
   });
 
   it('should render the user vote if user has voted', () => {
-    wrapper = shallow(<Poll {...pollVoted} ip={ownIP}/>);    
+    wrapper = shallow(<Poll params={params} {...pollVoted} ip={ownIP}/>);    
     
     const voteText = wrapper.find('#voteText');
 
@@ -108,7 +79,7 @@ describe('Poll', () => {
   });
 
   it('should render a div for the votes chart', () => {
-    wrapper = shallow(<Poll {...pollVoted} ip={ownIP}/>);    
+    wrapper = shallow(<Poll params={params} {...pollVoted} ip={ownIP}/>);    
     
     const chart = wrapper.find('.chart');
 
@@ -117,7 +88,7 @@ describe('Poll', () => {
   });
 
   it('vote(optionId) should call props.vote with (pollObject, optionId, props.ip)', () => {
-    wrapper = shallow(<Poll {...pollVoted} ip={ownIP} vote={sinon.spy()}/>);    
+    wrapper = shallow(<Poll params={params} {...pollVoted} ip={ownIP} vote={sinon.spy()}/>);    
     const poll = {
       _id: 'some123hade314',
       name: 'name',
@@ -136,7 +107,7 @@ describe('Poll', () => {
     sandbox.restore();
     //spy on it instead
     const spyGetPoll = sandbox.spy(Poll.prototype, 'getPoll');
-    wrapper = shallow(<Poll {...pollVoted}/>);    
+    wrapper = shallow(<Poll params={params} {...pollVoted}/>);    
     
     wrapper.instance().getPoll();
     
@@ -155,7 +126,7 @@ describe('Poll', () => {
       votes: [ownIP]
     };
     stubGetPoll.returns(poll);
-    wrapper = shallow(<Poll {...pollVoted} ip={ownIP} addNewOption={sinon.spy()}/>);    
+    wrapper = shallow(<Poll params={params} {...pollVoted} ip={ownIP} addNewOption={sinon.spy()}/>);    
 
     wrapper.instance().addNewOption(newOption);
 
@@ -163,7 +134,7 @@ describe('Poll', () => {
   });
 
   it('should render a VoteInput component for authenticated users only', () => {
-    wrapper = shallow(<Poll {...pollVoted} isAuthenticated={true}/>);    
+    wrapper = shallow(<Poll params={params} {...pollVoted} isAuthenticated={true}/>);    
     
     const voteInput = wrapper.find(VoteInput),
       loginToAddMesage = wrapper.find('#loginToAddMesage');
@@ -173,7 +144,7 @@ describe('Poll', () => {
   });
 
   it('should render a "Login in order to vote for your own option" message to unauthenticated users instead of the VoteInput component', () => {
-    wrapper = shallow(<Poll {...pollVoted} isAuthenticated={false}/>);    
+    wrapper = shallow(<Poll params={params} {...pollVoted} isAuthenticated={false}/>);    
     
     const voteInput = wrapper.find(VoteInput),
       loginToAddMesage = wrapper.find('#loginToAddMesage');
@@ -183,7 +154,7 @@ describe('Poll', () => {
   });
 
   it('showEditForm() sets state.editing to true', () => {
-    wrapper = shallow(<Poll {...pollVoted} ip={ownIP}/>); 
+    wrapper = shallow(<Poll params={params} {...pollVoted} ip={ownIP}/>); 
 
     wrapper.instance().showEditForm();
 
@@ -191,7 +162,7 @@ describe('Poll', () => {
   });
 
   it('hideEditForm() sets state.editing to false', () => {
-    wrapper = shallow(<Poll {...pollVoted} ip={ownIP}/>); 
+    wrapper = shallow(<Poll params={params} {...pollVoted} ip={ownIP}/>); 
 
     wrapper.instance().hideEditForm();
 
@@ -199,7 +170,7 @@ describe('Poll', () => {
   });
 
   it('should render poll author controls (edit and delete) if showControls is true', () => {
-    wrapper = shallow(<Poll {...pollVoted} ip={ownIP} showControls/>); 
+    wrapper = shallow(<Poll params={params} {...pollVoted} ip={ownIP} showControls/>); 
     
     const controls = wrapper.find('#pollAuthorControls');
 
@@ -207,7 +178,7 @@ describe('Poll', () => {
   });
 
   it('it should not render poll author controls (edit and delete) if showControls is false', () => {
-    wrapper = shallow(<Poll {...pollVoted} ip={ownIP}/>); 
+    wrapper = shallow(<Poll params={params} {...pollVoted} ip={ownIP}/>); 
     
     const controls = wrapper.find('#pollAuthorControls');
 
@@ -215,7 +186,7 @@ describe('Poll', () => {
   });
 
   it('showDeletePopover() sets state.showDeletePopover to true', () => {
-    wrapper = shallow(<Poll {...pollVoted} ip={ownIP} />);
+    wrapper = shallow(<Poll params={params} {...pollVoted} ip={ownIP} />);
 
     wrapper.instance().showDeletePopover();
 
@@ -223,7 +194,7 @@ describe('Poll', () => {
   });
 
   it('hideDeletePopover() sets state.showDeletePopover to false', () => {
-    wrapper = shallow(<Poll {...pollVoted} ip={ownIP} />);
+    wrapper = shallow(<Poll params={params} {...pollVoted} ip={ownIP} />);
 
     wrapper.instance().hideDeletePopover();
 

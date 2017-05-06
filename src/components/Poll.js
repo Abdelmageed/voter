@@ -2,10 +2,12 @@ import React, {Component, PropTypes} from 'react';
 import {Button} from 'react-bootstrap';
 import {Pie} from 'react-chartjs-2';
 import randomcolor from 'randomcolor';
+import {Share} from 'react-twitter-widgets';
 
 import VoteInput from './VoteInput';
 import PollForm from '../containers/EditPollForm';
 import DeletePopover from '../containers/DeletePopover';
+import PollTitle from './PollTitle';
 
 export default class Poll extends Component{
   constructor(props){
@@ -44,7 +46,7 @@ export default class Poll extends Component{
 
   getPoll() {
     return {
-            _id: this.props._id,
+            _id: this.props.params._id,
             options: this.props.options,
             _author: this.props._author,
             name: this.props.name
@@ -138,31 +140,23 @@ export default class Poll extends Component{
         addVoteOrMessage
       );
 
-      const authorName = (this.props.userId === this.props._author._id) ? 
-        'You' : this.props._author.local.username;
-
-      const authorNameHeading = (
-        <h4 id="authorName">
-          By{' '}<strong>{authorName}</strong>
-        </h4>
-      );
-
       const pollAuthorControls = (
         <div id="pollAuthorControls">
           <Button onClick={this.showEditForm}>Edit</Button>
           <Button onClick={this.showDeletePopover}>Delete</Button>
-          <DeletePopover show={this.state.showDeletePopover} hide={this.hideDeletePopover} id={this.props._id}/>
+          <DeletePopover show={this.state.showDeletePopover} hide={this.hideDeletePopover} id={this.props.params._id}/>
         </div>
       );
 
       const poll = (
         <div>
           {this.props.showControls ? pollAuthorControls : null}
-        <h3 id="name">{this.props.name}</h3>
-        {
-          (this.props.showAuthor) ?
-            authorNameHeading : null
-        }        
+        
+        <PollTitle 
+          authorName={this.props._author.local.username}
+          pollName={this.props.name}
+          size="lg"
+          showAuthor/>        
         {
           (vote === '') ?
           optionButtons : voteText
@@ -178,6 +172,7 @@ export default class Poll extends Component{
             data={data}
             />
         </div>
+        <Share url="http://google.com" options={{text: "Vote on my poll"}} />
       </div>
       );
 
@@ -197,7 +192,7 @@ Poll.propTypes = {
   _author: PropTypes.object,
   options: PropTypes.array,
   ip: PropTypes.string,
-  _id: PropTypes.string,
+  params: PropTypes.object,
   vote: PropTypes.func,
   addNewOption: PropTypes.func,
   isAuthenticated: PropTypes.bool,
