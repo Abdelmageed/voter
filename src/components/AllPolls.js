@@ -1,6 +1,7 @@
 import React, {Component, PropTypes} from 'react';
 
 import Poll from '../containers/Poll';
+import PollHeader from '../containers/PollHeader';
 
 export default class AllPoll extends Component{
   
@@ -14,10 +15,14 @@ export default class AllPoll extends Component{
       <Poll _id={id} key={index} showAuthor/>
     ));
 
+    const pollHeaders = this.props.pollIds.map((id, index) => (
+      <PollHeader _id={id} key={index} showAuthor />
+    ));
+    
     return(
       <div>
         <h1>Polls</h1>
-        {polls}
+        {pollHeaders}
       </div>
     ); 
   }

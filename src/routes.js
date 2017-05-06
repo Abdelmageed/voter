@@ -6,6 +6,7 @@ import * as actionCreators from './actions/actionCreators';
 import {App} from './components/app';
 import AllPolls from './containers/AllPolls';
 import MyPolls from './containers/MyPolls';
+import Poll from './containers/Poll';
 
 export const getRoutes = (store)=> {
 
@@ -29,9 +30,15 @@ export const getRoutes = (store)=> {
         component={AllPolls} 
         onEnter={()=> {getPolls();}}/>
       <Route 
-        path="my-polls" 
+        path="/my-polls" 
         component={MyPolls}
         onEnter={redirectIfNotAuth}/>
+      <Route
+        path="/poll/:_id"
+        component={Poll}/>
+      <Route
+        path="*"
+        component={() => ((<div>404</div>))} />
     </Route>
   );
 };

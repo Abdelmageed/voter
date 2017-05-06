@@ -3,7 +3,8 @@ import {expect} from 'chai';
 import {shallow} from 'enzyme';
 
 import AllPolls from './AllPolls';
-import Poll from '../containers/Poll';
+// import Poll from '../containers/Poll';
+import PollHeader from '../containers/PollHeader';
 
 describe('AllPolls Component', ()=> {
   
@@ -14,10 +15,10 @@ describe('AllPolls Component', ()=> {
     <AllPolls 
       pollIds={pollIds}/>);
   
-  it('should render all polls', ()=> {
-    const polls = wrapper.find(Poll);
+  it('should render all poll headers', ()=> {
+    const headers = wrapper.find(PollHeader);
 
-    expect(polls).to.have.lengthOf(pollIds.length);
+    expect(headers).to.have.lengthOf(pollIds.length);
   });
   
 });

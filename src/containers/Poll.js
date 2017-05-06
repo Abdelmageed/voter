@@ -20,7 +20,7 @@ const getPollWithNewOption = (poll, newOption) => {
 
 const mapStateToProps = (state, ownProps) => {
     const poll = state.polls.filter((poll) => {
-        return (poll._id === ownProps._id);
+        return (poll._id === ownProps.params._id);
     })[0];
     return {
         ip: state.user.ip,
