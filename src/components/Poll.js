@@ -150,7 +150,7 @@ export default class Poll extends Component{
 
       const poll = (
         <div>
-          {this.props.showControls ? pollAuthorControls : null}
+          {(this.props.userId === this.props._author._id) ? pollAuthorControls : null}
         
         <PollTitle 
           authorName={this.props._author.local.username}
