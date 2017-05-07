@@ -13,7 +13,8 @@ const getUserPollIds = (state) => {
 };
 
 const mapStateToProps = (state) => ({
-    userPollIds: getUserPollIds(state)
+    userPollIds: getUserPollIds(state),
+    status: state.polls.status,
 });
 
 export default connect(mapStateToProps)(MyPolls);

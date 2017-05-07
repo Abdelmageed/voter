@@ -5,6 +5,7 @@ import sinon from 'sinon';
 
 import Poll from './Poll';
 import VoteInput from './VoteInput';
+import Spinner from './Spinner';
 
 describe('Poll', () => {
   let wrapper,
@@ -184,5 +185,13 @@ describe('Poll', () => {
 
     expect(wrapper.instance().state).to.have.property('showDeletePopover', false);
   });
+
+  it('renders a spinner if status is loading', () => {
+    wrapper = shallow(<Poll status="loading" />);
+
+    const spinner = wrapper.find(Spinner);
+
+    expect(spinner).to.have.length(1);
+  })
 
 });

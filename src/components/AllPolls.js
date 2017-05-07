@@ -1,7 +1,7 @@
 import React, {Component, PropTypes} from 'react';
 
-import Poll from '../containers/Poll';
 import PollHeader from '../containers/PollHeader';
+import Spinner from './Spinner';
 
 export default class AllPoll extends Component{
   
@@ -10,6 +10,8 @@ export default class AllPoll extends Component{
   }
   
   render(){
+
+    if(this.props.status === 'loading') {return <Spinner />;}
 
     const pollHeaders = this.props.pollIds.map((id, index) => (
       <PollHeader _id={id} key={index} showAuthor />
@@ -25,5 +27,6 @@ export default class AllPoll extends Component{
 }
 
 AllPoll.propTypes = {
-  pollIds: PropTypes.arrayOf(PropTypes.string)
+  pollIds: PropTypes.arrayOf(PropTypes.string),
+  status: PropTypes.string,
 };

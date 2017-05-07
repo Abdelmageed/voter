@@ -48,5 +48,5 @@ PollHeader.propTypes = {
     _author: PropTypes.object,
     options: PropTypes.arrayOf(PropTypes.object),
     showLeadingOptions: PropTypes.bool,
-    userId: propTypes.string,
+    userId: PropTypes.string,
 };

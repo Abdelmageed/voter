@@ -5,6 +5,7 @@ import sinon from 'sinon';
 
 import MyPolls from './MyPolls';
 import PollHeader from '../containers/PollHeader';
+import Spinner from './Spinner';
 
 
 describe('MyPolls component', () => {
@@ -61,6 +62,14 @@ describe('MyPolls component', () => {
     const userPollsHeaders = wrapper.find(PollHeader);
 
     expect(userPollsHeaders).to.have.lengthOf(userPollIds.length);
+  });
+
+  it('should render a spinner if status is loading', () => {
+    wrapper = shallow(<MyPolls status="loading" />);
+
+    const spinner = wrapper.find(Spinner);
+
+    expect(spinner).to.have.length(1);
   });
   
 });

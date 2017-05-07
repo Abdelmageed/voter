@@ -8,6 +8,7 @@ import VoteInput from './VoteInput';
 import PollForm from '../containers/EditPollForm';
 import DeletePopover from '../containers/DeletePopover';
 import PollTitle from './PollTitle';
+import Spinner from './Spinner';
 
 export default class Poll extends Component{
   constructor(props){
@@ -88,6 +89,8 @@ export default class Poll extends Component{
     }
 
   render(){
+
+    if(this.props.status === 'loading') {return <Spinner />;}
 
     const colors = randomcolor({count: this.props.options.length});
 
@@ -175,7 +178,7 @@ export default class Poll extends Component{
             data={data}
             />
         </div>
-        <Share url="http://google.com" options={{text: "Vote on my poll"}} />
+        <Share url={window.location.href} options={{text: `Your vote counts on ${this.props.name}`}} />
       </div>
       );
 
@@ -202,4 +205,5 @@ Poll.propTypes = {
   showAuthor: PropTypes.bool,
   userId: PropTypes.string,
   showControls: PropTypes.bool,
+  status: PropTypes.string,
 };

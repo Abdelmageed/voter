@@ -1,9 +1,9 @@
 import React, {Component, PropTypes} from 'react';
 import {Button} from 'react-bootstrap';
 
-import Poll from '../containers/Poll';
 import PollForm from '../containers/CreatePollForm';
 import PollHeader from '../containers/PollHeader';
+import Spinner from './Spinner';
 
 export default class MyPolls extends Component{
   
@@ -32,6 +32,9 @@ export default class MyPolls extends Component{
   
   render(){
     
+    if(this.props.status === 'loading') {return <Spinner />;}
+
+
     const createPollButton = (
       <Button
         id="createPollButton"
@@ -67,4 +70,5 @@ export default class MyPolls extends Component{
 
 MyPolls.propTypes = {
   userPollIds: PropTypes.arrayOf(PropTypes.string),
+  status: PropTypes.string,
 };
