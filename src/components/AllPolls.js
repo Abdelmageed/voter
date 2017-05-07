@@ -9,6 +9,13 @@ export default class AllPoll extends Component{
     super(props);
   }
   
+  componentDidMount() {
+    if(this.props.getAllPolls) {
+
+      this.props.getAllPolls();
+    }
+  }
+
   render(){
 
     if(this.props.status === 'loading') {return <Spinner />;}
@@ -29,4 +36,5 @@ export default class AllPoll extends Component{
 AllPoll.propTypes = {
   pollIds: PropTypes.arrayOf(PropTypes.string),
   status: PropTypes.string,
+  getAllPolls: PropTypes.func,
 };

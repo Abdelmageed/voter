@@ -7,7 +7,7 @@ import 'bootstrap/dist/css/bootstrap.css';
 
 import configureStore from './store/configureStore';
 import {getRoutes} from './routes';
-import {getIp, getAllPolls} from './actions/actionCreators';
+import {getIp} from './actions/actionCreators';
 import session from './util/session';
 require("font-awesome-webpack");
 
@@ -16,14 +16,13 @@ persistStore(store, () => {
   if(!store.getState().user.isAuthenticated) {session.setSessionId('');}
 });
 store.dispatch(getIp());
-store.dispatch(getAllPolls());
 
 
 const reactRoot = window.document.getElementById("app");
   ReactDOM.render(
     <Provider store={store}>
       <Router history={browserHistory}>
-        {getRoutes(store)}
+        {getRoutes()}
       </Router>
     </Provider>,
     reactRoot);

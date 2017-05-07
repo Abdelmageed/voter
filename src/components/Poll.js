@@ -28,6 +28,10 @@ export default class Poll extends Component{
       showDeletePopover: false
     };
   }
+
+  componentdidMount () {
+    this.props.getPoll(this.props.params._id);
+  }
   
   getUserVote() {
     let userVote = '';
@@ -206,4 +210,5 @@ Poll.propTypes = {
   userId: PropTypes.string,
   showControls: PropTypes.bool,
   status: PropTypes.string,
+  getPoll: PropTypes.func,
 };

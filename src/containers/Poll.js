@@ -1,6 +1,6 @@
 import {connect} from 'react-redux';
 
-import {modifyPoll} from '../actions/actionCreators';
+import {modifyPoll, getPoll} from '../actions/actionCreators';
 import Poll from '../components/Poll';
 
 const getVotedPoll = (poll, optionId, ip) => {
@@ -19,6 +19,7 @@ const getPollWithNewOption = (poll, newOption) => {
 };
 
 const mapStateToProps = (state, ownProps) => {
+    
     const poll = state.polls.items.filter((poll) => {
         return (poll._id === ownProps.params._id);
     })[0];
@@ -40,7 +41,8 @@ const mapDispatchToProps = (dispatch) => ({
         
         const pollWithNewOption = getPollWithNewOption(poll, newOption);
         dispatch(modifyPoll(pollWithNewOption ,poll));
-    }
+    },
+    getPoll: (id) => {dispatch(getPoll(id)); }
 });
 
 export default connect(mapStateToProps, mapDispatchToProps) (Poll);

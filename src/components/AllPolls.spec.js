@@ -13,7 +13,8 @@ describe('AllPolls Component', () => {
   ];
   let wrapper = shallow(
     <AllPolls 
-      pollIds={pollIds}/>);
+      pollIds={pollIds}
+      getAllPolls={()=>{}}/>);
   
   it('should render all poll headers', () => {
     const headers = wrapper.find(PollHeader);
