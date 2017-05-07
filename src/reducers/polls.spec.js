@@ -107,7 +107,7 @@ describe('Polls Reducer', () => {
   
   describe('getAllPolls thunk', () => {
     
-    it('calls getRequestPending, then sets state.polls.items to response.data.polls', (done) => {
+    it('calls getRequestPending, then sets state.polls.items to response.data.polls, then getRequestSuccess', (done) => {
       
       const allPolls = [
           {name: 'name', options: []},
@@ -115,7 +115,8 @@ describe('Polls Reducer', () => {
         ];
       const expectedActions = [
         actionCreators.getRequestPending(),
-        actionCreators.setPolls(allPolls)
+        actionCreators.setPolls(allPolls),
+        actionCreators.getRequestSuccess()
       ];
       const store = storeMock({});
       store.dispatch(actionCreators.getAllPolls());
@@ -147,7 +148,7 @@ describe('Polls Reducer', () => {
       }, 10);
     });
 
-    it('if poll was not found, it calls getRequestPending, then appends response.data.poll to state.polls.items', (done) => {
+    it('if poll was not found, it calls getRequestPending, then appends response.data.poll to state.polls.items, then calls getRequestSuccess', (done) => {
 
        const allPolls = [
         {_id: 'not found', name: 'not there', options: []}
@@ -157,19 +158,20 @@ describe('Polls Reducer', () => {
         };
       const expectedActions = [
         actionCreators.getRequestPending(),
-        actionCreators.addPoll(requestedPoll)
+        actionCreators.addPoll(requestedPoll),
+        actionCreators.getRequestSuccess()
         ];
 
-        const store = storeMock({polls: {status: 'ready', items: allPolls}});
-        axiosMock.onGet(endpoints.getPoll + 'id')
-          .reply(200, {poll: requestedPoll});
-        store.dispatch(actionCreators.getPoll('id'));
-        
-        setTimeout(() => {
-          expect(store.getActions()).to.deep.equal(expectedActions);
-          done();
-        }, 10);
-    });
+      const store = storeMock({polls: {status: 'ready', items: allPolls}});
+      axiosMock.onGet(endpoints.getPoll + 'id')
+        .reply(200, {poll: requestedPoll});
+      store.dispatch(actionCreators.getPoll('id'));
+      
+      setTimeout(() => {
+        expect(store.getActions()).to.deep.equal(expectedActions);
+        done();
+      }, 10);
+  });
 
   });
 
@@ -248,7 +250,15 @@ describe('Polls Reducer', () => {
       nextState = {status: 'loading', items: []},
       action = actionCreators.getRequestPending();
 
-      expect(polls(state, action)).to.deep.equal(nextState);
+    expect(polls(state, action)).to.deep.equal(nextState);
+  });
+
+  it('should handle GET_REQUEST_SUCCESS', () => {
+    const state = {status: 'loading', items: []},
+      nextState = {status: 'ready', items: []},
+      action = actionCreators.getRequestSuccess();
+
+    expect(polls(state, action)).to.deep.equal(nextState);
   });
   
 });

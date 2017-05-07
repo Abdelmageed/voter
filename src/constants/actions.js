@@ -10,3 +10,4 @@ export const DELETE_POLL = 'DELETE_POLL';
 export const ADD_POLL = 'ADD_POLL';
 export const EDIT_POLL = 'EDIT_POLL';
 export const SET_IP = 'SET_IP';
+export const GET_REQUEST_SUCCESS = 'GET_REQUEST_SUCCESS';

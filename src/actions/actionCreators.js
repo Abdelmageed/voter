@@ -133,6 +133,7 @@ export const getAllPolls = () => {
     return axios.get(endpoints.getAllPolls)
       .then((response) => {
         dispatch(setPolls(response.data.polls));
+        dispatch(getRequestSuccess());        
     })
     .catch((error) => {
       //TODO flash error message
@@ -151,6 +152,7 @@ export const getPoll = (id) => {
     return axios.get(endpoints.getPoll + id)
       .then((response) => {
         dispatch(addPoll(response.data.poll));
+        dispatch(getRequestSuccess());
       })
       .catch((error) => {
         //TODO flash error message
@@ -222,6 +224,10 @@ export const setPolls = (polls) => ({
 
 export const getRequestPending = () => ({
   type: actions.GET_REQUEST_PENDING
+});
+
+export const getRequestSuccess = () => ({
+  type: actions.GET_REQUEST_SUCCESS
 });
 
 //for some reason using action constants fails the tests.

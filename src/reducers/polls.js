@@ -28,6 +28,9 @@ export function polls(state = initialState.polls, action){
     case actions.GET_REQUEST_PENDING:
       return Object.assign({}, state, {status: 'loading'});
 
+      case actions.GET_REQUEST_SUCCESS:
+        return Object.assign({}, state, {status: 'ready'});
+
     default:
         return state;
   }
