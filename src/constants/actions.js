@@ -2,6 +2,7 @@ export const LOGIN = 'LOGIN';
 export const SET_USER = 'SET_USER';
 export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
 export const LOGIN_FAILURE = 'LOGIN_FAILURE';
+export const GET_REQUEST_PENDING = 'GET_REQUEST_PENDING';
 export const SET_POLLS = 'SET_POLLS';
 export const UPDATE_POLL = 'UPDATE_POLL';
 export const VOTE = 'VOTE';

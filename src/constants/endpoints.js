@@ -23,3 +23,5 @@ export const removePoll = '/poll/';
 export const modifyPoll = '/poll/';
 
 export const getAllPolls = '/poll/';
+
+export const getPoll = '/poll/';

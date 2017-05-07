@@ -3,7 +3,7 @@ import {connect} from 'react-redux';
 import MyPolls from '../components/MyPolls';
 
 const getUserPollIds = (state) => {
-    const filteredPolls = state.polls.filter((poll) => {
+    const filteredPolls = state.polls.items.filter((poll) => {
         return poll._author._id === state.user.id;
     });
     const pollIds = filteredPolls.map((userPoll) => {

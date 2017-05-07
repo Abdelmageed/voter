@@ -129,6 +129,7 @@ export const modifyPoll = (newPoll, poll) => {
 
 export const getAllPolls = () => {
   return (dispatch) => {
+    dispatch(getRequestPending());
     return axios.get(endpoints.getAllPolls)
       .then((response) => {
         dispatch(setPolls(response.data.polls));
@@ -137,6 +138,24 @@ export const getAllPolls = () => {
       //TODO flash error message
       if(error.response) throw error.response;
     });
+  };
+};
+
+export const getPoll = (id) => {
+  return (dispatch, getState) => {
+
+    const polls = getState().polls.items;
+    if(polls.find(poll => poll._id === id)) {return ;}
+    
+    dispatch(getRequestPending());
+    return axios.get(endpoints.getPoll + id)
+      .then((response) => {
+        dispatch(addPoll(response.data.poll));
+      })
+      .catch((error) => {
+        //TODO flash error message
+        if(error.response) throw error.response;
+      });
   };
 };
 
@@ -199,6 +218,10 @@ export const editPoll = (_id, newPoll) => ({
 export const setPolls = (polls) => ({
   type: actions.SET_POLLS,
   polls
+});
+
+export const getRequestPending = () => ({
+  type: actions.GET_REQUEST_PENDING
 });
 
 //for some reason using action constants fails the tests.

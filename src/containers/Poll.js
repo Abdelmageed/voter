@@ -19,14 +19,15 @@ const getPollWithNewOption = (poll, newOption) => {
 };
 
 const mapStateToProps = (state, ownProps) => {
-    const poll = state.polls.filter((poll) => {
+    const poll = state.polls.items.filter((poll) => {
         return (poll._id === ownProps.params._id);
     })[0];
     return {
         ip: state.user.ip,
         ...poll,
         isAuthenticated: state.user.isAuthenticated,
-        userId: state.user.id
+        userId: state.user.id,
+        status: state.polls.status
     };
 };
 

@@ -3,7 +3,7 @@ import {connect} from 'react-redux';
 import PollHeader from '../components/PollHeader';
 
 const mapStateToProps = (state, ownProps) => {
-    const poll = state.polls.filter((poll) => {
+    const poll = state.polls.items.filter((poll) => {
         return (poll._id === ownProps._id);
     })[0];
     return {

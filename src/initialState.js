@@ -12,5 +12,8 @@ export const initialState = {
     id: '',
     ip: ''
   },
-  polls: []
+  polls: {
+    status: 'loading',
+    items: []
+  }
 };

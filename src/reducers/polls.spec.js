@@ -49,20 +49,22 @@ describe('Polls Reducer', () => {
       type: actions.ADD_POLL,
       poll: fakePoll
     },
-          state = [],
-          nextState = [fakePoll];
+          state = {items: [], status: 'ready'},
+          nextState = {items: [fakePoll], status: 'ready'};
     expect(polls(state, action)).to.deep.equal(nextState);
     
   });
   
   it('should handle REMOVE_POLL', () => {
     const _id = 0,
-          state = [{
-      _id,
-      name: 'dead poll',
-      options: []
-    }],
-          nextState = [];
+          state = {
+            status: 'ready',
+            items: [{
+              _id,
+              name: 'dead poll',
+              options: []
+            }]},
+          nextState = {status: 'ready', items: []};
     expect(polls(state, actionCreators.deletePoll(_id))).to.deep.equal(nextState);
   });
   
@@ -96,20 +98,23 @@ describe('Polls Reducer', () => {
   });
  
   it('should handle SET_POLLS', () => {
-    const state = [],
+    const state = {status: 'ready', items: []},
           allPolls = [{name: 'name', options: []},
                    {name: 'another name', options: []}],
-          nextState = allPolls;
+          nextState = {status: 'ready', items: allPolls};
     expect(polls(state, actionCreators.setPolls(allPolls))).to.deep.equal(nextState);
   });
   
   describe('getAllPolls thunk', () => {
     
-    it('loads state.polls with response.data.polls', (done) => {
+    it('calls getRequestPending, then sets state.polls.items to response.data.polls', (done) => {
       
-      const allPolls = [{name: 'name', options: []},
-                   {name: 'another name', options: []}];
+      const allPolls = [
+          {name: 'name', options: []},
+          {name: 'another name', options: []}
+        ];
       const expectedActions = [
+        actionCreators.getRequestPending(),
         actionCreators.setPolls(allPolls)
       ];
       const store = storeMock({});
@@ -117,18 +122,61 @@ describe('Polls Reducer', () => {
       axiosMock.onGet(endpoints.getAllPolls)
         .reply(200, {polls: allPolls});
       
-    setTimeout(() => {             expect(store.getActions()).to.deep.equal(expectedActions);
+    setTimeout(() => {
+      expect(store.getActions()).to.deep.equal(expectedActions);
       done();
     }, 10);  
-      
       
     });
   });
 
+  describe('getPoll thunk', () => {
+
+    it('returns if poll with given id was found in state.polls.items', (done) => {
+
+      const allPolls = [
+        {_id: 'found', name: 'got you', options: []}
+      ];
+      const expectedActions = [];
+      const store = storeMock({polls: {items: allPolls, status: 'ready'}});
+
+      store.dispatch(actionCreators.getPoll('found'));
+      setTimeout(() => {
+        expect(store.getActions()).to.deep.equal(expectedActions);
+        done();
+      }, 10);
+    });
+
+    it('if poll was not found, it calls getRequestPending, then appends response.data.poll to state.polls.items', (done) => {
+
+       const allPolls = [
+        {_id: 'not found', name: 'not there', options: []}
+      ],
+        requestedPoll = {
+          _id: 'id', name: 'poll name', options: []
+        };
+      const expectedActions = [
+        actionCreators.getRequestPending(),
+        actionCreators.addPoll(requestedPoll)
+        ];
+
+        const store = storeMock({polls: {status: 'ready', items: allPolls}});
+        axiosMock.onGet(endpoints.getPoll + 'id')
+          .reply(200, {poll: requestedPoll});
+        store.dispatch(actionCreators.getPoll('id'));
+        
+        setTimeout(() => {
+          expect(store.getActions()).to.deep.equal(expectedActions);
+          done();
+        }, 10);
+    });
+
+  });
+
   it('should handle EDIT_POLL', () => {
       const modifiedPoll = Object.assign({}, fakePoll, {name: 'modified poll name'});
-      const state = [fakePoll, anotherFakePoll],
-        nextState = [modifiedPoll, anotherFakePoll],
+      const state = {status: 'ready', items: [fakePoll, anotherFakePoll]},
+        nextState = {status: 'ready', items: [modifiedPoll, anotherFakePoll]},
         action = actionCreators.editPoll(fakePoll._id, modifiedPoll);
 
       expect(polls(state, action)).to.deep.equal(nextState);
@@ -193,6 +241,14 @@ describe('Polls Reducer', () => {
         done();
       }, 10);
     });
+  });
+
+  it('should handle GET_REQUEST_PENDING', () => {
+    const state = {status: 'ready', items: []},
+      nextState = {status: 'loading', items: []},
+      action = actionCreators.getRequestPending();
+
+      expect(polls(state, action)).to.deep.equal(nextState);
   });
   
 });
