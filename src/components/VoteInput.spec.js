@@ -11,14 +11,14 @@ let wrapper,
     spyMakeNewOption,
     spyGetOptionNameValidation,
     spyGetStateValidation;
-const ip = "123.156.2.1";
+const identifier = "123.156.2.1";
 beforeEach(() => {
     spyMakeNewOption = sandbox.spy(VoteInput.prototype, 'makeNewOption');
     spyGetOptionNameValidation = sandbox.spy(VoteInput.prototype, 'getOptionNameValidation');
     spyGetStateValidation = sandbox.spy(VoteInput.prototype, "getStateValidation");
     wrapper = shallow(
     <VoteInput 
-        ip={ip}
+        identifier={identifier}
         addNewOption={sandbox.spy()}/>);
 });
 
@@ -33,11 +33,11 @@ describe('VoteInput', () => {
         expect(wrapper.find(FormControl)).to.have.length(1);
     });
 
-    it('makeNewOption() should return an option object with name and a votes array containing the user\'s ip', () => {
+    it('makeNewOption() should return an option object with name and a votes array containing the user\'s identifier', () => {
         const optionName = "new option",
             option = {
                 name: optionName,
-                votes: [ip]
+                votes: [identifier]
             };
         wrapper.instance().setState({optionName});
         
@@ -82,12 +82,12 @@ describe('VoteInput', () => {
             stubGetOptionNameValidation = sandbox.stub(VoteInput.prototype, 'getOptionNameValidation'),
             newOption = {
                 _id: 'newid',
-                votes: ['some.fancy.user.ip']
+                votes: ['some.fancy.user.identifier']
             };
 
         wrapper = shallow(
          <VoteInput 
-            ip={ip}
+            identifier={identifier}
             addNewOption={sandbox.spy()}/>);
 
         stubMakeNewOption.returns(newOption);
@@ -115,7 +115,7 @@ describe('VoteInput', () => {
         };
         wrapper = shallow(
          <VoteInput 
-            ip={ip}
+            identifier={identifier}
             addNewOption={sandbox.spy()}/>);
 
         wrapper.instance().handleSubmit(e);

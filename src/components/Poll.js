@@ -27,18 +27,26 @@ export default class Poll extends Component{
       editing: false,
       showDeletePopover: false
     };
+
+    this.identifier = this.props.userId || this.props.ip;
   }
 
   componentdidMount () {
     this.props.getPoll(this.props.params._id);
   }
+
+  // componentWillReceiveProps(nextProps) {
+  //   console.log(nextProps.userId);
+  //   this.identifier = this.props.userId || this.props.ip;    
+  //   // this.props.getPoll(this.props.params._id);    
+  // }
   
   getUserVote() {
     let userVote = '';
     this.props.options.forEach((option) => {
       let found = false;
       option.votes.forEach((vote) => {
-        if(vote === this.props.ip) {
+        if(vote === this.identifier) {
           userVote =  option.name;
           found = true;
           return;
@@ -60,7 +68,7 @@ export default class Poll extends Component{
 
   vote(optionId) {
     const poll = this.getPoll();
-    this.props.vote(poll, optionId, this.props.ip);
+    this.props.vote(poll, optionId, this.identifier);
   }
   
   addNewOption(newOption) {
@@ -95,6 +103,8 @@ export default class Poll extends Component{
   render(){
 
     if(this.props.status === 'loading') {return <Spinner />;}
+    
+    this.identifier = this.props.userId || this.props.ip;    
 
     const colors = randomcolor({count: this.props.options.length});
 
@@ -112,7 +122,7 @@ export default class Poll extends Component{
         }]
   };
 
-    const vote = this.getUserVote(),
+    const userVote = this.getUserVote(),
       optionButtons = this.props.options.map((option, index) => (
           <Button 
             key={index}
@@ -123,14 +133,14 @@ export default class Poll extends Component{
         )),
       voteText = (
         <h4 id="voteText">
-          You voted for {vote}
+          You voted for {userVote}
         </h4>
       );
 
       const voteInput = (
         <VoteInput 
           key={optionButtons.length}
-          ip={this.props.ip}
+          identifier={this.identifier}
           addNewOption={this.addNewOption}
           />),
         loginToAddMessage = (
@@ -174,7 +184,7 @@ export default class Poll extends Component{
           showAuthor
           isOwnPoll={isOwnPoll}/>        
         {
-          (vote === '') ?
+          (userVote === '') ?
           optionButtons : voteText
         }
         <div

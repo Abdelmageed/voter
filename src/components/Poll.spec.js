@@ -62,6 +62,14 @@ describe('Poll', () => {
     expect(spyGetUserVote.returned('')).to.be.true;
   });
 
+  it('getUserVote() should search by userId if user is authenticated instead of ip', () => {
+    wrapper = shallow(<Poll params={params} userId="authId" {...pollVoted} ip={ownIP}/>);    
+
+    wrapper.instance().getUserVote();
+
+    expect(spyGetUserVote.returned('')).to.be.true; 
+  });
+
   it('should render a collection of buttons for every option if user has not voted yet', () => {
     wrapper = shallow(<Poll params={params} {...pollNotVoted} ip={ownIP}/>);    
     
@@ -88,7 +96,7 @@ describe('Poll', () => {
 
   });
 
-  it('vote(optionId) should call props.vote with (pollObject, optionId, props.ip)', () => {
+  it('vote(optionId) should call props.vote with (pollObject, optionId, props.ip) if user is unuathenticated', () => {
     wrapper = shallow(<Poll params={params} {...pollVoted} ip={ownIP} vote={sinon.spy()}/>);    
     const poll = {
       _id: 'some123hade314',
@@ -101,6 +109,22 @@ describe('Poll', () => {
     wrapper.instance().vote(optionId);
 
     expect(wrapper.instance().props.vote.calledWith(poll, optionId, ownIP)).to.be.true;
+  });
+
+  it('vote(optionId) should call props.vote with (pollObject, optionId, props.userId) if user is authenticated', () => {
+    const userId = "authId";
+    wrapper = shallow(<Poll params={params} {...pollVoted} userId={userId} ip={ownIP} vote={sinon.spy()}/>);    
+    const poll = {
+      _id: 'some123hade314',
+      name: 'name',
+      options: []
+    },
+    optionId = 'some123sdiq2aa';
+    stubGetPoll.returns(poll);
+
+    wrapper.instance().vote(optionId);
+
+    expect(wrapper.instance().props.vote.calledWith(poll, optionId, userId)).to.be.true;
   });
   
   it('getPoll() should return the extracted poll object from props', () => {

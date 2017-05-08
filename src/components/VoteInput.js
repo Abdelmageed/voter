@@ -53,7 +53,7 @@ export default class VoteInput extends Component{
     makeNewOption() {
         return {
             name: this.state.optionName,
-            votes: [this.props.ip]
+            votes: [this.props.identifier]
         };
     }
 
@@ -83,6 +83,6 @@ export default class VoteInput extends Component{
 }
 
 VoteInput.propTypes = {
-    ip: PropTypes.string,
+    identifier: PropTypes.string,
     addNewOption: PropTypes.func
 };
