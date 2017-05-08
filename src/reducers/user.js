@@ -11,7 +11,7 @@ export function user(state = initialState.user, action){
       return Object.assign({}, state, {
         isAuthenticated: true,
         loggingIn: false,
-        error: ''
+        login: {error: ''}
       });
       
     case 'LOGIN_FAILURE':
