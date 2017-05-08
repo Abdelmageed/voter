@@ -1,6 +1,7 @@
 import querystring from 'querystring';
 import jsonp from 'jsonp';
-import {push} from 'react-router-redux';
+import {push, goBack} from 'react-router-redux';
+import {browserHistory} from 'react-router';
 
 import * as actions from '../constants/actions';
 import * as errors from '../constants/errors';
@@ -165,6 +166,11 @@ export const removePoll = (id) => {
   return (dispatch) => {
     return axios.delete(endpoints.removePoll + id)
       .then(() => {
+        if(browserHistory.length > 0) {
+          dispatch(goBack());
+        } else {
+          dispatch(push('/'));
+        }
         dispatch(deletePoll(id));
       })
       .catch((error) => {

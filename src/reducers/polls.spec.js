@@ -2,6 +2,7 @@ import {expect} from 'chai';
 import MockAdapter from 'axios-mock-adapter';
 import configureStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
+import {push} from 'react-router-redux';
 
 import * as endpoints from '../constants/endpoints';
 import * as actions from '../constants/actions';
@@ -226,10 +227,11 @@ describe('Polls Reducer', () => {
   });
 
   describe('removePoll thunk', () => {
-    it('should delete poll on response success', (done) => {
+    it('should redirect to previous route if it exists and delete poll on response success', (done) => {
       const pollId = 'theCondemnedPollId';
 
       const expectedActions = [
+        push('/'),
         actionCreators.deletePoll(pollId)
       ];
       const store = storeMock({});
