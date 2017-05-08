@@ -192,6 +192,18 @@ describe('Poll', () => {
     const spinner = wrapper.find(Spinner);
 
     expect(spinner).to.have.length(1);
-  })
+  });
+
+  it('renders social widgets for sharing link to poll if it is authenticated user poll', () => {
+    wrapper = shallow(<Poll {...pollVoted} params={params} userId={pollVoted._author._id} ip={ownIP}/>);
+    let tweetButton = wrapper.find('#socialWidgets');
+
+    expect(tweetButton).to.have.length(1);
+
+    wrapper = shallow(<Poll {...pollVoted} params={params} ip={ownIP}/>);
+    tweetButton = wrapper.find('#socialWidgets');    
+
+    expect(tweetButton).to.have.length(0);
+  });
 
 });

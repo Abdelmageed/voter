@@ -155,6 +155,12 @@ export default class Poll extends Component{
         </div>
       );
 
+      const socialWidgets = (
+        <div id="socialWidgets">
+            <Share url={window.location.href} options={{text: `Your vote counts on ${this.props.name}`}} />
+        </div>
+      );
+
       const isOwnPoll = (this.props.userId === this.props._author._id);
 
       const poll = (
@@ -182,7 +188,7 @@ export default class Poll extends Component{
             data={data}
             />
         </div>
-        <Share url={window.location.href} options={{text: `Your vote counts on ${this.props.name}`}} />
+        {isOwnPoll ? socialWidgets : null}
       </div>
       );
 
