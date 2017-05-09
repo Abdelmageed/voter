@@ -77,7 +77,9 @@ export default class PollForm extends Component{
     }));
   }
   
-  validate() {
+  validate(e) {
+    e.preventDefault();
+
     this.setState({
       validating: true
     });
@@ -172,7 +174,10 @@ export default class PollForm extends Component{
             validating={this.state.validating}/>);
       });
     return (
-      <div id="PollForm" style={style}>
+      <form 
+        id="PollForm"
+        style={style}
+        onSubmit={this.validate}>
         <Button
           id="closeButton"
           className="close"
@@ -194,7 +199,7 @@ export default class PollForm extends Component{
             validating={this.state.validating}
             errorMessage="Can't be empty"/>
         </FormGroup>
-        <Form id="options">
+        <FormGroup id="options">
          <ControlLabel>Options:</ControlLabel>
           {optionsInputs}
           <Button
@@ -202,14 +207,14 @@ export default class PollForm extends Component{
           onClick={this.addOption} >
             <i className="fa fa-plus" /> Add Option
           </Button>
-        </Form>
+        </FormGroup>
         <hr />
         <Button
-        bsStyle="success"
-        id="saveButton"
-        onClick={()=>{this.validate();}}>Save</Button>
-        
-      </div>
+          bsStyle="success"
+          id="saveButton"
+          type="submit"
+        >Save</Button>
+      </form>
     );
   }
 }

@@ -169,10 +169,11 @@ describe('PollForm', () => {
     expect(spyClose.called).to.be.true;
   });
 
-  it('has a save button that calls validate() on click', () => {
+  it('has a save button that calls validate() on submit', () => {
+    const form = wrapper.find('form');
     const saveButton = wrapper.find('#saveButton');
     expect(saveButton).to.have.length(1);
-    saveButton.simulate('click');
+    form.simulate('submit');
 
     expect(spyValidate.called).to.be.true;
   });
