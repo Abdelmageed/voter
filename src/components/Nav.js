@@ -13,7 +13,7 @@ export default class Nav extends Component{
   
   render(){
       return (
-        <Bootstrap.Navbar>
+        <Bootstrap.Navbar fixedTop>
         <Bootstrap.Navbar.Header>
           <Bootstrap.Navbar.Brand>
             <IndexLink style={{cursor:'pointer'}} to="/">Voter</IndexLink>

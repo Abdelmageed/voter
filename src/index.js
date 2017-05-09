@@ -4,12 +4,13 @@ import { Provider } from 'react-redux';
 import { persistStore } from 'redux-persist';
 import {Router, browserHistory} from 'react-router';
 import 'bootstrap/dist/css/bootstrap.css';
+import 'font-awesome-webpack';
 
 import configureStore from './store/configureStore';
 import {getRoutes} from './routes';
 import {getIp} from './actions/actionCreators';
 import session from './util/session';
-require("font-awesome-webpack");
+import './index.css';
 
 const store = configureStore();
 persistStore(store, () => {

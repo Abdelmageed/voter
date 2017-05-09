@@ -1,7 +1,7 @@
 import React, {Component, PropTypes} from 'react';
 import {Button} from 'react-bootstrap';
 import {Pie} from 'react-chartjs-2';
-import randomcolor from 'randomcolor';
+import color from '../util/colors';
 import {Share} from 'react-twitter-widgets';
 
 import VoteInput from './VoteInput';
@@ -34,12 +34,6 @@ export default class Poll extends Component{
   componentdidMount () {
     this.props.getPoll(this.props.params._id);
   }
-
-  // componentWillReceiveProps(nextProps) {
-  //   console.log(nextProps.userId);
-  //   this.identifier = this.props.userId || this.props.ip;    
-  //   // this.props.getPoll(this.props.params._id);    
-  // }
   
   getUserVote() {
     let userVote = '';
@@ -103,10 +97,10 @@ export default class Poll extends Component{
   render(){
 
     if(this.props.status === 'loading') {return <Spinner />;}
-    
+
     this.identifier = this.props.userId || this.props.ip;    
 
-    const colors = randomcolor({count: this.props.options.length});
+    const colors = color(this.props.options.length);
 
     const data = {
     labels: this.props.options.map((option) => {
@@ -124,12 +118,13 @@ export default class Poll extends Component{
 
     const userVote = this.getUserVote(),
       optionButtons = this.props.options.map((option, index) => (
-          <Button 
-            key={index}
-            className="option-button"
-            onClick={()=> {this.vote(option._id);}}>
-            {option.name}
+          <div key={index}>
+            <Button 
+              className="option-button"
+              onClick={()=> {this.vote(option._id);}}>
+              {option.name}
             </Button>
+          </div>
         )),
       voteText = (
         <h4 id="voteText">
@@ -157,49 +152,78 @@ export default class Poll extends Component{
         addVoteOrMessage
       );
 
-      const pollAuthorControls = (
-        <div id="pollAuthorControls">
-          <Button onClick={this.showEditForm}>Edit</Button>
-          <Button onClick={this.showDeletePopover}>Delete</Button>
-          <DeletePopover show={this.state.showDeletePopover} hide={this.hideDeletePopover} id={this.props.params._id}/>
-        </div>
-      );
+      const style = {
+        width: 440,
+        margin: 'auto',
+        border: '1px solid #999',
+        borderRadius: '1.5%',
+        backgroundColor: 'white',
+        boxShadow: '0px 2px 1px 2px #999', 
+        padding: 20,
+      };
+
+      const controlsStyle = {
+        width: '80%',
+        marginTop: 20,
+        marginRight: 'auto',
+        marginLeft: 'auto',
+      };
+
+      const chartStyle = {
+        width: 400,
+        marginBottom: '10px',
+      };
 
       const socialWidgets = (
-        <div id="socialWidgets">
-            <Share url={window.location.href} options={{text: `Your vote counts on ${this.props.name}`}} />
-        </div>
+        <span id="socialWidgets">
+            <Share 
+              url={window.location.href}
+              options={{text: `Your vote counts on ${this.props.name}`, size: 'large'}} />
+        </span>
       );
+
+      
+
+      const pollAuthorControls = (
+        <span id="pollAuthorControls" style={controlsStyle}>
+          <Button bsStyle="warning" onClick={this.showEditForm}>
+            <i className="fa fa-edit" /> Edit
+          </Button>
+          <Button bsStyle="danger" onClick={this.showDeletePopover} style={{float: 'right'}}>
+            <i className="fa fa-trash"/> Delete
+          </Button>
+          <DeletePopover show={this.state.showDeletePopover} hide={this.hideDeletePopover} id={this.props.params._id}/>
+        </span>
+      );
+
 
       const isOwnPoll = (this.props.userId === this.props._author._id);
 
+      
+
       const poll = (
-        <div>
+        <div style={style}>
+          <PollTitle 
+            authorName={this.props._author.local.username}
+            pollName={this.props.name}
+            size="lg"
+            showAuthor
+            isOwnPoll={isOwnPoll}/>        
+          {
+            (userVote === '') ?
+            optionButtons : voteText
+          }
+          <div
+            className="chart" 
+            style={chartStyle}
+          >
+            <Pie
+              data={data}
+              />
+          </div>
+          {isOwnPoll ? socialWidgets : null}
           {isOwnPoll ? pollAuthorControls : null}
-        
-        <PollTitle 
-          authorName={this.props._author.local.username}
-          pollName={this.props.name}
-          size="lg"
-          showAuthor
-          isOwnPoll={isOwnPoll}/>        
-        {
-          (userVote === '') ?
-          optionButtons : voteText
-        }
-        <div
-          className="chart" 
-          style={{
-            width: 400,
-            height: 400
-          }}
-        >
-          <Pie
-            data={data}
-            />
         </div>
-        {isOwnPoll ? socialWidgets : null}
-      </div>
       );
 
       const pollForm = (
@@ -209,7 +233,11 @@ export default class Poll extends Component{
         />
       );
 
-    return this.state.editing ? pollForm : poll;
+    return (
+      <div className="container">
+        {this.state.editing ? pollForm : poll};
+      </div>
+    );
   }
 }
 

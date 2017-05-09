@@ -1,4 +1,5 @@
 import React, {Component, PropTypes} from 'react';
+import {ListGroup} from 'react-bootstrap';
 
 import PollHeader from '../containers/PollHeader';
 import Spinner from './Spinner';
@@ -20,14 +21,28 @@ export default class AllPoll extends Component{
 
     if(this.props.status === 'loading') {return <Spinner />;}
 
+    const listGroupStyle = {
+      width: '75%',
+      margin: 'auto',
+      backgrounColor: 'white',
+      textAlign: 'center'
+    };
+
     const pollHeaders = this.props.pollIds.map((id, index) => (
-      <PollHeader _id={id} key={index} showAuthor />
+      <PollHeader key={index} _id={id} showAuthor />
     ));
     
+    const headerStyle = {
+      color: '#666'
+    };
+
+
     return(
-      <div>
-        <h1>Polls</h1>
-        {pollHeaders}
+      <div className="container">
+        <h1 style={headerStyle}>All Polls</h1>
+        <ListGroup style={listGroupStyle}>
+          {pollHeaders}
+        </ListGroup>
       </div>
     ); 
   }

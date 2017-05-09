@@ -137,6 +137,18 @@ export default class PollForm extends Component{
   
   render(){
     
+    const style = {
+      width: '75%',
+      marginLeft: 'auto',
+      marginRight: 'auto',
+      marginBottom: '20px',
+      boxShadow: '2px 2px 2px 2px #999',
+      padding: '5px',
+      border: '1px solid #999',
+      borderRadius: '1.5%',
+      textAlign: 'left',
+    };
+
     const optionsInputs = (this.state.options.length > 2)?
           this.state.options.map((option)=> {
           return (<RemovableTextInput
@@ -160,7 +172,18 @@ export default class PollForm extends Component{
             validating={this.state.validating}/>);
       });
     return (
-      <div id="PollForm">
+      <div id="PollForm" style={style}>
+        <Button
+          id="closeButton"
+          className="close"
+          style={{marginLeft: '90%'}}
+          onClick={()=> {
+            this.props.close();
+          }}
+        >
+          <i className="fa fa-times fa-2x" style={{color: 'red'}}/>
+        </Button>
+        <br />
         <FormGroup id="pollNameGroup">
           <ControlLabel>Name:</ControlLabel>
           <RequiredTextInput 
@@ -171,26 +194,21 @@ export default class PollForm extends Component{
             validating={this.state.validating}
             errorMessage="Can't be empty"/>
         </FormGroup>
-        <Form inline id="options">
+        <Form id="options">
          <ControlLabel>Options:</ControlLabel>
           {optionsInputs}
           <Button
           id="addOption"
           onClick={this.addOption} >
-            <i className="fa fa-plus" />
+            <i className="fa fa-plus" /> Add Option
           </Button>
         </Form>
+        <hr />
         <Button
+        bsStyle="success"
         id="saveButton"
         onClick={()=>{this.validate();}}>Save</Button>
-        <Button
-          id="closeButton"
-          onClick={()=> {
-            this.props.close();
-          }}
-        >
-          Close
-        </Button>
+        
       </div>
     );
   }

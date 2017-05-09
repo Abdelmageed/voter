@@ -1,5 +1,5 @@
 import React, {Component, PropTypes} from 'react';
-import {Button} from 'react-bootstrap';
+import {Button, ListGroup} from 'react-bootstrap';
 
 import PollForm from '../containers/CreatePollForm';
 import PollHeader from '../containers/PollHeader';
@@ -16,6 +16,8 @@ export default class MyPolls extends Component{
     
     this.closeForm = this.closeForm.bind(this);
     this.showForm = this.showForm.bind(this);
+
+    this.createButton = null;
   }
   
   closeForm(){
@@ -34,13 +36,23 @@ export default class MyPolls extends Component{
     
     if(this.props.status === 'loading') {return <Spinner />;}
 
+    const containerStyle = {
+      textAlign: 'center'
+    };
+
+    const createButtonStyle = {
+      marginBottom: 10,
+    };
 
     const createPollButton = (
       <Button
+        ref={ref => {this.createButton = ref;}}
+        style={createButtonStyle}
+        bsStyle="primary"
         id="createPollButton"
         onClick={()=> {this.showForm();}}
       >
-        Create New Poll <i className="fa fa-plus" />
+       <h4><i className="fa fa-plus" /> Create New Poll</h4>
       </Button>
     );
     
@@ -51,18 +63,33 @@ export default class MyPolls extends Component{
       />
     );
 
+    const listGroupStyle = {
+      width: '75%',
+      margin: 'auto',
+      backgrounColor: 'white',
+    };
+
+    const headerStyle = {
+      color: '#666'
+    };
+
     const userPollsHeaders = this.props.userPollIds.map((id, index) => (
-      <PollHeader _id={id} key={index} showLeadingOptions />
+      <PollHeader key={index} _id={id}  showLeadingOptions />
     ));
 
+
     return(
-      <div>
-        <h1>My Polls</h1>
-        { 
-          (this.state.showForm)?
-            pollForm : createPollButton
-        }
-        {userPollsHeaders}
+      <div className="container">
+        <h1 style={headerStyle}>My Polls</h1>
+        <div style={containerStyle}>
+          { 
+            (this.state.showForm)?
+              pollForm : createPollButton
+          }
+          <ListGroup style={listGroupStyle}>
+            {userPollsHeaders}
+          </ListGroup>
+        </div>
       </div>
     ); 
   }
