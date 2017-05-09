@@ -40,7 +40,7 @@ export default class PollHeader extends Component {
         )));
 
         return (
-          <Link to={`/poll/${this.props._id}`}>
+          <Link to={`/poll-detail/${this.props._id}`}>
             <ListGroupItem style={listGroupItemStyle}>
                 <PollTitle 
                     pollName={this.props.name}

@@ -27,7 +27,7 @@ export const getRoutes = () => {
         component={MyPolls}
         onEnter={redirectIfNotAuth}/>
       <Route
-        path="/poll/:_id"
+        path="/poll-detail/:_id"
         component={Poll}/>
       <Route
         path="*"

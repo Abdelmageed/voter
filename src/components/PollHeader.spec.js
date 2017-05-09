@@ -28,7 +28,7 @@ describe('PollHeader', () => {
         const link = wrapper.find(Link);
 
         expect(link).to.have.length(1);
-        expect(link.prop('to')).to.equal(`/poll/${poll._id}`);
+        expect(link.prop('to')).to.equal(`/poll-detail/${poll._id}`);
     });
 
     it('should render the first two leading options in votes if showLeadingOptions is true', () => {

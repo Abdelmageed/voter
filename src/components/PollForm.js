@@ -1,5 +1,5 @@
 import React, {Component, PropTypes} from 'react';
-import {FormGroup, ControlLabel, Form, Button} from 'react-bootstrap';
+import {FormGroup, ControlLabel, Button} from 'react-bootstrap';
 import RemovableTextInput from './RemovableTextInput';
 import RequiredTextInput from './RequiredTextInput';
 
